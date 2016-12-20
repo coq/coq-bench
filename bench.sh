@@ -14,6 +14,7 @@
 
 # TODO
 # - reuse the real *.opam file for Coq (we just need custom "url" file)
+# - improve initial checks (whether all the things that we need exist)
 # - camlp{4,5} ... probably we do not need the fake "camlp4" and "camlp5" packages
 #   (there is a way to tell OPAM to use the camlp4/5 available on the system instead of compiling/installing it when some package depends on it)
 # - describe the effect of that EXAMPLE command ... what kind of files are generated and what is their meaning
@@ -152,6 +153,15 @@ echo DEBUG: coq_opam_packages = $coq_opam_packages
 # --------------------------------------------------------------------------------
 
 # Some sanity checks of command-line arguments provided by the user that can be done right now.
+
+if which perf; then
+    echo -n
+else
+    echo > /dev/stderr
+    echo -e $error_prefix \"perf\" program is not available. > /dev/stderr
+    echo > /dev/stderr
+    exit 1
+fi
 
 if [ ! -e "$working_dir" ]; then
     echo > /dev/stderr
