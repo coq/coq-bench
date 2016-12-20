@@ -171,15 +171,6 @@ coq_opam_packages
      let proportional_difference__user_time__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.first) |> List.reduce max |> log10 |> ceil |> int_of_float) + 2 + precision in
      let proportional_difference__instructions__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.second) |> List.reduce max |> log10 |> ceil |> int_of_float) + 2 + precision in
      let proportional_difference__cycles__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.third) |> List.reduce max |> log10 |> ceil |> int_of_float) + 2 + precision in
-
-     measurements |> List.map (Tuple4.fourth %> Tuple3.first) |> List.iter (printf "DEBUG: 0.0: %f\n"); printf "\n";
-     measurements |> List.map (Tuple4.fourth %> Tuple3.second) |> List.iter (printf "DEBUG: 0.1: %f\n"); printf "\n";
-     measurements |> List.map (Tuple4.fourth %> Tuple3.third) |> List.iter (printf "DEBUG: 0.2: %f\n"); printf "\n";
-
-     printf "DEBUG 0: proportional_difference__user_time__width = %d\n" proportional_difference__user_time__width;
-     printf "DEBUG 1: proportional_difference__instructions__width = %d\n" proportional_difference__instructions__width;
-     printf "DEBUG 2: proportional_difference__cycles__width = %d\n" proportional_difference__cycles__width;
-     measurements |> List.map (Tuple4.fourth %> Tuple3.third) |> List.iter (printf "DEBUG 10: %+f\n");
      let make_dashes count = String.make count '-' in
      let vertical_separator = sprintf "+-%s-+-%s-%s--%s--+-%s-%s-%s---+-%s-%s--%s--+\n"
        (make_dashes package_name__width)
