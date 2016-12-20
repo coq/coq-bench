@@ -53,7 +53,7 @@ u='\033[4m'          # underline
 number_of_processors=$(cat /proc/cpuinfo | grep '^processor *' | wc -l)
 
 program_name="$0"
-program_path="${program_name%/*}"
+program_path=$(readlink -f "${program_name%/*}")
 program_name="${program_name##*/}"
 synopsys1="\t$b$program_name$r  [$b-h$r | $b--help$r]"
 synopsys2="\t$b$program_name$r  ${u}working_dir$r  ${u}coq_repository$r  ${u}coq_branch$r  ${u}num_of_iterations$r  ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
