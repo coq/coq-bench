@@ -168,11 +168,11 @@ coq_opam_packages
      let merge_base__user_time__width = (measurements |> List.map (Tuple4.third %> Tuple3.first) |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision in
      let merge_base__instructions__width = measurements |> List.map (Tuple4.third %> Tuple3.second) |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float in
      let merge_base__cycles__width = measurements |> List.map (Tuple4.third %> Tuple3.third) |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float in
-     let proportional_difference__user_time__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.first) |> List.reduce max |> log10 |> ceil |> int_of_float) + 2 + precision in
-     let proportional_difference__instructions__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.second) |> List.reduce max |> log10 |> ceil |> int_of_float) + 2 + precision in
-     let proportional_difference__cycles__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.third) |> List.reduce max |> log10 |> ceil |> int_of_float) + 2 + precision in
+     let proportional_difference__user_time__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.first %> abs_float) |> List.reduce max |> log10 |> ceil |> int_of_float |> fun i -> if i = 0 then 1 else i) + 2 + precision in
+     let proportional_difference__instructions__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.second %> abs_float) |> List.reduce max |> log10 |> ceil |> int_of_float |> fun i -> if i = 0 then 1 else i) + 2 + precision in
+     let proportional_difference__cycles__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.third %> abs_float) |> List.reduce max |> log10 |> ceil |> int_of_float |> fun i -> if i = 0 then 1 else i) + 2 + precision in
      let make_dashes count = String.make count '-' in
-     let vertical_separator = sprintf "+-%s-+-%s-%s--%s--+-%s-%s-%s---+-%s-%s--%s--+\n"
+     let vertical_separator = sprintf "+-%s-+-%s-%s-%s---+-%s-%s-%s---+-%s-%s-%s---+\n"
        (make_dashes package_name__width)
        (make_dashes head__user_time__width)
        (make_dashes merge_base__user_time__width)
