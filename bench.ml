@@ -31,11 +31,6 @@ assert (Array.length Sys.argv > 3);
 let working_directory = Sys.argv.(1) in
 let num_of_iterations = int_of_string Sys.argv.(2) in
 let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 3 in
-(*
-let working_directory = "/tmp/b" in
-let num_of_iterations = 1 in
-let coq_opam_packages = ["coq-aac-tactics"] in
-*)
 
 (* Run a given bash command;
    wait until it termines;
