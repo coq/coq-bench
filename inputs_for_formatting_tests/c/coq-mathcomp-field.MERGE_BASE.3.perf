@@ -1,0 +1,10 @@
+# started on Wed Dec 21 15:17:25 2016
+
+
+ Performance counter stats for 'opam install coq-mathcomp-field -v -j1':
+
+ 2,292,405,112,503      instructions:u            #    1.22  insns per cycle        
+ 1,876,624,387,627      cycles:u                 
+
+     512.568485637 seconds time elapsed
+
