@@ -152,20 +152,69 @@ coq_opam_packages
         let get_user_time = Tuple4.fourth %> Tuple3.first in
         compare (get_user_time measurement1) (get_user_time measurement2))
 
-|> tap (fun measurements -> ())
+(* Below we take the measurements and format them to stdout. *)
 
 |> fun measurements ->
      let precision = 2 in
-     let package_name__width = measurements |> List.map (Tuple4.first %> String.length) |> List.reduce max in
-     let head__user_time__width = (measurements |> List.map (Tuple4.second %> Tuple3.first) |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision in
-     let head__instructions__width = measurements |> List.map (Tuple4.second %> Tuple3.second) |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float in
-     let head__cycles__width = measurements |> List.map (Tuple4.second %> Tuple3.third) |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float in
-     let merge_base__user_time__width = (measurements |> List.map (Tuple4.third %> Tuple3.first) |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision in
-     let merge_base__instructions__width = measurements |> List.map (Tuple4.third %> Tuple3.second) |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float in
-     let merge_base__cycles__width = measurements |> List.map (Tuple4.third %> Tuple3.third) |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float in
-     let proportional_difference__user_time__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.first %> abs_float) |> List.reduce max |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision in
-     let proportional_difference__instructions__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.second %> abs_float) |> List.reduce max |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision in
-     let proportional_difference__cycles__width = (measurements |> List.map (Tuple4.fourth %> Tuple3.third %> abs_float) |> List.reduce max |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision in
+
+     (* the labels that we will print *)
+     let package_name__label = "package_name" in
+     let head__label = "HEAD" in
+     let merge_base__label = "MBASE" in
+     let proportional_difference__label = "PDIFF" in
+
+     (* the lengths of labels that we will print *)
+     let head__label__length = String.length head__label in
+     let merge_base__label__length = String.length merge_base__label in
+     let proportional_difference__label__length = String.length proportional_difference__label in
+
+     (*
+     measurements |> List.map Tuple4.first |> List.iter (printf "DEBUG: package_name = %s\n");
+     measurements |> List.map (Tuple4.second %> Tuple3.first) |> List.iter (printf "DEBUG: head__user_time = %f\n");
+     measurements |> List.map (Tuple4.second %> Tuple3.second) |> List.iter (printf "DEBUG: head__instructions = %d\n");
+     measurements |> List.map (Tuple4.second %> Tuple3.third) |> List.iter (printf "DEBUG: head__cycles = %d\n");
+     measurements |> List.map (Tuple4.third %> Tuple3.first) |> List.iter (printf "DEBUG: merge_base__user_time = %f\n");
+     measurements |> List.map (Tuple4.third %> Tuple3.second) |> List.iter (printf "DEBUG: merge_base__instructions = %d\n");
+     measurements |> List.map (Tuple4.third %> Tuple3.third) |> List.iter (printf "DEBUG: merge_base__cycles = %d\n");
+     measurements |> List.map (Tuple4.fourth %> Tuple3.first) |> List.iter (printf "DEBUG: proportional_difference__user_time = %f\n");
+     measurements |> List.map (Tuple4.fourth %> Tuple3.second) |> List.iter (printf "DEBUG: proportional_difference__instructions = %f\n");
+     measurements |> List.map (Tuple4.fourth %> Tuple3.third) |> List.iter (printf "DEBUG: proportional_difference__cycles = %f\n");
+     *)
+
+     (* widths of individual columns of the table *)
+     let package_name__width = max (measurements |> List.map (Tuple4.first %> String.length) |> List.reduce max)
+                                   (String.length package_name__label) in
+     let head__user_time__width = max ((measurements |> List.map (Tuple4.second %> Tuple3.first)
+                                        |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision)
+                                      head__label__length in
+     let head__instructions__width = max (measurements |> List.map (Tuple4.second %> Tuple3.second)
+                                          |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                         head__label__length in
+     let head__cycles__width = max (measurements |> List.map (Tuple4.second %> Tuple3.third)
+                                    |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                   head__label__length in
+     let merge_base__user_time__width = max ((measurements |> List.map (Tuple4.third %> Tuple3.first)
+                                              |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision)
+                                            merge_base__label__length in
+     let merge_base__instructions__width = max (measurements |> List.map (Tuple4.third %> Tuple3.second)
+                                                |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                               merge_base__label__length in
+     let merge_base__cycles__width = max (measurements |> List.map (Tuple4.third %> Tuple3.third)
+                                          |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                         merge_base__label__length
+     in
+     let proportional_difference__user_time__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple3.first %> abs_float) |> List.reduce max
+                                                           |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision)
+                                                         proportional_difference__label__length in
+     let proportional_difference__instructions__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple3.second %> abs_float) |> List.reduce max
+                                                              |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision)
+                                                            proportional_difference__label__length in
+     let proportional_difference__cycles__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple3.third %> abs_float) |> List.reduce max
+                                                        |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision)
+                                                      proportional_difference__label__length in
+
+     (* print the table *)
+
      let make_dashes count = String.make count '-' in
      let vertical_separator = sprintf "+-%s-+-%s-%s-%s---+-%s-%s-%s---+-%s-%s-%s---+\n"
        (make_dashes package_name__width)
@@ -179,6 +228,45 @@ coq_opam_packages
        (make_dashes merge_base__instructions__width)
        (make_dashes proportional_difference__instructions__width)
      in
+     let center_string string width =
+       let string_length = String.length string in
+       let width = max width string_length in
+       let left_hfill = (width - string_length) / 2 in
+       let right_hfill = width - left_hfill - string_length in
+       String.make left_hfill ' ' ^ string ^ String.make right_hfill ' '
+     in
+     printf "+-%s-+-%s-%s-%s-----%s-%s-%s-----%s-%s-%s---+\n"
+       (make_dashes package_name__width)
+       (make_dashes head__user_time__width)
+       (make_dashes merge_base__user_time__width)
+       (make_dashes proportional_difference__user_time__width)
+       (make_dashes head__cycles__width)
+       (make_dashes merge_base__cycles__width)
+       (make_dashes proportional_difference__cycles__width)
+       (make_dashes head__instructions__width)
+       (make_dashes merge_base__instructions__width)
+       (make_dashes proportional_difference__instructions__width);
+     "|" ^ String.make (1 + package_name__width + 1) ' ' ^ "|"
+     ^ center_string "user time" (1 +  head__user_time__width + 1 + merge_base__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "|"
+     ^ center_string "CPU cycles" (1 + head__cycles__width    + 1 + merge_base__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "|"
+     ^ center_string "CPU instructions" (1 + head__instructions__width + 1 + merge_base__instructions__width + 1 + proportional_difference__instructions__width + 3)
+     ^ "|\n" |> print_string;
+     printf "|%*s | %*s| %*s| %*s|\n"
+       (1 + package_name__width) ""
+       (head__user_time__width      + 1 + merge_base__user_time__width    + 1 + proportional_difference__user_time__width + 3) ""
+       (head__cycles__width       + 1 + merge_base__cycles__width       + 1 + proportional_difference__cycles__width + 3) ""
+       (head__instructions__width + 1 + merge_base__instructions__width + 1 + proportional_difference__instructions__width + 3) "";
+     printf "| %*s | %*s %*s %*s   | %*s %*s %*s   | %*s %*s %*s   |\n"
+       package_name__width package_name__label
+       head__user_time__width head__label
+       merge_base__user_time__width merge_base__label
+       proportional_difference__user_time__width proportional_difference__label
+       head__cycles__width head__label
+       merge_base__cycles__width merge_base__label
+       proportional_difference__cycles__width proportional_difference__label
+       head__instructions__width head__label
+       merge_base__instructions__width merge_base__label
+       proportional_difference__instructions__width proportional_difference__label;
      print_string vertical_separator;
      measurements |> List.iter
          (fun (package_name,
@@ -201,6 +289,24 @@ coq_opam_packages
 (* TESTS:
 
      ./bench.ml inputs_for_formatting_tests/a 3 coq-aac-tactics
+
+        +-----------------+-----------------------------------------------------------------------------------------+
+        |                 |      user time      |           CPU cycles            |        CPU instructions         |
+        |                 |                     |                                 |                                 |
+        |    package_name |  HEAD MBASE PDIFF   |        HEAD       MBASE PDIFF   |        HEAD       MBASE PDIFF   |
+        +-----------------+---------------------+---------------------------------+---------------------------------+
+        | coq-aac-tactics | 12.18 11.40 +6.84 % | 43313124698 41947595925 +3.26 % | 47396322602 44780155894 +5.84 % |
+        +-----------------+---------------------+---------------------------------+---------------------------------+
+
      ./bench.ml inputs_for_formatting_tests/b 1 coq-abp coq-zf
 
+        +--------------+-------------------------------------------------------------------------------------------+
+        |              |      user time       |            CPU cycles            |        CPU instructions         |
+        |              |                      |                                  |                                 |
+        | package_name |  HEAD MBASE  PDIFF   |        HEAD       MBASE  PDIFF   |        HEAD       MBASE PDIFF   |
+        +--------------+----------------------+----------------------------------+---------------------------------+
+        |      coq-abp |  7.67  7.80  -1.67 % | 28725701399 29219013046  -1.69 % | 32930749122 32935004729 -0.01 % |
+        +--------------+----------------------+----------------------------------+---------------------------------+
+        |       coq-zf | 10.32  7.68 +34.38 % | 38467675997 27497499103 +39.90 % | 32657861506 32659994172 -0.01 % |
+        +--------------+----------------------+----------------------------------+---------------------------------+
  *)
