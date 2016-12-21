@@ -197,3 +197,10 @@ coq_opam_packages
              merge_base__instructions__width merge_base_instructions
              proportional_difference__instructions__width precision proportional_difference__instructions;
            print_string vertical_separator)
+
+(* TESTS:
+
+     ./bench.ml inputs_for_formatting_tests/a 3 coq-aac-tactics
+     ./bench.ml inputs_for_formatting_tests/b 1 coq-abp coq-zf
+
+ *)
