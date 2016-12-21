@@ -235,6 +235,7 @@ coq_opam_packages
        let right_hfill = width - left_hfill - string_length in
        String.make left_hfill ' ' ^ string ^ String.make right_hfill ' '
      in
+     printf "\n";
      printf "+-%s-+-%s-%s-%s-----%s-%s-%s-----%s-%s-%s---+\n"
        (make_dashes package_name__width)
        (make_dashes head__user_time__width)
@@ -284,7 +285,18 @@ coq_opam_packages
              head__instructions__width head_instructions
              merge_base__instructions__width merge_base_instructions
              proportional_difference__instructions__width precision proportional_difference__instructions;
-           print_string vertical_separator)
+           print_string vertical_separator);
+
+printf "
+
+\"user time\" is in seconds
+
+ HEAD ... measurements at the HEAD of your branch
+MBASE ... measurements at the latest common commit of your branch and the official Coq branch (so called \"merge base\" point)
+PDIFF ... proportional difference of the HEAD and MBASE measurements
+          (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%%
+
+";
 
 (* TESTS:
 
