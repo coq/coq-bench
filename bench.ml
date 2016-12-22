@@ -236,17 +236,7 @@ coq_opam_packages
        String.make left_hfill ' ' ^ string ^ String.make right_hfill ' '
      in
      printf "\n";
-     printf "+-%s-+-%s-%s-%s-----%s-%s-%s-----%s-%s-%s---+\n"
-       (make_dashes package_name__width)
-       (make_dashes head__user_time__width)
-       (make_dashes merge_base__user_time__width)
-       (make_dashes proportional_difference__user_time__width)
-       (make_dashes head__cycles__width)
-       (make_dashes merge_base__cycles__width)
-       (make_dashes proportional_difference__cycles__width)
-       (make_dashes head__instructions__width)
-       (make_dashes merge_base__instructions__width)
-       (make_dashes proportional_difference__instructions__width);
+     print_string vertical_separator;
      "|" ^ String.make (1 + package_name__width + 1) ' ' ^ "|"
      ^ center_string "user time" (1 +  head__user_time__width + 1 + merge_base__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "|"
      ^ center_string "CPU cycles" (1 + head__cycles__width    + 1 + merge_base__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "|"
