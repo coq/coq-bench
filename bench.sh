@@ -14,6 +14,8 @@
 
 # TODO
 # - reuse the real *.opam file for Coq (we just need custom "url" file)
+# - use this script to confirm/refute the prior measurements:
+#   https://ci.inria.fr/coq/job/TEST10/13/console
 # - add checks that user-provided HEAD and BASE values have proper chronological order
 #   (i.e. HEAD is a more recent commit than BASE)
 # - improve initial checks (whether all the things that we need exist)
