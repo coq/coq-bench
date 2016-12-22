@@ -18,6 +18,8 @@
 #   - then run the comparison for
 #     - the HEAD of the v8.6 branch
 #     - the merge-base of the v8.6 branch
+# - add checks that user-provided HEAD and BASE values have proper chronological order
+#   (i.e. HEAD is a more recent commit than BASE)
 # - instead of '-' '|' '+' use the corresponding UNICODE glyphs.
 # - improve initial checks (whether all the things that we need exist)
 # - camlp{4,5} ... probably we do not need the fake "camlp4" and "camlp5" packages
