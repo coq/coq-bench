@@ -14,6 +14,12 @@
 
 # TODO
 # - reuse the real *.opam file for Coq (we just need custom "url" file)
+# - simplify the terminology; instead of merge-base/merge_base/MERGE_BASE/MBASE, just talk about base/BASE
+#   (this will make sense when we will adapt the scripts to compare any two given commits of a given branch)
+# - adapt these script so that they enable us to compare any two given points of a branch
+#   - then run the comparison for
+#     - the HEAD of the v8.6 branch
+#     - the merge-base of the v8.6 branch
 # - improve initial checks (whether all the things that we need exist)
 # - camlp{4,5} ... probably we do not need the fake "camlp4" and "camlp5" packages
 #   (there is a way to tell OPAM to use the camlp4/5 available on the system instead of compiling/installing it when some package depends on it)
