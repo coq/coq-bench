@@ -16,7 +16,6 @@
 # - reuse the real *.opam file for Coq (we just need custom "url" file)
 # - add checks that user-provided HEAD and BASE values have proper chronological order
 #   (i.e. HEAD is a more recent commit than BASE)
-# - instead of '-' '|' '+' use the corresponding UNICODE glyphs.
 # - improve initial checks (whether all the things that we need exist)
 # - camlp{4,5} ... probably we do not need the fake "camlp4" and "camlp5" packages
 #   (there is a way to tell OPAM to use the camlp4/5 available on the system instead of compiling/installing it when some package depends on it)

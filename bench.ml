@@ -215,18 +215,26 @@ coq_opam_packages
 
      (* print the table *)
 
-     let make_dashes count = String.make count '-' in
-     let vertical_separator = sprintf "+-%s-+-%s-%s-%s---+-%s-%s-%s---+-%s-%s-%s---+\n"
+     let rec make_dashes = function
+       | 0 -> ""
+       | count -> "─" ^ make_dashes (pred count)
+     in
+     let vertical_separator left_glyph middle_glyph right_glyph = sprintf "%s─%s─%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s\n"
+       left_glyph
        (make_dashes package_name__width)
+       middle_glyph
        (make_dashes head__user_time__width)
        (make_dashes base__user_time__width)
        (make_dashes proportional_difference__user_time__width)
+       middle_glyph
        (make_dashes head__cycles__width)
        (make_dashes base__cycles__width)
        (make_dashes proportional_difference__cycles__width)
+       middle_glyph
        (make_dashes head__instructions__width)
        (make_dashes base__instructions__width)
        (make_dashes proportional_difference__instructions__width)
+       right_glyph
      in
      let center_string string width =
        let string_length = String.length string in
@@ -236,18 +244,18 @@ coq_opam_packages
        String.make left_hfill ' ' ^ string ^ String.make right_hfill ' '
      in
      printf "\n";
-     print_string vertical_separator;
-     "|" ^ String.make (1 + package_name__width + 1) ' ' ^ "|"
-     ^ center_string "user time" (1 +  head__user_time__width + 1 + base__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "|"
-     ^ center_string "CPU cycles" (1 + head__cycles__width    + 1 + base__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "|"
+     print_string (vertical_separator "┌" "┬" "┐");
+     "│" ^ String.make (1 + package_name__width + 1) ' ' ^ "│"
+     ^ center_string "user time" (1 +  head__user_time__width + 1 + base__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "│"
+     ^ center_string "CPU cycles" (1 + head__cycles__width    + 1 + base__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "│"
      ^ center_string "CPU instructions" (1 + head__instructions__width + 1 + base__instructions__width + 1 + proportional_difference__instructions__width + 3)
-     ^ "|\n" |> print_string;
-     printf "|%*s | %*s| %*s| %*s|\n"
+     ^ "│\n" |> print_string;
+     printf "│%*s │ %*s│ %*s│ %*s│\n"
        (1 + package_name__width) ""
        (head__user_time__width      + 1 + base__user_time__width    + 1 + proportional_difference__user_time__width + 3) ""
        (head__cycles__width       + 1 + base__cycles__width       + 1 + proportional_difference__cycles__width + 3) ""
        (head__instructions__width + 1 + base__instructions__width + 1 + proportional_difference__instructions__width + 3) "";
-     printf "| %*s | %*s %*s %*s   | %*s %*s %*s   | %*s %*s %*s   |\n"
+     printf "│ %*s │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │\n"
        package_name__width package_name__label
        head__user_time__width head__label
        base__user_time__width base__label
@@ -258,13 +266,13 @@ coq_opam_packages
        head__instructions__width head__label
        base__instructions__width base__label
        proportional_difference__instructions__width proportional_difference__label;
-     print_string vertical_separator;
      measurements |> List.iter
          (fun (package_name,
                (head_user_time, head_instructions, head_cycles),
                (base_user_time, base_instructions, base_cycles),
                (proportional_difference__user_time, proportional_difference__instructions, proportional_difference__cycles)) ->
-           printf "| %*s | %*.*f %*.*f %+*.*f %% | %*d %*d %+*.*f %% | %*d %*d %+*.*f %% |\n"
+           print_string (vertical_separator "├" "┼" "┤");
+           printf "│ %*s │ %*.*f %*.*f %+*.*f %% │ %*d %*d %+*.*f %% │ %*d %*d %+*.*f %% │\n"
              package_name__width package_name
              head__user_time__width precision head_user_time
              base__user_time__width precision base_user_time
@@ -274,9 +282,9 @@ coq_opam_packages
              proportional_difference__cycles__width precision proportional_difference__cycles
              head__instructions__width head_instructions
              base__instructions__width base_instructions
-             proportional_difference__instructions__width precision proportional_difference__instructions;
-           print_string vertical_separator);
+             proportional_difference__instructions__width precision proportional_difference__instructions);
 
+print_string (vertical_separator "└" "┴" "┘");
 printf "
 
 \"user time\" is in seconds
@@ -292,43 +300,68 @@ PDIFF ... proportional difference of the HEAD and MBASE measurements
 
    ./bench.ml inputs_for_formatting_tests/a 3 coq-aac-tactics
 
-        +-----------------+---------------------+---------------------------------+---------------------------------+
-        |                 |      user time      |           CPU cycles            |        CPU instructions         |
-        |                 |                     |                                 |                                 |
-        |    package_name |  HEAD  BASE PDIFF   |        HEAD        BASE PDIFF   |        HEAD        BASE PDIFF   |
-        +-----------------+---------------------+---------------------------------+---------------------------------+
-        | coq-aac-tactics | 12.18 11.40 +6.84 % | 43313124698 41947595925 +3.26 % | 47396322602 44780155894 +5.84 % |
-        +-----------------+---------------------+---------------------------------+---------------------------------+
+        ┌─────────────────┬─────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
+        │                 │      user time      │           CPU cycles            │        CPU instructions         │
+        │                 │                     │                                 │                                 │
+        │    package_name │  HEAD  BASE PDIFF   │        HEAD        BASE PDIFF   │        HEAD        BASE PDIFF   │
+        ├─────────────────┼─────────────────────┼─────────────────────────────────┼─────────────────────────────────┤
+        │ coq-aac-tactics │ 12.18 11.40 +6.84 % │ 43313124698 41947595925 +3.26 % │ 47396322602 44780155894 +5.84 % │
+        └─────────────────┴─────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
+
+
+        "user time" is in seconds
+
+         HEAD ... measurements at the HEAD of your branch
+         BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
+        PDIFF ... proportional difference of the HEAD and MBASE measurements
+                  (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%
 
    ./bench.ml inputs_for_formatting_tests/b 1 coq-abp coq-zf
 
-        +--------------+----------------------+----------------------------------+---------------------------------+
-        |              |      user time       |            CPU cycles            |        CPU instructions         |
-        |              |                      |                                  |                                 |
-        | package_name |  HEAD  BASE  PDIFF   |        HEAD        BASE  PDIFF   |        HEAD        BASE PDIFF   |
-        +--------------+----------------------+----------------------------------+---------------------------------+
-        |      coq-abp |  7.67  7.80  -1.67 % | 28725701399 29219013046  -1.69 % | 32930749122 32935004729 -0.01 % |
-        +--------------+----------------------+----------------------------------+---------------------------------+
-        |       coq-zf | 10.32  7.68 +34.38 % | 38467675997 27497499103 +39.90 % | 32657861506 32659994172 -0.01 % |
-        +--------------+----------------------+----------------------------------+---------------------------------+
+        ┌──────────────┬─────────────────────┬──────────────────────────────────┬─────────────────────────────────┐
+        │              │      user time      │            CPU cycles            │        CPU instructions         │
+        │              │                     │                                  │                                 │
+        │ package_name │  HEAD BASE  PDIFF   │        HEAD        BASE  PDIFF   │        HEAD        BASE PDIFF   │
+        ├──────────────┼─────────────────────┼──────────────────────────────────┼─────────────────────────────────┤
+        │      coq-abp │  7.67 7.80  -1.67 % │ 28725701399 29219013046  -1.69 % │ 32930749122 32935004729 -0.01 % │
+        ├──────────────┼─────────────────────┼──────────────────────────────────┼─────────────────────────────────┤
+        │       coq-zf │ 10.32 7.68 +34.38 % │ 38467675997 27497499103 +39.90 % │ 32657861506 32659994172 -0.01 % │
+        └──────────────┴─────────────────────┴──────────────────────────────────┴─────────────────────────────────┘
+
+
+        "user time" is in seconds
+
+         HEAD ... measurements at the HEAD of your branch
+         BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
+        PDIFF ... proportional difference of the HEAD and MBASE measurements
+                  (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%
+
 
    ./bench.ml inputs_for_formatting_tests/c 3 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect
 
-        +------------------------+--------------------------+---------------------------------------+-----------------------------------------+
-        |                        |        user time         |              CPU cycles               |           CPU instructions            |
-        |                        |                          |                                       |                                       |
-        |           package_name |    HEAD   BASE   PDIFF   |          HEAD          BASE   PDIFF   |          HEAD          BASE   PDIFF   |
-        +------------------------+--------------------------+---------------------------------------+---------------------------------------+
-        |  coq-mathcomp-fingroup |   57.57  57.39   +0.31 % |  212196525523  211700800619   +0.23 % |  230742383528  231051582985   -0.13 % |
-        +------------------------+--------------------------+---------------------------------------+---------------------------------------+
-        | coq-mathcomp-ssreflect |   44.16  43.76   +0.91 % |  157468537172  157129657017   +0.22 % |  156209219792  155462303481   +0.48 % |
-        +------------------------+--------------------------+---------------------------------------+---------------------------------------+
-        |  coq-mathcomp-solvable |  239.79 199.12  +20.42 % |  895688256644  742909321481  +20.56 % | 1045508031859  847593471137  +23.35 % |
-        +------------------------+--------------------------+---------------------------------------+---------------------------------------+
-        |   coq-mathcomp-algebra |  378.67 175.35 +115.95 % | 1410735202916  653030070797 +116.03 % | 1469054879541  697258305890 +110.69 % |
-        +------------------------+--------------------------+---------------------------------------+---------------------------------------+
-        |     coq-mathcomp-field | 1790.52 498.74 +259.01 % | 6748094598910 1876624387627 +259.59 % | 8682577070704 2292383630876 +278.76 % |
-        +------------------------+--------------------------+---------------------------------------+---------------------------------------+
-        | coq-mathcomp-character |  964.52 266.90 +261.38 % | 3638431192496 1000837103539 +263.54 % | 4254625106615 1126775092470 +277.59 % |
-        +------------------------+--------------------------+---------------------------------------+---------------------------------------+
+        ┌────────────────────────┬──────────────────────────┬───────────────────────────────────────┬───────────────────────────────────────┐
+        │                        │        user time         │              CPU cycles               │           CPU instructions            │
+        │                        │                          │                                       │                                       │
+        │           package_name │    HEAD   BASE   PDIFF   │          HEAD          BASE   PDIFF   │          HEAD          BASE   PDIFF   │
+        ├────────────────────────┼──────────────────────────┼───────────────────────────────────────┼───────────────────────────────────────┤
+        │  coq-mathcomp-fingroup │   57.57  57.39   +0.31 % │  212196525523  211700800619   +0.23 % │  230742383528  231051582985   -0.13 % │
+        ├────────────────────────┼──────────────────────────┼───────────────────────────────────────┼───────────────────────────────────────┤
+        │ coq-mathcomp-ssreflect │   44.16  43.76   +0.91 % │  157468537172  157129657017   +0.22 % │  156209219792  155462303481   +0.48 % │
+        ├────────────────────────┼──────────────────────────┼───────────────────────────────────────┼───────────────────────────────────────┤
+        │  coq-mathcomp-solvable │  239.79 199.12  +20.42 % │  895688256644  742909321481  +20.56 % │ 1045508031859  847593471137  +23.35 % │
+        ├────────────────────────┼──────────────────────────┼───────────────────────────────────────┼───────────────────────────────────────┤
+        │   coq-mathcomp-algebra │  378.67 175.35 +115.95 % │ 1410735202916  653030070797 +116.03 % │ 1469054879541  697258305890 +110.69 % │
+        ├────────────────────────┼──────────────────────────┼───────────────────────────────────────┼───────────────────────────────────────┤
+        │     coq-mathcomp-field │ 1790.52 498.74 +259.01 % │ 6748094598910 1876624387627 +259.59 % │ 8682577070704 2292383630876 +278.76 % │
+        ├────────────────────────┼──────────────────────────┼───────────────────────────────────────┼───────────────────────────────────────┤
+        │ coq-mathcomp-character │  964.52 266.90 +261.38 % │ 3638431192496 1000837103539 +263.54 % │ 4254625106615 1126775092470 +277.59 % │
+        └────────────────────────┴──────────────────────────┴───────────────────────────────────────┴───────────────────────────────────────┘
+
+
+        "user time" is in seconds
+
+         HEAD ... measurements at the HEAD of your branch
+         BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
+        PDIFF ... proportional difference of the HEAD and MBASE measurements
+                  (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%
 *)
