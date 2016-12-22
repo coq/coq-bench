@@ -14,10 +14,6 @@
 
 # TODO
 # - reuse the real *.opam file for Coq (we just need custom "url" file)
-# - adapt these script so that they enable us to compare any two given points of a branch
-#   - then run the comparison for
-#     - the HEAD of the v8.6 branch
-#     - the merge-base of the v8.6 branch
 # - add checks that user-provided HEAD and BASE values have proper chronological order
 #   (i.e. HEAD is a more recent commit than BASE)
 # - instead of '-' '|' '+' use the corresponding UNICODE glyphs.
