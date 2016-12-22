@@ -49,7 +49,7 @@ coq_opam_packages
      (fun package_name ->
        package_name,
        
-       (* compilation_results_of_HEAD : (float * int * int) list *)
+       (* compilation_results_for_HEAD : (float * int * int) list *)
        List.init num_of_iterations succ
        |> List.map
             (fun iteration ->
@@ -66,32 +66,32 @@ coq_opam_packages
               command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'"
               |> run |> String.rchop ~n:1 |> int_of_string),
 
-       (* compilation_results_of_MERGE_BASE : (float * int * int) *)
+       (* compilation_results_for_BASE : (float * int * int) *)
        List.init num_of_iterations succ
        |> List.map
             (fun iteration ->
-              let command_prefix = "cat " ^ working_directory ^ "/" ^ package_name ^ ".MERGE_BASE." ^ string_of_int iteration in
+              let command_prefix = "cat " ^ working_directory ^ "/" ^ package_name ^ ".BASE." ^ string_of_int iteration in
 
-              (* MERGE_BASE_user_time : float *)
+              (* BASE_user_time : float *)
               command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> float_of_string,
 
-              (* MERGE_BASE_instructions : int *)
+              (* BASE_instructions : int *)
               command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'"
               |> run |> String.rchop ~n:1 |> int_of_string,
 
-              (* MERGE_BASE_cycles : int *)
+              (* BASE_cycles : int *)
               command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'"
               |> run |> String.rchop ~n:1 |> int_of_string))
 
-(* [package_name, [HEAD_user_time, HEAD_instructions, HEAD_cycles]      , [MERGE_BASE_user_time, MERGE_BASE_instructions, MERGE_BASE_cycles]     ]
- :  string      * (float         * int              * int        ) list * (float               * int                    * int              ) list) list *)          
+(* [package_name, [HEAD_user_time, HEAD_instructions, HEAD_cycles]      , [BASE_user_time, BASE_instructions, BASE_cycles]     ]
+ :  string      * (float         * int              * int        ) list * (float         * int              * int              ) list) list *)          
 
 (* from the list of measured values, select just the minimal ones *)
 
 |> List.map
      (fun ((package_name : string),
            (head_measurements : (float * int * int) list),
-           (merge_base_measurements : (float * int * int) list)) ->
+           (base_measurements : (float * int * int) list)) ->
 
        (* : string *)
        package_name,
@@ -108,37 +108,37 @@ coq_opam_packages
          head_measurements |> List.map Tuple3.third |> List.reduce min
        ),
 
-       (* minimums_of_MERGE_BASE_measurements : float * int * int *)
+       (* minimums_of_BASE_measurements : float * int * int *)
        (
-         (* minimal_MERGE_BASE_user_time : float *)
-         merge_base_measurements |> List.map Tuple3.first |> List.reduce min,
+         (* minimal_BASE_user_time : float *)
+         base_measurements |> List.map Tuple3.first |> List.reduce min,
 
-         (* minimal_MERGE_BASE_instructions : int *)
-         merge_base_measurements |> List.map Tuple3.second |> List.reduce min,
+         (* minimal_BASE_instructions : int *)
+         base_measurements |> List.map Tuple3.second |> List.reduce min,
 
-         (* minimal_MERGE_BASE_cycles : int *)
-         merge_base_measurements |> List.map Tuple3.third |> List.reduce min
+         (* minimal_BASE_cycles : int *)
+         base_measurements |> List.map Tuple3.third |> List.reduce min
        )
      )
 
-(* [package_name, (minimal_HEAD_user_time, minimal_HEAD_instructions, minimal_HEAD_cycles) , (minimal_MERGE_BASE_user_time, minimal_MERGE_BASE_instructions, minimal_MERGE_BASE_cycles)]
+(* [package_name, (minimal_HEAD_user_time, minimal_HEAD_instructions, minimal_HEAD_cycles) , (minimal_BASE_user_time, minimal_BASE_instructions, minimal_BASE_cycles)]
  : (string      * (float                 * int                      * int                ) * (float                       * int                            * int                      )) list *)
 
-(* compute the "proportional differences in % of the HEAD measurement and the MERGE_BASE measurement" of all measured values *)
+(* compute the "proportional differences in % of the HEAD measurement and the BASE measurement" of all measured values *)
 |> List.map
      (fun (package_name,
            (minimal_HEAD_user_time, minimal_HEAD_instructions, minimal_HEAD_cycles as minimums_of_HEAD_measurements),
-           (minimal_MERGE_BASE_user_time, minimal_MERGE_BASE_instructions, minimal_MERGE_BASE_cycles as minimums_of_MERGE_BASE_measurements)) ->
+           (minimal_BASE_user_time, minimal_BASE_instructions, minimal_BASE_cycles as minimums_of_BASE_measurements)) ->
        package_name,
        minimums_of_HEAD_measurements,
-       minimums_of_MERGE_BASE_measurements,
-       ((minimal_HEAD_user_time -. minimal_MERGE_BASE_user_time) /. minimal_MERGE_BASE_user_time *. 100.0,
-        float_of_int (minimal_HEAD_instructions - minimal_MERGE_BASE_instructions) /. float_of_int minimal_MERGE_BASE_instructions *. 100.0,
-        float_of_int (minimal_HEAD_cycles - minimal_MERGE_BASE_cycles) /. float_of_int minimal_MERGE_BASE_cycles *. 100.0))
+       minimums_of_BASE_measurements,
+       ((minimal_HEAD_user_time -. minimal_BASE_user_time) /. minimal_BASE_user_time *. 100.0,
+        float_of_int (minimal_HEAD_instructions - minimal_BASE_instructions) /. float_of_int minimal_BASE_instructions *. 100.0,
+        float_of_int (minimal_HEAD_cycles - minimal_BASE_cycles) /. float_of_int minimal_BASE_cycles *. 100.0))
 
 (* [package_name,
     (minimal_HEAD_user_time, minimal_HEAD_instructions, minimal_HEAD_cycles),
-    (minimal_MERGE_BASE_user_time, minimal_MERGE_BASE_instructions, minimal_MERGE_BASE_cycles),
+    (minimal_BASE_user_time, minimal_BASE_instructions, minimal_BASE_cycles),
     (proportianal_difference_of_user_times, proportional_difference_of_instructions, proportional_difference_of_cycles)]
 
  : (string *
@@ -160,12 +160,12 @@ coq_opam_packages
      (* the labels that we will print *)
      let package_name__label = "package_name" in
      let head__label = "HEAD" in
-     let merge_base__label = "MBASE" in
+     let base__label = "BASE" in
      let proportional_difference__label = "PDIFF" in
 
      (* the lengths of labels that we will print *)
      let head__label__length = String.length head__label in
-     let merge_base__label__length = String.length merge_base__label in
+     let base__label__length = String.length base__label in
      let proportional_difference__label__length = String.length proportional_difference__label in
 
      (*
@@ -173,9 +173,9 @@ coq_opam_packages
      measurements |> List.map (Tuple4.second %> Tuple3.first) |> List.iter (printf "DEBUG: head__user_time = %f\n");
      measurements |> List.map (Tuple4.second %> Tuple3.second) |> List.iter (printf "DEBUG: head__instructions = %d\n");
      measurements |> List.map (Tuple4.second %> Tuple3.third) |> List.iter (printf "DEBUG: head__cycles = %d\n");
-     measurements |> List.map (Tuple4.third %> Tuple3.first) |> List.iter (printf "DEBUG: merge_base__user_time = %f\n");
-     measurements |> List.map (Tuple4.third %> Tuple3.second) |> List.iter (printf "DEBUG: merge_base__instructions = %d\n");
-     measurements |> List.map (Tuple4.third %> Tuple3.third) |> List.iter (printf "DEBUG: merge_base__cycles = %d\n");
+     measurements |> List.map (Tuple4.third %> Tuple3.first) |> List.iter (printf "DEBUG: base__user_time = %f\n");
+     measurements |> List.map (Tuple4.third %> Tuple3.second) |> List.iter (printf "DEBUG: base__instructions = %d\n");
+     measurements |> List.map (Tuple4.third %> Tuple3.third) |> List.iter (printf "DEBUG: base__cycles = %d\n");
      measurements |> List.map (Tuple4.fourth %> Tuple3.first) |> List.iter (printf "DEBUG: proportional_difference__user_time = %f\n");
      measurements |> List.map (Tuple4.fourth %> Tuple3.second) |> List.iter (printf "DEBUG: proportional_difference__instructions = %f\n");
      measurements |> List.map (Tuple4.fourth %> Tuple3.third) |> List.iter (printf "DEBUG: proportional_difference__cycles = %f\n");
@@ -193,15 +193,15 @@ coq_opam_packages
      let head__cycles__width = max (measurements |> List.map (Tuple4.second %> Tuple3.third)
                                     |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
                                    head__label__length in
-     let merge_base__user_time__width = max ((measurements |> List.map (Tuple4.third %> Tuple3.first)
-                                              |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision)
-                                            merge_base__label__length in
-     let merge_base__instructions__width = max (measurements |> List.map (Tuple4.third %> Tuple3.second)
-                                                |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
-                                               merge_base__label__length in
-     let merge_base__cycles__width = max (measurements |> List.map (Tuple4.third %> Tuple3.third)
+     let base__user_time__width = max ((measurements |> List.map (Tuple4.third %> Tuple3.first)
+                                        |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision)
+                                      base__label__length in
+     let base__instructions__width = max (measurements |> List.map (Tuple4.third %> Tuple3.second)
                                           |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
-                                         merge_base__label__length
+                                         base__label__length in
+     let base__cycles__width = max (measurements |> List.map (Tuple4.third %> Tuple3.third)
+                                    |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                   base__label__length
      in
      let proportional_difference__user_time__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple3.first %> abs_float) |> List.reduce max
                                                            |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision)
@@ -219,13 +219,13 @@ coq_opam_packages
      let vertical_separator = sprintf "+-%s-+-%s-%s-%s---+-%s-%s-%s---+-%s-%s-%s---+\n"
        (make_dashes package_name__width)
        (make_dashes head__user_time__width)
-       (make_dashes merge_base__user_time__width)
+       (make_dashes base__user_time__width)
        (make_dashes proportional_difference__user_time__width)
        (make_dashes head__cycles__width)
-       (make_dashes merge_base__cycles__width)
+       (make_dashes base__cycles__width)
        (make_dashes proportional_difference__cycles__width)
        (make_dashes head__instructions__width)
-       (make_dashes merge_base__instructions__width)
+       (make_dashes base__instructions__width)
        (make_dashes proportional_difference__instructions__width)
      in
      let center_string string width =
@@ -238,42 +238,42 @@ coq_opam_packages
      printf "\n";
      print_string vertical_separator;
      "|" ^ String.make (1 + package_name__width + 1) ' ' ^ "|"
-     ^ center_string "user time" (1 +  head__user_time__width + 1 + merge_base__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "|"
-     ^ center_string "CPU cycles" (1 + head__cycles__width    + 1 + merge_base__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "|"
-     ^ center_string "CPU instructions" (1 + head__instructions__width + 1 + merge_base__instructions__width + 1 + proportional_difference__instructions__width + 3)
+     ^ center_string "user time" (1 +  head__user_time__width + 1 + base__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "|"
+     ^ center_string "CPU cycles" (1 + head__cycles__width    + 1 + base__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "|"
+     ^ center_string "CPU instructions" (1 + head__instructions__width + 1 + base__instructions__width + 1 + proportional_difference__instructions__width + 3)
      ^ "|\n" |> print_string;
      printf "|%*s | %*s| %*s| %*s|\n"
        (1 + package_name__width) ""
-       (head__user_time__width      + 1 + merge_base__user_time__width    + 1 + proportional_difference__user_time__width + 3) ""
-       (head__cycles__width       + 1 + merge_base__cycles__width       + 1 + proportional_difference__cycles__width + 3) ""
-       (head__instructions__width + 1 + merge_base__instructions__width + 1 + proportional_difference__instructions__width + 3) "";
+       (head__user_time__width      + 1 + base__user_time__width    + 1 + proportional_difference__user_time__width + 3) ""
+       (head__cycles__width       + 1 + base__cycles__width       + 1 + proportional_difference__cycles__width + 3) ""
+       (head__instructions__width + 1 + base__instructions__width + 1 + proportional_difference__instructions__width + 3) "";
      printf "| %*s | %*s %*s %*s   | %*s %*s %*s   | %*s %*s %*s   |\n"
        package_name__width package_name__label
        head__user_time__width head__label
-       merge_base__user_time__width merge_base__label
+       base__user_time__width base__label
        proportional_difference__user_time__width proportional_difference__label
        head__cycles__width head__label
-       merge_base__cycles__width merge_base__label
+       base__cycles__width base__label
        proportional_difference__cycles__width proportional_difference__label
        head__instructions__width head__label
-       merge_base__instructions__width merge_base__label
+       base__instructions__width base__label
        proportional_difference__instructions__width proportional_difference__label;
      print_string vertical_separator;
      measurements |> List.iter
          (fun (package_name,
                (head_user_time, head_instructions, head_cycles),
-               (merge_base_user_time, merge_base_instructions, merge_base_cycles),
+               (base_user_time, base_instructions, base_cycles),
                (proportional_difference__user_time, proportional_difference__instructions, proportional_difference__cycles)) ->
            printf "| %*s | %*.*f %*.*f %+*.*f %% | %*d %*d %+*.*f %% | %*d %*d %+*.*f %% |\n"
              package_name__width package_name
              head__user_time__width precision head_user_time
-             merge_base__user_time__width precision merge_base_user_time
+             base__user_time__width precision base_user_time
              proportional_difference__user_time__width precision proportional_difference__user_time
              head__cycles__width head_cycles
-             merge_base__cycles__width merge_base_cycles
+             base__cycles__width base_cycles
              proportional_difference__cycles__width precision proportional_difference__cycles
              head__instructions__width head_instructions
-             merge_base__instructions__width merge_base_instructions
+             base__instructions__width base_instructions
              proportional_difference__instructions__width precision proportional_difference__instructions;
            print_string vertical_separator);
 
@@ -282,7 +282,7 @@ printf "
 \"user time\" is in seconds
 
  HEAD ... measurements at the HEAD of your branch
-MBASE ... measurements at the latest common commit of your branch and the official Coq branch (so called \"merge base\" point)
+ BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called \"merge-base\" point)
 PDIFF ... proportional difference of the HEAD and MBASE measurements
           (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%%
 
@@ -292,20 +292,20 @@ PDIFF ... proportional difference of the HEAD and MBASE measurements
 
    ./bench.ml inputs_for_formatting_tests/a 3 coq-aac-tactics
 
-        +-----------------+-----------------------------------------------------------------------------------------+
+        +-----------------+---------------------+---------------------------------+---------------------------------+
         |                 |      user time      |           CPU cycles            |        CPU instructions         |
         |                 |                     |                                 |                                 |
-        |    package_name |  HEAD MBASE PDIFF   |        HEAD       MBASE PDIFF   |        HEAD       MBASE PDIFF   |
+        |    package_name |  HEAD  BASE PDIFF   |        HEAD        BASE PDIFF   |        HEAD        BASE PDIFF   |
         +-----------------+---------------------+---------------------------------+---------------------------------+
         | coq-aac-tactics | 12.18 11.40 +6.84 % | 43313124698 41947595925 +3.26 % | 47396322602 44780155894 +5.84 % |
         +-----------------+---------------------+---------------------------------+---------------------------------+
 
    ./bench.ml inputs_for_formatting_tests/b 1 coq-abp coq-zf
 
-        +--------------+-------------------------------------------------------------------------------------------+
+        +--------------+----------------------+----------------------------------+---------------------------------+
         |              |      user time       |            CPU cycles            |        CPU instructions         |
         |              |                      |                                  |                                 |
-        | package_name |  HEAD MBASE  PDIFF   |        HEAD       MBASE  PDIFF   |        HEAD       MBASE PDIFF   |
+        | package_name |  HEAD  BASE  PDIFF   |        HEAD        BASE  PDIFF   |        HEAD        BASE PDIFF   |
         +--------------+----------------------+----------------------------------+---------------------------------+
         |      coq-abp |  7.67  7.80  -1.67 % | 28725701399 29219013046  -1.69 % | 32930749122 32935004729 -0.01 % |
         +--------------+----------------------+----------------------------------+---------------------------------+
@@ -314,10 +314,10 @@ PDIFF ... proportional difference of the HEAD and MBASE measurements
 
    ./bench.ml inputs_for_formatting_tests/c 3 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect
 
-        +------------------------+----------------------------------------------------------------------------------------------------------+
+        +------------------------+--------------------------+---------------------------------------+-----------------------------------------+
         |                        |        user time         |              CPU cycles               |           CPU instructions            |
         |                        |                          |                                       |                                       |
-        |           package_name |    HEAD  MBASE   PDIFF   |          HEAD         MBASE   PDIFF   |          HEAD         MBASE   PDIFF   |
+        |           package_name |    HEAD   BASE   PDIFF   |          HEAD          BASE   PDIFF   |          HEAD          BASE   PDIFF   |
         +------------------------+--------------------------+---------------------------------------+---------------------------------------+
         |  coq-mathcomp-fingroup |   57.57  57.39   +0.31 % |  212196525523  211700800619   +0.23 % |  230742383528  231051582985   -0.13 % |
         +------------------------+--------------------------+---------------------------------------+---------------------------------------+

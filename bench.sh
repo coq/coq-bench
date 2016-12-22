@@ -14,8 +14,6 @@
 
 # TODO
 # - reuse the real *.opam file for Coq (we just need custom "url" file)
-# - simplify the terminology; instead of merge-base/merge_base/MERGE_BASE/MBASE, just talk about base/BASE
-#   (this will make sense when we will adapt the scripts to compare any two given commits of a given branch)
 # - adapt these script so that they enable us to compare any two given points of a branch
 #   - then run the comparison for
 #     - the HEAD of the v8.6 branch
@@ -352,19 +350,19 @@ opam repo list
 cd $coq_dir
 git remote add upstream https://github.com/coq/coq.git
 git fetch upstream $official_coq_branch
-merge_base=$(git merge-base upstream/$official_coq_branch "$coq_branch")
-git checkout -b $official_coq_branch $merge_base
+base=$(git merge-base upstream/$official_coq_branch "$coq_branch")
+git checkout -b $official_coq_branch $base
 cd "$coq_dir"
-echo DEBUG git commit for MERGE_BASE = $(git log | head -n 1 | awk '{print $2}')
+echo DEBUG git commit for BASE = $(git log | head -n 1 | awk '{print $2}')
 opam install coq.$coq_opam_version -v -j$number_of_processors
 
-mv "$OPAMROOT" "$OPAMROOT.MERGE_BASE"
+mv "$OPAMROOT" "$OPAMROOT.BASE"
 
 # --------------------------------------------------------------------------------
 
 # Measure the compilation times of the specified OPAM packages
 # - at the HEAD of the indicated branch
-# - at the MERGE_BASE of the indicated branch
+# - at the BASE of the indicated branch
 
 export OPAMROOT="$working_dir/.opam"
 
@@ -383,16 +381,16 @@ for coq_opam_package in $coq_opam_packages; do
             opam install $coq_opam_package -v -j1
     done
 
-    # perform measurements for the MERGE_BASE of the branch (provided by the user)
+    # perform measurements for the BASE of the branch (provided by the user)
     rm -r -f "$OPAMROOT"
-    cp -r "$OPAMROOT.MERGE_BASE" "$OPAMROOT"
+    cp -r "$OPAMROOT.BASE" "$OPAMROOT"
     opam install $coq_opam_package -v -j$number_of_processors --deps-only -y
-    mv "$OPAMROOT" "$OPAMROOT.$coq_opam_package.MERGE_BASE.with_deps"
+    mv "$OPAMROOT" "$OPAMROOT.$coq_opam_package.BASE.with_deps"
     for iteration in $(seq $num_of_iterations); do
         rm -r -f "$OPAMROOT"
-        cp -r "$OPAMROOT.$coq_opam_package.MERGE_BASE.with_deps" "$OPAMROOT"
-        /usr/bin/time -o "$working_dir/$coq_opam_package.MERGE_BASE.$iteration.time" --format="%U" \
-            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.MERGE_BASE.$iteration.perf" \
+        cp -r "$OPAMROOT.$coq_opam_package.BASE.with_deps" "$OPAMROOT"
+        /usr/bin/time -o "$working_dir/$coq_opam_package.BASE.$iteration.time" --format="%U" \
+            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.BASE.$iteration.perf" \
             opam install $coq_opam_package -v -j1
     done
 done
