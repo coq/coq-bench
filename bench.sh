@@ -107,7 +107,9 @@ print_man_page () {
     echo
     echo -e ${b}EXAMPLES$r
     echo
-    echo -e "\t$program_name /tmp https://github.com/matej-kosik/coq.git trunk__API 3 coq-aac-tactics coq-abp"
+    echo -e "\t$b$program_name /tmp https://github.com/SkySkimmer/coq.git always-fast-typeops 3 coq-mathcomp-algebra coq-mathcomp-character$r"
+    echo
+    echo -e "\t$b$program_name /tmp https://github.com/coq/coq.git v8.6:HEAD:d0afde58 3 coq-persistent-union-find$r"
     echo
 }
 
