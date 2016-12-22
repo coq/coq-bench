@@ -21,8 +21,6 @@
 #   (there is a way to tell OPAM to use the camlp4/5 available on the system instead of compiling/installing it when some package depends on it)
 # - describe the effect of that EXAMPLE command ... what kind of files are generated and what is their meaning
 # - describe the effect of this command in general .... what kind of files are generated and what is their meaning
-# - measure also the number of executed CPU-instructions.
-# - make sure that the second and all the other iterations do not end prematurely because a given thing is actually already installed
 # - print a summary at the end
 #   - for each package
 #     - for each iteration
@@ -31,7 +29,6 @@
 #     - the proportional variation
 # - figure out some way to measure just the interpretation of "build" section
 #   (not interpretation of the "url" file or "install" section in the *.opam file)
-# - figure out how to perform "opam init" so that no "default" repo is added
 # - make experiments with working directory located in a ramdisk; can I get real-time speedup?
 # - would it help if the tested package were downloaded via "opam source ..." and then added as a package to "custom-repo"?
 # - figure out how to avoid measuring downloading of the actual OPAM package that is being done during "opam install"
