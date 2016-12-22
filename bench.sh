@@ -96,11 +96,17 @@ print_man_page () {
     echo
 }
 
+print_man_page_hint () {
+    echo
+    echo "See:"
+    echo
+    echo "    $program_name --help"
+    echo
+}
+
 # --------------------------------------------------------------------------------
 
 # Process command line arguments
-
-error_prefix="$b\033[31mERROR:$r"
 
 case $# in
     0)
@@ -115,16 +121,16 @@ case $# in
                 ;;
             *)
                 echo > /dev/stderr
-                echo -e "$error_prefix unrecognized command-line argument \"$1\"." > /dev/stderr
-                print_man_page > /dev/stderr
+                echo ERROR: unrecognized command-line argument \"$1\". > /dev/stderr
+                print_man_page_hint
                 exit 1
                 ;;
         esac
         ;;
     2 | 3 | 4)
         echo > /dev/stderr
-        echo -e "$error_prefix wrong number of arguments." > /dev/stderr
-        print_man_page > /dev/stderr
+        echo ERROR: wrong number of arguments. > /dev/stderr
+        print_man_page_hint
         exit 1
         ;;
     *)
@@ -135,8 +141,8 @@ case $# in
             num_of_iterations=$4
         else
             echo
-            echo -e "$error_prefix the fourth command-line argument \"$4\" is not a positive integer."
-            print_man_page
+            echo ERROR: the fourth command-line argument \"$4\" is not a positive integer.
+            print_man_page_hint
             exit 1
         fi
         shift 4
@@ -158,28 +164,28 @@ if which perf; then
     echo -n
 else
     echo > /dev/stderr
-    echo -e $error_prefix \"perf\" program is not available. > /dev/stderr
+    echo ERROR: \"perf\" program is not available. > /dev/stderr
     echo > /dev/stderr
     exit 1
 fi
 
 if [ ! -e "$working_dir" ]; then
     echo > /dev/stderr
-    echo -e $error_prefix \"$working_dir\" does not exist. > /dev/stderr
+    echo ERROR: \"$working_dir\" does not exist. > /dev/stderr
     echo > /dev/stderr
     exit 1
 fi
 
 if [ ! -d "$working_dir" ]; then
     echo > /dev/stderr
-    echo -e $error_prefix \"$working_dir\" is not a directory. > /dev/stderr
+    echo ERROR: \"$working_dir\" is not a directory. > /dev/stderr
     echo > /dev/stderr
     exit 1
 fi
 
 if [ ! -w "$working_dir" ]; then
     echo > /dev/stderr
-    echo -e $error_prefix \"working_dir\" is not writable. > /dev/stderr
+    echo ERROR: \"working_dir\" is not writable. > /dev/stderr
     echo > /dev/stderr
 fi
 
@@ -200,7 +206,7 @@ else if git log | grep d0afde58b3320b65fc755cca5600af3b1bc9fa82 > /dev/null; the
 else if git log | grep 784d82dc1a709c4c262665a4cd4eb0b1bd1487a0 > /dev/null; then
     official_coq_branch=v8.5
 else
-    echo -e "$error_prefix unrecognized Coq branch (neither \"v8.5\", nor \"v8.6\", nor \"trunk\")"
+    echo "ERROR: unrecognized Coq branch (neither \"v8.5\", nor \"v8.6\", nor \"trunk\")"
     exit 1
 fi fi fi
 
@@ -216,7 +222,7 @@ case $official_coq_branch in
         coq_opam_version=8.5.dev
         ;;
     *)
-        echo "$error_prefix unexpected value of \"coq_branch\" variable."
+        echo ERROR: unexpected value of \"coq_branch\" variable.
         exit 1
 esac
 
