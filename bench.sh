@@ -39,7 +39,6 @@
 #     - the "print_man_page" command
 #     - the piece of code where we set the "official_coq_branch" variable
 #     - the piece of code where we set the "coq_opam_version" variable
-# - remove DEBUG messages
 # - Consider the possibility to measure/monitor the load of the system.
 #   This would give us hints about the reliability of the results we've obtained.
 #   (We will know that when we measured and there was a lot of load, the results are not reliable.
@@ -418,6 +417,4 @@ for coq_opam_package in $coq_opam_packages; do
     done
 done
 
-echo DEBUG 0 $num_of_iterations
-echo DEBUG 1 $(echo $num_of_iterations | wc -w)
 $program_path/bench.ml "$working_dir" $num_of_iterations $coq_opam_packages
