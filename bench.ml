@@ -30,7 +30,8 @@ open Unix
 assert (Array.length Sys.argv > 3);
 let working_directory = Sys.argv.(1) in
 let num_of_iterations = int_of_string Sys.argv.(2) in
-let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 3 in
+let minimal_user_time = float_of_string Sys.argv.(3) in
+let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 4 in
 
 (* Run a given bash command;
    wait until it termines;
@@ -151,6 +152,12 @@ coq_opam_packages
      (fun measurement1 measurement2 ->
         let get_user_time = Tuple4.fourth %> Tuple3.first in
         compare (get_user_time measurement1) (get_user_time measurement2))
+
+(* Keep only measurements that took at least "minimal_user_time" (in seconds). *)
+
+|> List.filter
+     (fun (_, (minimal_HEAD_user_time,_,_), (minimal_BASE_user_time,_,_), _) ->
+        minimal_user_time <= minimal_HEAD_user_time && minimal_user_time <= minimal_BASE_user_time)
 
 (* Below we take the measurements and format them to stdout. *)
 

@@ -419,4 +419,4 @@ for coq_opam_package in $coq_opam_packages; do
     done
 done
 
-$program_path/bench.ml "$working_dir" $num_of_iterations $coq_opam_packages
+$program_path/bench.ml "$working_dir" $num_of_iterations 0 $coq_opam_packages
