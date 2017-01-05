@@ -143,7 +143,7 @@ coq_opam_packages
 
  : (string *
     (float * int * int) *
-    (float * int * int) *                                                                                                                                                           
+    (float * int * int) *
     (float * float * float)) list *)
 
 (* sort wrt. the proportional difference in user-time *)
