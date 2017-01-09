@@ -298,8 +298,8 @@ printf "
 
  HEAD ... measurements at the HEAD of your branch
  BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called \"merge-base\" point)
-PDIFF ... proportional difference of the HEAD and MBASE measurements
-          (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%%
+PDIFF ... proportional difference of the HEAD and BASE measurements
+          (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%%
 
 ";
 
@@ -320,8 +320,8 @@ PDIFF ... proportional difference of the HEAD and MBASE measurements
 
          HEAD ... measurements at the HEAD of your branch
          BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
-        PDIFF ... proportional difference of the HEAD and MBASE measurements
-                  (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%
+        PDIFF ... proportional difference of the HEAD and BASE measurements
+                  (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%
 
    ./bench.ml inputs_for_formatting_tests/b 1 coq-abp coq-zf
 
@@ -340,8 +340,8 @@ PDIFF ... proportional difference of the HEAD and MBASE measurements
 
          HEAD ... measurements at the HEAD of your branch
          BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
-        PDIFF ... proportional difference of the HEAD and MBASE measurements
-                  (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%
+        PDIFF ... proportional difference of the HEAD and BASE measurements
+                  (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%
 
 
    ./bench.ml inputs_for_formatting_tests/c 3 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect
@@ -369,6 +369,6 @@ PDIFF ... proportional difference of the HEAD and MBASE measurements
 
          HEAD ... measurements at the HEAD of your branch
          BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
-        PDIFF ... proportional difference of the HEAD and MBASE measurements
-                  (HEAD_measurement - MBASE_measurement) / MBASE_measurement * 100%
+        PDIFF ... proportional difference of the HEAD and BASE measurements
+                  (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%
 *)
