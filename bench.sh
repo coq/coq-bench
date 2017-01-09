@@ -64,7 +64,7 @@ print_man_page () {
     echo
     echo -e ${b}NAME$r
     echo
-    echo -e "\tprogram_name - run Coq benchmarks"
+    echo -e "\t$program_name - run Coq benchmarks"
     echo
     echo -e ${b}SYNOPSIS$r
     echo
