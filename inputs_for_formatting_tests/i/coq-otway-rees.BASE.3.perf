@@ -1,0 +1,10 @@
+# started on Mon Jan  9 17:22:35 2017
+
+
+ Performance counter stats for 'opam install coq-otway-rees -v -j1':
+
+    30,976,481,175      instructions:u            #    1.31  insns per cycle        
+    23,632,322,817      cycles:u                 
+
+      11.552261157 seconds time elapsed
+

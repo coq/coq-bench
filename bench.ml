@@ -305,7 +305,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 (* TESTS:
 
-   ./bench.ml inputs_for_formatting_tests/a 3 coq-aac-tactics
+   ./bench.ml inputs_for_formatting_tests/a 3 0 coq-aac-tactics
 
         ┌─────────────────┬─────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
         │                 │      user time      │           CPU cycles            │        CPU instructions         │
@@ -316,14 +316,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
         └─────────────────┴─────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
 
 
-        "user time" is in seconds
-
-         HEAD ... measurements at the HEAD of your branch
-         BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
-        PDIFF ... proportional difference of the HEAD and BASE measurements
-                  (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%
-
-   ./bench.ml inputs_for_formatting_tests/b 1 coq-abp coq-zf
+   ./bench.ml inputs_for_formatting_tests/b 1 0 coq-abp coq-zf
 
         ┌──────────────┬─────────────────────┬──────────────────────────────────┬─────────────────────────────────┐
         │              │      user time      │            CPU cycles            │        CPU instructions         │
@@ -336,15 +329,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
         └──────────────┴─────────────────────┴──────────────────────────────────┴─────────────────────────────────┘
 
 
-        "user time" is in seconds
-
-         HEAD ... measurements at the HEAD of your branch
-         BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
-        PDIFF ... proportional difference of the HEAD and BASE measurements
-                  (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%
-
-
-   ./bench.ml inputs_for_formatting_tests/c 3 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect
+   ./bench.ml inputs_for_formatting_tests/c 3 0 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect
 
         ┌────────────────────────┬──────────────────────────┬───────────────────────────────────────┬───────────────────────────────────────┐
         │                        │        user time         │              CPU cycles               │           CPU instructions            │
@@ -365,10 +350,82 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
         └────────────────────────┴──────────────────────────┴───────────────────────────────────────┴───────────────────────────────────────┘
 
 
-        "user time" is in seconds
+    (* notebook: ThinkPad X230 *)
+    ./bench.ml inputs_for_formatting_tests/d 10 0 coq-persistent-union-find
 
-         HEAD ... measurements at the HEAD of your branch
-         BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called "merge-base" point)
-        PDIFF ... proportional difference of the HEAD and BASE measurements
-                  (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%
+        ┌───────────────────────────┬──────────────────────┬───────────────────────────────────┬────────────────────────────────────┐
+        │                           │      user time       │            CPU cycles             │          CPU instructions          │
+        │                           │                      │                                   │                                    │
+        │              package_name │  HEAD  BASE  PDIFF   │         HEAD        BASE  PDIFF   │         HEAD         BASE  PDIFF   │
+        ├───────────────────────────┼──────────────────────┼───────────────────────────────────┼────────────────────────────────────┤
+        │ coq-persistent-union-find │ 52.00 30.39 +71.11 % │ 168903203726 98378322597 +71.69 % │ 177308860658 112340449808 +57.83 % │
+        └───────────────────────────┴──────────────────────┴───────────────────────────────────┴────────────────────────────────────┘
+
+
+    (* notebook: ThinkPad X230 *)
+    ./bench.ml inputs_for_formatting_tests/e 10 0 coq-persistent-union-find
+
+        ┌───────────────────────────┬──────────────────────┬───────────────────────────────────┬────────────────────────────────────┐
+        │                           │      user time       │            CPU cycles             │          CPU instructions          │
+        │                           │                      │                                   │                                    │
+        │              package_name │  HEAD  BASE  PDIFF   │         HEAD        BASE  PDIFF   │         HEAD         BASE  PDIFF   │
+        ├───────────────────────────┼──────────────────────┼───────────────────────────────────┼────────────────────────────────────┤
+        │ coq-persistent-union-find │ 51.86 30.40 +70.59 % │ 168590915216 98387933632 +71.35 % │ 177249568577 112342334134 +57.78 % │
+        └───────────────────────────┴──────────────────────┴───────────────────────────────────┴────────────────────────────────────┘
+
+
+    (* notebook: ThinkPad X230 *)
+    ./bench.ml inputs_for_formatting_tests/f 10 0 coq-gc
+
+        ┌──────────────┬────────────────────────┬────────────────────────────────────┬────────────────────────────────────┐
+        │              │       user time        │             CPU cycles             │          CPU instructions          │
+        │              │                        │                                    │                                    │
+        │ package_name │   HEAD   BASE  PDIFF   │         HEAD         BASE  PDIFF   │         HEAD         BASE  PDIFF   │
+        ├──────────────┼────────────────────────┼────────────────────────────────────┼────────────────────────────────────┤
+        │       coq-gc │ 152.22 118.68 +28.26 % │ 493890013225 383210349553 +28.88 % │ 454226788229 363922855469 +24.81 % │
+        └──────────────┴────────────────────────┴────────────────────────────────────┴────────────────────────────────────┘
+
+
+    (* notebook: ThinkPad X230 *)
+    ./bench.ml inputs_for_formatting_tests/g 10 0 coq-gc
+
+        ┌──────────────┬────────────────────────┬────────────────────────────────────┬────────────────────────────────────┐
+        │              │       user time        │             CPU cycles             │          CPU instructions          │
+        │              │                        │                                    │                                    │
+        │ package_name │   HEAD   BASE  PDIFF   │         HEAD         BASE  PDIFF   │         HEAD         BASE  PDIFF   │
+        ├──────────────┼────────────────────────┼────────────────────────────────────┼────────────────────────────────────┤
+        │       coq-gc │ 152.65 118.46 +28.86 % │ 494267863364 384050516870 +28.70 % │ 454178074635 363803278377 +24.84 % │
+        └──────────────┴────────────────────────┴────────────────────────────────────┴────────────────────────────────────┘
+
+
+    (* notebook: ThinkPad X230 *)
+    ./bench.ml inputs_for_formatting_tests/h 10 0 coq-pi-calc coq-otway-rees coq-lazy-pcf
+
+        ┌────────────────┬──────────────────────┬────────────────────────────────────┬────────────────────────────────────┐
+        │                │      user time       │             CPU cycles             │          CPU instructions          │
+        │                │                      │                                    │                                    │
+        │   package_name │  HEAD  BASE  PDIFF   │         HEAD         BASE  PDIFF   │         HEAD         BASE  PDIFF   │
+        ├────────────────┼──────────────────────┼────────────────────────────────────┼────────────────────────────────────┤
+        │   coq-lazy-pcf │  6.86  6.96  -1.44 % │  20626707131  20644923463  -0.09 % │  27012382562  27109159492  -0.36 % │
+        ├────────────────┼──────────────────────┼────────────────────────────────────┼────────────────────────────────────┤
+        │ coq-otway-rees │  7.96  8.02  -0.75 % │  23404622634  23516567732  -0.48 % │  30820246815  30970294528  -0.48 % │
+        ├────────────────┼──────────────────────┼────────────────────────────────────┼────────────────────────────────────┤
+        │    coq-pi-calc │ 70.04 56.52 +23.92 % │ 227041402678 183143495642 +23.97 % │ 258190739644 210406262998 +22.71 % │
+        └────────────────┴──────────────────────┴────────────────────────────────────┴────────────────────────────────────┘
+
+
+    (* notebook: ThinkPad X230 *)
+    ./bench.ml inputs_for_formatting_tests/i 10 0 coq-pi-calc coq-otway-rees coq-lazy-pcf
+
+        ┌────────────────┬──────────────────────┬────────────────────────────────────┬────────────────────────────────────┐
+        │                │      user time       │             CPU cycles             │          CPU instructions          │
+        │                │                      │                                    │                                    │
+        │   package_name │  HEAD  BASE  PDIFF   │         HEAD         BASE  PDIFF   │         HEAD         BASE  PDIFF   │
+        ├────────────────┼──────────────────────┼────────────────────────────────────┼────────────────────────────────────┤
+        │   coq-lazy-pcf │  6.94  6.98  -0.57 % │  20617469650  20691515078  -0.36 % │  27017623379  27114705474  -0.36 % │
+        ├────────────────┼──────────────────────┼────────────────────────────────────┼────────────────────────────────────┤
+        │ coq-otway-rees │  8.02  7.86  +2.04 % │  23468126863  23557180748  -0.38 % │  30828060320  30972789098  -0.47 % │
+        ├────────────────┼──────────────────────┼────────────────────────────────────┼────────────────────────────────────┤
+        │    coq-pi-calc │ 70.20 56.65 +23.92 % │ 227639688878 183643929078 +23.96 % │ 258240087091 211361180925 +22.18 % │
+        └────────────────┴──────────────────────┴────────────────────────────────────┴────────────────────────────────────┘
 *)

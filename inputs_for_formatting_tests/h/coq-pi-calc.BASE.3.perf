@@ -1,0 +1,10 @@
+# started on Mon Jan  9 16:05:49 2017
+
+
+ Performance counter stats for 'opam install coq-pi-calc -v -j1':
+
+   211,495,626,987      instructions:u            #    1.14  insns per cycle        
+   184,972,886,342      cycles:u                 
+
+      59.800050167 seconds time elapsed
+

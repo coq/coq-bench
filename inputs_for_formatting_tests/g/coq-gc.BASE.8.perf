@@ -1,0 +1,10 @@
+# started on Mon Jan  9 15:20:04 2017
+
+
+ Performance counter stats for 'opam install coq-gc -v -j1':
+
+   364,305,476,405      instructions:u            #    0.95  insns per cycle        
+   384,136,413,747      cycles:u                 
+
+     125.489216581 seconds time elapsed
+
