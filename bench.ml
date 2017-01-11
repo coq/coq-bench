@@ -281,7 +281,7 @@ coq_opam_packages
      ^ "│\n" |> print_string;
      printf "│%*s │ %*s│ %*s│ %*s│\n"
        (1 + package_name__width) ""
-       (head__user_time__width      + 1 + base__user_time__width    + 1 + proportional_difference__user_time__width + 3) ""
+       (head__user_time__width    + 1 + base__user_time__width    + 1 + proportional_difference__user_time__width + 3) ""
        (head__cycles__width       + 1 + base__cycles__width       + 1 + proportional_difference__cycles__width + 3) ""
        (head__instructions__width + 1 + base__instructions__width + 1 + proportional_difference__instructions__width + 3) "";
      printf "│ %*s │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │\n"
