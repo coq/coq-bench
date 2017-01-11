@@ -275,7 +275,7 @@ coq_opam_packages
      printf "\n";
      print_string (vertical_separator "┌" "┬" "┐");
      "│" ^ String.make (1 + package_name__width + 1) ' ' ^ "│"
-     ^ center_string "user time" (1 +  head__user_time__width + 1 + base__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "│"
+     ^ center_string "user time [s]" (1 +  head__user_time__width + 1 + base__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "│"
      ^ center_string "CPU cycles" (1 + head__cycles__width    + 1 + base__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "│"
      ^ center_string "CPU instructions" (1 + head__instructions__width + 1 + base__instructions__width + 1 + proportional_difference__instructions__width + 3)
      ^ "│\n" |> print_string;
@@ -316,10 +316,6 @@ coq_opam_packages
 print_string (vertical_separator "└" "┴" "┘");
 printf "
 
-\"user time\" is in seconds
-
- HEAD ... measurements at the HEAD of your branch
- BASE ... measurements at the latest common commit of your branch and the official Coq branch (so called \"merge-base\" point)
 PDIFF ... proportional difference of the HEAD and BASE measurements
           (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%%
 
