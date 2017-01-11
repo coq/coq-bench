@@ -1,0 +1,10 @@
+# started on Tue Jan 10 10:03:56 2017
+
+
+ Performance counter stats for 'opam install coq-ltl -v -j1':
+
+    25,895,234,979      instructions:u            #    1.29  insns per cycle        
+    20,127,599,452      cycles:u                 
+
+       7.367582865 seconds time elapsed
+

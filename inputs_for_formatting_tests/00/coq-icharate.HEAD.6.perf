@@ -1,0 +1,10 @@
+# started on Tue Jan 10 05:40:05 2017
+
+
+ Performance counter stats for 'opam install coq-icharate -v -j1':
+
+    98,256,440,314      instructions:u            #    1.14  insns per cycle        
+    86,110,076,404      cycles:u                 
+
+      31.305452154 seconds time elapsed
+

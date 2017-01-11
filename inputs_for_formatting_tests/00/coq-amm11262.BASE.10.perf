@@ -1,0 +1,10 @@
+# started on Mon Jan  9 10:22:42 2017
+
+
+ Performance counter stats for 'opam install coq-amm11262 -v -j1':
+
+    42,910,978,230      instructions:u            #    1.16  insns per cycle        
+    36,960,375,369      cycles:u                 
+
+      12.709442185 seconds time elapsed
+

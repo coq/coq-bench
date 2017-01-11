@@ -1,0 +1,10 @@
+# started on Tue Jan 10 17:17:31 2017
+
+
+ Performance counter stats for 'opam install coq-pts -v -j1':
+
+    51,002,818,253      instructions:u            #    1.11  insns per cycle        
+    46,005,368,157      cycles:u                 
+
+      19.222056952 seconds time elapsed
+

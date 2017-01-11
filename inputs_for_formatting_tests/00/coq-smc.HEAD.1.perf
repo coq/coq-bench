@@ -1,0 +1,10 @@
+# started on Tue Jan 10 21:00:59 2017
+
+
+ Performance counter stats for 'opam install coq-smc -v -j1':
+
+    85,861,875,433      instructions:u            #    1.08  insns per cycle        
+    79,581,806,272      cycles:u                 
+
+      28.715736990 seconds time elapsed
+

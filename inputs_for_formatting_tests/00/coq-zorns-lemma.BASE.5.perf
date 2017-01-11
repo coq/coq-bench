@@ -1,0 +1,10 @@
+# started on Wed Jan 11 00:25:36 2017
+
+
+ Performance counter stats for 'opam install coq-zorns-lemma -v -j1':
+
+    46,963,799,751      instructions:u            #    1.16  insns per cycle        
+    40,530,895,027      cycles:u                 
+
+      16.160638893 seconds time elapsed
+

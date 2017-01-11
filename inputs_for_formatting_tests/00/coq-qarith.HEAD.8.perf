@@ -1,0 +1,10 @@
+# started on Tue Jan 10 17:46:22 2017
+
+
+ Performance counter stats for 'opam install coq-qarith -v -j1':
+
+    32,325,119,996      instructions:u            #    1.21  insns per cycle        
+    26,625,746,124      cycles:u                 
+
+       9.209830599 seconds time elapsed
+

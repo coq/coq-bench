@@ -1,0 +1,10 @@
+# started on Tue Jan 10 19:49:51 2017
+
+
+ Performance counter stats for 'opam install coq-relation-extraction -v -j1':
+
+    27,598,445,426      instructions:u            #    1.31  insns per cycle        
+    21,089,566,869      cycles:u                 
+
+      10.330184551 seconds time elapsed
+

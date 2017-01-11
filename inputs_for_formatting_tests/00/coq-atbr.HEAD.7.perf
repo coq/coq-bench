@@ -1,0 +1,10 @@
+# started on Mon Jan  9 13:45:30 2017
+
+
+ Performance counter stats for 'opam install coq-atbr -v -j1':
+
+   867,589,447,446      instructions:u            #    0.94  insns per cycle        
+   922,179,622,318      cycles:u                 
+
+     257.011525301 seconds time elapsed
+

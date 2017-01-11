@@ -1,0 +1,10 @@
+# started on Tue Jan 10 11:46:26 2017
+
+
+ Performance counter stats for 'opam install coq-paco -v -j1':
+
+   194,574,163,580      instructions:u            #    1.22  insns per cycle        
+   159,676,094,522      cycles:u                 
+
+      44.943513279 seconds time elapsed
+

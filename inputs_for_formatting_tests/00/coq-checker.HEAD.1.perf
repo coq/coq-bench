@@ -1,0 +1,10 @@
+# started on Mon Jan  9 17:13:06 2017
+
+
+ Performance counter stats for 'opam install coq-checker -v -j1':
+
+    24,355,220,885      instructions:u            #    1.32  insns per cycle        
+    18,490,959,379      cycles:u                 
+
+       7.548814921 seconds time elapsed
+

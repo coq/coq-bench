@@ -1,0 +1,10 @@
+# started on Tue Jan 10 00:06:59 2017
+
+
+ Performance counter stats for 'opam install coq-fermat4 -v -j1':
+
+    61,993,695,303      instructions:u            #    1.11  insns per cycle        
+    55,849,302,749      cycles:u                 
+
+      25.657955333 seconds time elapsed
+

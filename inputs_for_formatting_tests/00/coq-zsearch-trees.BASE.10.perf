@@ -1,0 +1,10 @@
+# started on Wed Jan 11 00:33:44 2017
+
+
+ Performance counter stats for 'opam install coq-zsearch-trees -v -j1':
+
+    29,661,668,572      instructions:u            #    1.23  insns per cycle        
+    24,200,048,352      cycles:u                 
+
+      18.751576394 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Mon Jan  9 17:21:42 2017
+
+
+ Performance counter stats for 'opam install coq-chinese -v -j1':
+
+    37,182,756,525      instructions:u            #    1.22  insns per cycle        
+    30,517,978,908      cycles:u                 
+
+      11.896407205 seconds time elapsed
+

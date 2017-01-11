@@ -1,0 +1,10 @@
+# started on Tue Jan 10 05:51:55 2017
+
+
+ Performance counter stats for 'opam install coq-idxassoc -v -j1':
+
+    26,070,219,733      instructions:u            #    1.28  insns per cycle        
+    20,329,986,798      cycles:u                 
+
+       7.201520047 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Mon Jan  9 17:10:45 2017
+
+
+ Performance counter stats for 'opam install coq-cfgv -v -j1':
+
+   440,540,332,534      instructions:u            #    1.05  insns per cycle        
+   418,587,757,133      cycles:u                 
+
+     117.197349056 seconds time elapsed
+

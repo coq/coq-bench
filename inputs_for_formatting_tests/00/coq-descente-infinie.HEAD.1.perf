@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:59:50 2017
+
+
+ Performance counter stats for 'opam install coq-descente-infinie -v -j1':
+
+    25,367,759,001      instructions:u            #    1.29  insns per cycle        
+    19,611,496,564      cycles:u                 
+
+      24.456477412 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Mon Jan  9 21:24:06 2017
+
+
+ Performance counter stats for 'opam install coq-distributed-reference-counting -v -j1':
+
+   149,162,869,548      instructions:u            #    1.06  insns per cycle        
+   140,669,691,852      cycles:u                 
+
+      53.765907918 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 11:11:56 2017
+
+
+ Performance counter stats for 'opam install coq-mutual-exclusion -v -j1':
+
+    25,885,223,349      instructions:u            #    1.29  insns per cycle        
+    20,136,637,982      cycles:u                 
+
+       7.279214238 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 17:30:06 2017
+
+
+ Performance counter stats for 'opam install coq-ptsatr -v -j1':
+
+   136,116,107,319      instructions:u            #    1.12  insns per cycle        
+   121,856,582,146      cycles:u                 
+
+      37.429887521 seconds time elapsed
+

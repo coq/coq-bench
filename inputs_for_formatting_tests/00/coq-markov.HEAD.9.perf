@@ -1,0 +1,10 @@
+# started on Tue Jan 10 10:17:14 2017
+
+
+ Performance counter stats for 'opam install coq-markov -v -j1':
+
+    28,690,639,760      instructions:u            #    1.23  insns per cycle        
+    23,238,693,302      cycles:u                 
+
+       8.081085979 seconds time elapsed
+

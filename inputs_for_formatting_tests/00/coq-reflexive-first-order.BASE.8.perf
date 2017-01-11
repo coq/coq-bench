@@ -1,0 +1,10 @@
+# started on Tue Jan 10 19:41:36 2017
+
+
+ Performance counter stats for 'opam install coq-reflexive-first-order -v -j1':
+
+    48,951,551,494      instructions:u            #    1.14  insns per cycle        
+    42,768,071,160      cycles:u                 
+
+      14.608551103 seconds time elapsed
+

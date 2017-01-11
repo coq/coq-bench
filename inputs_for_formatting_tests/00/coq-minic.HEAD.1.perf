@@ -1,0 +1,10 @@
+# started on Tue Jan 10 10:38:09 2017
+
+
+ Performance counter stats for 'opam install coq-minic -v -j1':
+
+    38,775,342,970      instructions:u            #    1.22  insns per cycle        
+    31,814,093,474      cycles:u                 
+
+      28.937666277 seconds time elapsed
+

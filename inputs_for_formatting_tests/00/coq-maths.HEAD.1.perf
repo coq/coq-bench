@@ -1,0 +1,10 @@
+# started on Tue Jan 10 10:20:39 2017
+
+
+ Performance counter stats for 'opam install coq-maths -v -j1':
+
+    32,846,334,628      instructions:u            #    1.18  insns per cycle        
+    27,888,137,869      cycles:u                 
+
+      19.842659998 seconds time elapsed
+

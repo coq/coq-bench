@@ -1,0 +1,10 @@
+# started on Tue Jan 10 04:52:29 2017
+
+
+ Performance counter stats for 'opam install coq-hedges -v -j1':
+
+    32,370,884,934      instructions:u            #    1.19  insns per cycle        
+    27,227,270,670      cycles:u                 
+
+       9.344627961 seconds time elapsed
+

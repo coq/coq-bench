@@ -1,0 +1,10 @@
+# started on Tue Jan 10 21:37:09 2017
+
+
+ Performance counter stats for 'opam install coq-stalmarck -v -j1':
+
+   172,533,751,718      instructions:u            #    1.11  insns per cycle        
+   155,248,744,045      cycles:u                 
+
+      58.321881945 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 21:16:49 2017
+
+
+ Performance counter stats for 'opam install coq-square-matrices -v -j1':
+
+    25,207,357,091      instructions:u            #    1.30  insns per cycle        
+    19,449,312,316      cycles:u                 
+
+       7.603636035 seconds time elapsed
+

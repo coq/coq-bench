@@ -1,0 +1,10 @@
+# started on Tue Jan 10 20:06:46 2017
+
+
+ Performance counter stats for 'opam install coq-rsa -v -j1':
+
+    32,601,141,118      instructions:u            #    1.20  insns per cycle        
+    27,159,880,152      cycles:u                 
+
+      11.407927404 seconds time elapsed
+

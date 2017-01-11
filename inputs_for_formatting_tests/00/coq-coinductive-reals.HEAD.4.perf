@@ -1,0 +1,10 @@
+# started on Mon Jan  9 18:16:17 2017
+
+
+ Performance counter stats for 'opam install coq-coinductive-reals -v -j1':
+
+   379,809,504,031      instructions:u            #    1.08  insns per cycle        
+   352,527,001,566      cycles:u                 
+
+     100.503652651 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 09:44:20 2017
+
+
+ Performance counter stats for 'opam install coq-lin-alg -v -j1':
+
+   598,593,956,107      instructions:u            #    1.42  insns per cycle        
+   421,386,873,707      cycles:u                 
+
+     128.618059407 seconds time elapsed
+

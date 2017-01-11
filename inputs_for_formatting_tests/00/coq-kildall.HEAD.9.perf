@@ -1,0 +1,10 @@
+# started on Tue Jan 10 08:31:54 2017
+
+
+ Performance counter stats for 'opam install coq-kildall -v -j1':
+
+   142,410,006,361      instructions:u            #    1.13  insns per cycle        
+   126,125,031,953      cycles:u                 
+
+      43.639444931 seconds time elapsed
+

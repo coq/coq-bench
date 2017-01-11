@@ -1,0 +1,10 @@
+# started on Tue Jan 10 20:50:21 2017
+
+
+ Performance counter stats for 'opam install coq-semantics -v -j1':
+
+   103,757,047,081      instructions:u            #    1.06  insns per cycle        
+    97,708,137,548      cycles:u                 
+
+      40.119588698 seconds time elapsed
+

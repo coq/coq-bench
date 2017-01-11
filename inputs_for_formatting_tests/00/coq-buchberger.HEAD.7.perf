@@ -1,0 +1,10 @@
+# started on Mon Jan  9 15:27:00 2017
+
+
+ Performance counter stats for 'opam install coq-buchberger -v -j1':
+
+   116,597,262,700      instructions:u            #    1.09  insns per cycle        
+   106,560,455,541      cycles:u                 
+
+      35.405918279 seconds time elapsed
+

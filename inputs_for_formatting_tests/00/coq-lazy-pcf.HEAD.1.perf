@@ -1,0 +1,10 @@
+# started on Tue Jan 10 08:57:09 2017
+
+
+ Performance counter stats for 'opam install coq-lazy-pcf -v -j1':
+
+    31,652,815,999      instructions:u            #    1.26  insns per cycle        
+    25,159,602,211      cycles:u                 
+
+      18.583448363 seconds time elapsed
+

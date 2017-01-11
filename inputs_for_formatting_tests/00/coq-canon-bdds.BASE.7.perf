@@ -1,0 +1,10 @@
+# started on Mon Jan  9 15:41:45 2017
+
+
+ Performance counter stats for 'opam install coq-canon-bdds -v -j1':
+
+    42,163,026,093      instructions:u            #    1.16  insns per cycle        
+    36,361,955,549      cycles:u                 
+
+      14.765895878 seconds time elapsed
+

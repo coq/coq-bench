@@ -1,0 +1,10 @@
+# started on Tue Jan 10 13:26:50 2017
+
+
+ Performance counter stats for 'opam install coq-presburger -v -j1':
+
+    95,706,908,775      instructions:u            #    1.02  insns per cycle        
+    93,471,474,320      cycles:u                 
+
+      39.525565448 seconds time elapsed
+

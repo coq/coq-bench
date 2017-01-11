@@ -1,0 +1,10 @@
+# started on Tue Jan 10 08:19:59 2017
+
+
+ Performance counter stats for 'opam install coq-karatsuba -v -j1':
+
+    49,646,075,365      instructions:u            #    1.27  insns per cycle        
+    39,193,701,669      cycles:u                 
+
+      14.248046800 seconds time elapsed
+

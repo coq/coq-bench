@@ -1,0 +1,10 @@
+# started on Mon Jan  9 15:05:33 2017
+
+
+ Performance counter stats for 'opam install coq-bdds -v -j1':
+
+   105,546,750,342      instructions:u            #    1.12  insns per cycle        
+    93,889,870,257      cycles:u                 
+
+      37.104209452 seconds time elapsed
+

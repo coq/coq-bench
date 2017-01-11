@@ -1,0 +1,10 @@
+# started on Tue Jan 10 06:27:39 2017
+
+
+ Performance counter stats for 'opam install coq-izf -v -j1':
+
+    26,207,116,898      instructions:u            #    1.28  insns per cycle        
+    20,540,757,051      cycles:u                 
+
+      13.724622138 seconds time elapsed
+

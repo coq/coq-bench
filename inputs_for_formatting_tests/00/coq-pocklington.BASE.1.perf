@@ -1,0 +1,10 @@
+# started on Tue Jan 10 13:06:54 2017
+
+
+ Performance counter stats for 'opam install coq-pocklington -v -j1':
+
+    44,355,218,932      instructions:u            #    1.15  insns per cycle        
+    38,503,828,651      cycles:u                 
+
+      20.485018842 seconds time elapsed
+

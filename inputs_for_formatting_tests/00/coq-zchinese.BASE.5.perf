@@ -1,0 +1,10 @@
+# started on Wed Jan 11 00:02:59 2017
+
+
+ Performance counter stats for 'opam install coq-zchinese -v -j1':
+
+    30,190,105,986      instructions:u            #    1.24  insns per cycle        
+    24,311,004,489      cycles:u                 
+
+       8.896053230 seconds time elapsed
+

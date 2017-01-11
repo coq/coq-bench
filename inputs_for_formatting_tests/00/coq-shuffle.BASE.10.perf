@@ -1,0 +1,10 @@
+# started on Tue Jan 10 21:00:17 2017
+
+
+ Performance counter stats for 'opam install coq-shuffle -v -j1':
+
+    25,793,246,796      instructions:u            #    1.29  insns per cycle        
+    19,971,767,812      cycles:u                 
+
+       7.196304494 seconds time elapsed
+

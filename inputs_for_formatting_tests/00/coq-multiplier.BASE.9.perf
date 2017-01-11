@@ -1,0 +1,10 @@
+# started on Tue Jan 10 11:10:32 2017
+
+
+ Performance counter stats for 'opam install coq-multiplier -v -j1':
+
+    26,418,290,720      instructions:u            #    1.28  insns per cycle        
+    20,577,458,943      cycles:u                 
+
+       7.532498108 seconds time elapsed
+

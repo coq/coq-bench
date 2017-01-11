@@ -1,0 +1,10 @@
+# started on Tue Jan 10 06:08:32 2017
+
+
+ Performance counter stats for 'opam install coq-int-map -v -j1':
+
+    49,280,942,400      instructions:u            #    1.12  insns per cycle        
+    44,136,312,803      cycles:u                 
+
+      33.561535968 seconds time elapsed
+

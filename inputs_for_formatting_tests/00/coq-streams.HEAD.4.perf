@@ -1,0 +1,10 @@
+# started on Tue Jan 10 21:42:24 2017
+
+
+ Performance counter stats for 'opam install coq-streams -v -j1':
+
+    26,364,010,416      instructions:u            #    1.29  insns per cycle        
+    20,511,677,676      cycles:u                 
+
+       7.377081459 seconds time elapsed
+

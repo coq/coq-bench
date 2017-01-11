@@ -1,0 +1,10 @@
+# started on Tue Jan 10 19:28:18 2017
+
+
+ Performance counter stats for 'opam install coq-recursive-definition -v -j1':
+
+    38,400,871,911      instructions:u            #    1.23  insns per cycle        
+    31,118,871,295      cycles:u                 
+
+      12.012244910 seconds time elapsed
+

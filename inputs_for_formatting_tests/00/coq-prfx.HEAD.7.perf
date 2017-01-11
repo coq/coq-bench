@@ -1,0 +1,10 @@
+# started on Tue Jan 10 13:31:15 2017
+
+
+ Performance counter stats for 'opam install coq-prfx -v -j1':
+
+    56,364,595,833      instructions:u            #    1.17  insns per cycle        
+    48,122,804,074      cycles:u                 
+
+      20.071511517 seconds time elapsed
+

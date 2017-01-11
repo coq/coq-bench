@@ -1,0 +1,10 @@
+# started on Mon Jan  9 21:33:40 2017
+
+
+ Performance counter stats for 'opam install coq-domain-theory -v -j1':
+
+    31,848,101,966      instructions:u            #    1.22  insns per cycle        
+    26,069,927,875      cycles:u                 
+
+       9.471198062 seconds time elapsed
+

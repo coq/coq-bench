@@ -1,0 +1,10 @@
+# started on Tue Jan 10 19:13:10 2017
+
+
+ Performance counter stats for 'opam install coq-random -v -j1':
+
+   103,374,609,877      instructions:u            #    0.92  insns per cycle        
+   112,969,993,442      cycles:u                 
+
+      36.494600722 seconds time elapsed
+

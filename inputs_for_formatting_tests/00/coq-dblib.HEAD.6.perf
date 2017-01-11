@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:39:59 2017
+
+
+ Performance counter stats for 'opam install coq-dblib -v -j1':
+
+    63,147,664,245      instructions:u            #    1.11  insns per cycle        
+    56,903,937,414      cycles:u                 
+
+      18.230055241 seconds time elapsed
+

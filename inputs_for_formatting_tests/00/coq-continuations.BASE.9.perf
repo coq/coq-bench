@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:03:36 2017
+
+
+ Performance counter stats for 'opam install coq-continuations -v -j1':
+
+    38,668,699,680      instructions:u            #    1.20  insns per cycle        
+    32,278,284,212      cycles:u                 
+
+      12.201511980 seconds time elapsed
+

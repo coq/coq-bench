@@ -1,0 +1,10 @@
+# started on Tue Jan 10 23:29:03 2017
+
+
+ Performance counter stats for 'opam install coq-topology -v -j1':
+
+   109,154,895,628      instructions:u            #    1.09  insns per cycle        
+    99,924,973,961      cycles:u                 
+
+      41.519351325 seconds time elapsed
+

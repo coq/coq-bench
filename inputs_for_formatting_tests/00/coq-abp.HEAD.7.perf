@@ -1,0 +1,10 @@
+# started on Mon Jan  9 09:47:15 2017
+
+
+ Performance counter stats for 'opam install coq-abp -v -j1':
+
+    33,227,741,931      instructions:u            #    1.22  insns per cycle        
+    27,220,632,387      cycles:u                 
+
+       9.780064484 seconds time elapsed
+

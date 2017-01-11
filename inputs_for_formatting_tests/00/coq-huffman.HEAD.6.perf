@@ -1,0 +1,10 @@
+# started on Tue Jan 10 05:27:23 2017
+
+
+ Performance counter stats for 'opam install coq-huffman -v -j1':
+
+    69,532,131,190      instructions:u            #    1.11  insns per cycle        
+    62,400,412,688      cycles:u                 
+
+      33.624643031 seconds time elapsed
+

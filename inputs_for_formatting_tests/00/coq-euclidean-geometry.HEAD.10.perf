@@ -1,0 +1,10 @@
+# started on Mon Jan  9 23:00:54 2017
+
+
+ Performance counter stats for 'opam install coq-euclidean-geometry -v -j1':
+
+   165,677,547,718      instructions:u            #    1.09  insns per cycle        
+   152,541,564,690      cycles:u                 
+
+      56.066232450 seconds time elapsed
+

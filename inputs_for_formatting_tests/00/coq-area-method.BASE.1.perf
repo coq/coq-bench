@@ -1,0 +1,10 @@
+# started on Mon Jan  9 11:56:09 2017
+
+
+ Performance counter stats for 'opam install coq-area-method -v -j1':
+
+ 1,970,297,151,500      instructions:u            #    1.07  insns per cycle        
+ 1,842,526,643,153      cycles:u                 
+
+     500.783798123 seconds time elapsed
+

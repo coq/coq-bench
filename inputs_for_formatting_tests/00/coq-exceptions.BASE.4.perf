@@ -1,0 +1,10 @@
+# started on Mon Jan  9 23:37:38 2017
+
+
+ Performance counter stats for 'opam install coq-exceptions -v -j1':
+
+    25,171,319,119      instructions:u            #    1.30  insns per cycle        
+    19,351,723,918      cycles:u                 
+
+       6.983190600 seconds time elapsed
+

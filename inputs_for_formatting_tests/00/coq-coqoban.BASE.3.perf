@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:18:28 2017
+
+
+ Performance counter stats for 'opam install coq-coqoban -v -j1':
+
+    28,991,545,481      instructions:u            #    1.28  insns per cycle        
+    22,619,713,669      cycles:u                 
+
+       8.380793048 seconds time elapsed
+

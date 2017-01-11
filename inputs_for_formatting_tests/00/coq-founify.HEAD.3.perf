@@ -1,0 +1,10 @@
+# started on Tue Jan 10 01:19:20 2017
+
+
+ Performance counter stats for 'opam install coq-founify -v -j1':
+
+    33,341,108,997      instructions:u            #    1.21  insns per cycle        
+    27,442,123,850      cycles:u                 
+
+      19.088518220 seconds time elapsed
+

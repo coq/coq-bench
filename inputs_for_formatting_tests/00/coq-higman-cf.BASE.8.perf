@@ -1,0 +1,10 @@
+# started on Tue Jan 10 04:59:49 2017
+
+
+ Performance counter stats for 'opam install coq-higman-cf -v -j1':
+
+    28,712,944,779      instructions:u            #    1.23  insns per cycle        
+    23,404,426,127      cycles:u                 
+
+      13.296157919 seconds time elapsed
+

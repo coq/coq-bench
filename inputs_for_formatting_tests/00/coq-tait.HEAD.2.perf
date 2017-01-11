@@ -1,0 +1,10 @@
+# started on Tue Jan 10 22:35:53 2017
+
+
+ Performance counter stats for 'opam install coq-tait -v -j1':
+
+    91,380,387,808      instructions:u            #    1.06  insns per cycle        
+    86,106,021,216      cycles:u                 
+
+      29.031414359 seconds time elapsed
+

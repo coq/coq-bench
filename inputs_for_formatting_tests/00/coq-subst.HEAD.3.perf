@@ -1,0 +1,10 @@
+# started on Tue Jan 10 21:56:38 2017
+
+
+ Performance counter stats for 'opam install coq-subst -v -j1':
+
+    51,921,483,233      instructions:u            #    1.01  insns per cycle        
+    51,560,391,579      cycles:u                 
+
+      22.247058168 seconds time elapsed
+

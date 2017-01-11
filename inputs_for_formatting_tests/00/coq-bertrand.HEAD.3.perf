@@ -1,0 +1,10 @@
+# started on Mon Jan  9 15:11:05 2017
+
+
+ Performance counter stats for 'opam install coq-bertrand -v -j1':
+
+   120,932,090,918      instructions:u            #    1.11  insns per cycle        
+   109,068,758,632      cycles:u                 
+
+      34.385445789 seconds time elapsed
+

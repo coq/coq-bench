@@ -1,0 +1,10 @@
+# started on Tue Jan 10 20:32:25 2017
+
+
+ Performance counter stats for 'opam install coq-search-trees -v -j1':
+
+    30,991,943,994      instructions:u            #    1.25  insns per cycle        
+    24,800,406,336      cycles:u                 
+
+      20.716747413 seconds time elapsed
+

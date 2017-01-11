@@ -1,0 +1,10 @@
+# started on Mon Jan  9 18:56:06 2017
+
+
+ Performance counter stats for 'opam install coq-constructive-geometry -v -j1':
+
+    26,021,621,619      instructions:u            #    1.27  insns per cycle        
+    20,472,684,047      cycles:u                 
+
+       7.383992892 seconds time elapsed
+

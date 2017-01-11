@@ -1,0 +1,10 @@
+# started on Tue Jan 10 10:09:56 2017
+
+
+ Performance counter stats for 'opam install coq-maple-mode -v -j1':
+
+    47,082,982,563      instructions:u            #    1.04  insns per cycle        
+    45,280,180,452      cycles:u                 
+
+      15.879923618 seconds time elapsed
+

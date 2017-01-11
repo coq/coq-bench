@@ -1,0 +1,10 @@
+# started on Tue Jan 10 00:27:03 2017
+
+
+ Performance counter stats for 'opam install coq-finger-tree -v -j1':
+
+   469,270,761,183      instructions:u            #    0.96  insns per cycle        
+   490,763,196,143      cycles:u                 
+
+     135.697486551 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 23:46:20 2017
+
+
+ Performance counter stats for 'opam install coq-tree-diameter -v -j1':
+
+    33,015,080,263      instructions:u            #    1.19  insns per cycle        
+    27,723,168,299      cycles:u                 
+
+       9.195959152 seconds time elapsed
+

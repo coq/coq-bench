@@ -1,0 +1,10 @@
+# started on Tue Jan 10 05:22:36 2017
+
+
+ Performance counter stats for 'opam install coq-hoare-tut -v -j1':
+
+    30,496,119,620      instructions:u            #    1.22  insns per cycle        
+    25,097,366,816      cycles:u                 
+
+      13.407696074 seconds time elapsed
+

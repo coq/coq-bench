@@ -1,0 +1,10 @@
+# started on Mon Jan  9 23:30:03 2017
+
+
+ Performance counter stats for 'opam install coq-exact-real-arithmetic -v -j1':
+
+    83,770,558,681      instructions:u            #    1.09  insns per cycle        
+    76,869,354,986      cycles:u                 
+
+      36.437863560 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 02:28:59 2017
+
+
+ Performance counter stats for 'opam install coq-fssec-model -v -j1':
+
+    90,159,562,635      instructions:u            #    1.12  insns per cycle        
+    80,264,379,059      cycles:u                 
+
+      34.001494603 seconds time elapsed
+

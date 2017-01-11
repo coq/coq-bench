@@ -1,0 +1,10 @@
+# started on Tue Jan 10 20:10:34 2017
+
+
+ Performance counter stats for 'opam install coq-ruler-compass-geometry -v -j1':
+
+   107,633,823,250      instructions:u            #    1.00  insns per cycle        
+   107,468,877,972      cycles:u                 
+
+      35.377519277 seconds time elapsed
+

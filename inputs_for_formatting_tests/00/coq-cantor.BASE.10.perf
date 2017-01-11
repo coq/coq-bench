@@ -1,0 +1,10 @@
+# started on Mon Jan  9 15:53:54 2017
+
+
+ Performance counter stats for 'opam install coq-cantor -v -j1':
+
+    93,634,736,121      instructions:u            #    1.09  insns per cycle        
+    86,098,923,307      cycles:u                 
+
+      28.563026649 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 04:35:24 2017
+
+
+ Performance counter stats for 'opam install coq-groups -v -j1':
+
+    24,318,717,751      instructions:u            #    1.30  insns per cycle        
+    18,670,221,456      cycles:u                 
+
+       8.102740019 seconds time elapsed
+

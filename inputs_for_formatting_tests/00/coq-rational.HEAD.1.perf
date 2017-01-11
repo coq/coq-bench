@@ -1,0 +1,10 @@
+# started on Tue Jan 10 19:14:57 2017
+
+
+ Performance counter stats for 'opam install coq-rational -v -j1':
+
+    50,354,219,118      instructions:u            #    1.21  insns per cycle        
+    41,489,751,040      cycles:u                 
+
+      39.681454154 seconds time elapsed
+

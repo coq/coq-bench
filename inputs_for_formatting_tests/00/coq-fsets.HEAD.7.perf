@@ -1,0 +1,10 @@
+# started on Tue Jan 10 01:46:02 2017
+
+
+ Performance counter stats for 'opam install coq-fsets -v -j1':
+
+   518,322,041,570      instructions:u            #    1.01  insns per cycle        
+   513,492,512,376      cycles:u                 
+
+     143.280553465 seconds time elapsed
+

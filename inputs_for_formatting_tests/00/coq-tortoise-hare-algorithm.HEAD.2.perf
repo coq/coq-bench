@@ -1,0 +1,10 @@
+# started on Tue Jan 10 23:33:09 2017
+
+
+ Performance counter stats for 'opam install coq-tortoise-hare-algorithm -v -j1':
+
+    25,728,982,586      instructions:u            #    1.29  insns per cycle        
+    19,946,700,763      cycles:u                 
+
+      12.722882368 seconds time elapsed
+

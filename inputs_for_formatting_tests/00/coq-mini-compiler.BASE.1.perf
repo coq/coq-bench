@@ -1,0 +1,10 @@
+# started on Tue Jan 10 10:35:28 2017
+
+
+ Performance counter stats for 'opam install coq-mini-compiler -v -j1':
+
+    25,833,352,843      instructions:u            #    1.28  insns per cycle        
+    20,192,552,050      cycles:u                 
+
+      11.401575105 seconds time elapsed
+

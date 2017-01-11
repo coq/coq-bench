@@ -1,0 +1,10 @@
+# started on Tue Jan 10 08:44:43 2017
+
+
+ Performance counter stats for 'opam install coq-lambda -v -j1':
+
+    39,207,818,952      instructions:u            #    1.21  insns per cycle        
+    32,283,349,863      cycles:u                 
+
+      12.386995208 seconds time elapsed
+

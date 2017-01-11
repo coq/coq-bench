@@ -1,0 +1,10 @@
+# started on Tue Jan 10 22:13:27 2017
+
+
+ Performance counter stats for 'opam install coq-sudoku -v -j1':
+
+   202,027,673,125      instructions:u            #    1.38  insns per cycle        
+   146,553,984,062      cycles:u                 
+
+      62.760505751 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 18:35:24 2017
+
+
+ Performance counter stats for 'opam install coq-quicksort-complexity -v -j1':
+
+   213,356,991,997      instructions:u            #    1.07  insns per cycle        
+   199,462,118,111      cycles:u                 
+
+      69.531007021 seconds time elapsed
+

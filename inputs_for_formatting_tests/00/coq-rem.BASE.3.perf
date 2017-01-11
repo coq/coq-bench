@@ -1,0 +1,10 @@
+# started on Tue Jan 10 19:59:47 2017
+
+
+ Performance counter stats for 'opam install coq-rem -v -j1':
+
+    24,599,460,236      instructions:u            #    1.32  insns per cycle        
+    18,687,814,338      cycles:u                 
+
+       6.487717378 seconds time elapsed
+

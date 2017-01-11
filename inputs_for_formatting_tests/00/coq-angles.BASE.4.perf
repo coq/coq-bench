@@ -1,0 +1,10 @@
+# started on Mon Jan  9 10:26:09 2017
+
+
+ Performance counter stats for 'opam install coq-angles -v -j1':
+
+    37,429,563,689      instructions:u            #    1.14  insns per cycle        
+    32,952,243,340      cycles:u                 
+
+      11.209845305 seconds time elapsed
+

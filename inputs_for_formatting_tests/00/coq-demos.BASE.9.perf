@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:51:55 2017
+
+
+ Performance counter stats for 'opam install coq-demos -v -j1':
+
+    30,294,138,672      instructions:u            #    1.28  insns per cycle        
+    23,728,945,981      cycles:u                 
+
+       8.417615321 seconds time elapsed
+

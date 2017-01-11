@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:26:25 2017
+
+
+ Performance counter stats for 'opam install coq-cours-de-coq -v -j1':
+
+    29,967,183,553      instructions:u            #    1.26  insns per cycle        
+    23,704,455,587      cycles:u                 
+
+       8.711992625 seconds time elapsed
+

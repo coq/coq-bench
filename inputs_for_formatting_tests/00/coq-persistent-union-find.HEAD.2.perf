@@ -1,0 +1,10 @@
+# started on Tue Jan 10 12:23:43 2017
+
+
+ Performance counter stats for 'opam install coq-persistent-union-find -v -j1':
+
+   181,460,488,248      instructions:u            #    0.99  insns per cycle        
+   182,756,791,993      cycles:u                 
+
+      50.509737354 seconds time elapsed
+

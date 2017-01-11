@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:24:23 2017
+
+
+ Performance counter stats for 'opam install coq-counting -v -j1':
+
+    25,058,111,934      instructions:u            #    1.30  insns per cycle        
+    19,209,839,561      cycles:u                 
+
+       6.964624141 seconds time elapsed
+

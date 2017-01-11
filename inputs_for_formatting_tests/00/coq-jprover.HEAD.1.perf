@@ -1,0 +1,10 @@
+# started on Tue Jan 10 08:11:19 2017
+
+
+ Performance counter stats for 'opam install coq-jprover -v -j1':
+
+    29,876,841,887      instructions:u            #    1.32  insns per cycle        
+    22,667,431,507      cycles:u                 
+
+      28.633137745 seconds time elapsed
+

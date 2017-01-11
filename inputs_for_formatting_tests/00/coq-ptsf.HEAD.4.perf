@@ -1,0 +1,10 @@
+# started on Tue Jan 10 17:36:31 2017
+
+
+ Performance counter stats for 'opam install coq-ptsf -v -j1':
+
+    61,399,518,669      instructions:u            #    1.12  insns per cycle        
+    54,908,513,484      cycles:u                 
+
+      17.165839550 seconds time elapsed
+

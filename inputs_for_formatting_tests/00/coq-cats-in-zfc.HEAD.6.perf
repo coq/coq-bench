@@ -1,0 +1,10 @@
+# started on Mon Jan  9 16:02:58 2017
+
+
+ Performance counter stats for 'opam install coq-cats-in-zfc -v -j1':
+
+   390,363,140,952      instructions:u            #    1.13  insns per cycle        
+   344,728,127,916      cycles:u                 
+
+      98.885531520 seconds time elapsed
+

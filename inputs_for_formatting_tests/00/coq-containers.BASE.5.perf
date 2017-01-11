@@ -1,0 +1,10 @@
+# started on Mon Jan  9 19:40:23 2017
+
+
+ Performance counter stats for 'opam install coq-containers -v -j1':
+
+   594,748,812,421      instructions:u            #    1.00  insns per cycle        
+   596,652,543,599      cycles:u                 
+
+     165.311916033 seconds time elapsed
+

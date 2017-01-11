@@ -1,0 +1,10 @@
+# started on Mon Jan  9 22:27:33 2017
+
+
+ Performance counter stats for 'opam install coq-ergo -v -j1':
+
+   794,294,466,503      instructions:u            #    1.08  insns per cycle        
+   734,633,325,347      cycles:u                 
+
+     206.156086628 seconds time elapsed
+

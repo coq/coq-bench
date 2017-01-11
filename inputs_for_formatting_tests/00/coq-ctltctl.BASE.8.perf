@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:36:34 2017
+
+
+ Performance counter stats for 'opam install coq-ctltctl -v -j1':
+
+    28,742,030,956      instructions:u            #    1.27  insns per cycle        
+    22,691,090,783      cycles:u                 
+
+       8.155832615 seconds time elapsed
+

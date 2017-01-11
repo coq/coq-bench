@@ -1,0 +1,10 @@
+# started on Mon Jan  9 21:08:43 2017
+
+
+ Performance counter stats for 'opam install coq-dictionaries -v -j1':
+
+    29,616,080,212      instructions:u            #    1.23  insns per cycle        
+    24,013,917,856      cycles:u                 
+
+      19.266698894 seconds time elapsed
+

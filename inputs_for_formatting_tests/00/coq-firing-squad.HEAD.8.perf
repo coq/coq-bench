@@ -1,0 +1,10 @@
+# started on Tue Jan 10 00:51:19 2017
+
+
+ Performance counter stats for 'opam install coq-firing-squad -v -j1':
+
+    49,376,848,089      instructions:u            #    1.13  insns per cycle        
+    43,649,715,710      cycles:u                 
+
+      16.114789395 seconds time elapsed
+

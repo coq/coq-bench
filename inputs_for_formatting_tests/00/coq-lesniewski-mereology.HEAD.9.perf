@@ -1,0 +1,10 @@
+# started on Tue Jan 10 09:13:26 2017
+
+
+ Performance counter stats for 'opam install coq-lesniewski-mereology -v -j1':
+
+    27,461,413,549      instructions:u            #    1.24  insns per cycle        
+    22,186,388,102      cycles:u                 
+
+       7.679351526 seconds time elapsed
+

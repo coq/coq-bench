@@ -1,0 +1,10 @@
+# started on Tue Jan 10 02:42:41 2017
+
+
+ Performance counter stats for 'opam install coq-fundamental-arithmetics -v -j1':
+
+    45,917,347,201      instructions:u            #    1.16  insns per cycle        
+    39,731,203,710      cycles:u                 
+
+      22.670730560 seconds time elapsed
+

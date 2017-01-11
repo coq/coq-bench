@@ -1,0 +1,10 @@
+# started on Tue Jan 10 18:01:42 2017
+
+
+ Performance counter stats for 'opam install coq-qarith-stern-brocot -v -j1':
+
+   323,948,783,083      instructions:u            #    1.14  insns per cycle        
+   283,247,226,736      cycles:u                 
+
+      85.560800062 seconds time elapsed
+

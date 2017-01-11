@@ -1,0 +1,10 @@
+# started on Tue Jan 10 05:59:47 2017
+
+
+ Performance counter stats for 'opam install coq-ieee754 -v -j1':
+
+    32,421,569,340      instructions:u            #    1.25  insns per cycle        
+    25,914,614,356      cycles:u                 
+
+       9.744991882 seconds time elapsed
+

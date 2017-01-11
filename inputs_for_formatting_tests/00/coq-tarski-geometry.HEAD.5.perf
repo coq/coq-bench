@@ -1,0 +1,10 @@
+# started on Tue Jan 10 22:52:42 2017
+
+
+ Performance counter stats for 'opam install coq-tarski-geometry -v -j1':
+
+   150,009,278,150      instructions:u            #    0.92  insns per cycle        
+   162,373,759,048      cycles:u                 
+
+      46.626711063 seconds time elapsed
+

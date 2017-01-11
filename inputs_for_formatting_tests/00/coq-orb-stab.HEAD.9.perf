@@ -1,0 +1,10 @@
+# started on Tue Jan 10 11:26:05 2017
+
+
+ Performance counter stats for 'opam install coq-orb-stab -v -j1':
+
+    28,803,337,136      instructions:u            #    1.25  insns per cycle        
+    22,968,708,195      cycles:u                 
+
+       7.777893539 seconds time elapsed
+

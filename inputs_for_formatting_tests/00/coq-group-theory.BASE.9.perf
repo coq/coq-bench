@@ -1,0 +1,10 @@
+# started on Tue Jan 10 04:32:05 2017
+
+
+ Performance counter stats for 'opam install coq-group-theory -v -j1':
+
+    32,851,512,092      instructions:u            #    1.24  insns per cycle        
+    26,532,428,539      cycles:u                 
+
+      10.486447095 seconds time elapsed
+

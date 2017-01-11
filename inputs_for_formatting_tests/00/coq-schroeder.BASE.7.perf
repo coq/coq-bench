@@ -1,0 +1,10 @@
+# started on Tue Jan 10 20:29:37 2017
+
+
+ Performance counter stats for 'opam install coq-schroeder -v -j1':
+
+    25,379,490,741      instructions:u            #    1.31  insns per cycle        
+    19,445,589,885      cycles:u                 
+
+       7.096404911 seconds time elapsed
+

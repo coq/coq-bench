@@ -1,0 +1,10 @@
+# started on Mon Jan  9 18:04:41 2017
+
+
+ Performance counter stats for 'opam install coq-coalgebras -v -j1':
+
+    44,934,468,080      instructions:u            #    1.22  insns per cycle        
+    36,961,711,482      cycles:u                 
+
+      15.137398094 seconds time elapsed
+

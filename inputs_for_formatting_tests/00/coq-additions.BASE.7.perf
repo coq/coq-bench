@@ -1,0 +1,10 @@
+# started on Mon Jan  9 09:55:23 2017
+
+
+ Performance counter stats for 'opam install coq-additions -v -j1':
+
+    50,678,931,009      instructions:u            #    1.18  insns per cycle        
+    42,884,634,842      cycles:u                 
+
+      16.799339553 seconds time elapsed
+

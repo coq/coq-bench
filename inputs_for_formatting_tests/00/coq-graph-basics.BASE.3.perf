@@ -1,0 +1,10 @@
+# started on Tue Jan 10 04:16:03 2017
+
+
+ Performance counter stats for 'opam install coq-graph-basics -v -j1':
+
+    42,017,039,045      instructions:u            #    1.18  insns per cycle        
+    35,727,181,469      cycles:u                 
+
+      13.659050894 seconds time elapsed
+

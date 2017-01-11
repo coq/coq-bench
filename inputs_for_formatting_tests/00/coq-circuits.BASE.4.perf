@@ -1,0 +1,10 @@
+# started on Mon Jan  9 17:27:37 2017
+
+
+ Performance counter stats for 'opam install coq-circuits -v -j1':
+
+    36,463,554,108      instructions:u            #    1.21  insns per cycle        
+    30,076,515,685      cycles:u                 
+
+      11.655013996 seconds time elapsed
+

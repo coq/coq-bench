@@ -1,0 +1,10 @@
+# started on Mon Jan  9 23:14:12 2017
+
+
+ Performance counter stats for 'opam install coq-euler-formula -v -j1':
+
+    56,954,677,932      instructions:u            #    1.07  insns per cycle        
+    53,412,023,095      cycles:u                 
+
+      16.285921481 seconds time elapsed
+

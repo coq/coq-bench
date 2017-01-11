@@ -1,0 +1,10 @@
+# started on Tue Jan 10 04:45:51 2017
+
+
+ Performance counter stats for 'opam install coq-hardware -v -j1':
+
+    58,116,112,877      instructions:u            #    1.16  insns per cycle        
+    49,897,094,013      cycles:u                 
+
+      19.320696717 seconds time elapsed
+

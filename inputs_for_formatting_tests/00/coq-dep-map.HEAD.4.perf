@@ -1,0 +1,10 @@
+# started on Mon Jan  9 20:53:51 2017
+
+
+ Performance counter stats for 'opam install coq-dep-map -v -j1':
+
+    44,030,590,405      instructions:u            #    1.14  insns per cycle        
+    38,477,252,201      cycles:u                 
+
+      17.711615868 seconds time elapsed
+

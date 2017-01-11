@@ -1,0 +1,10 @@
+# started on Tue Jan 10 16:14:07 2017
+
+
+ Performance counter stats for 'opam install coq-projective-geometry -v -j1':
+
+ 2,241,508,231,347      instructions:u            #    1.02  insns per cycle        
+ 2,189,872,319,584      cycles:u                 
+
+     591.539517244 seconds time elapsed
+

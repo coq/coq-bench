@@ -1,0 +1,10 @@
+# started on Tue Jan 10 07:01:42 2017
+
+
+ Performance counter stats for 'opam install coq-jordan-curve-theorem -v -j1':
+
+ 1,134,752,118,086      instructions:u            #    1.04  insns per cycle        
+ 1,096,340,046,290      cycles:u                 
+
+     296.775218171 seconds time elapsed
+

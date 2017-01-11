@@ -1,0 +1,10 @@
+# started on Mon Jan  9 23:39:20 2017
+
+
+ Performance counter stats for 'opam install coq-fairisle -v -j1':
+
+   206,125,858,563      instructions:u            #    1.22  insns per cycle        
+   168,646,032,321      cycles:u                 
+
+      67.477578193 seconds time elapsed
+

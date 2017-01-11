@@ -1,0 +1,10 @@
+# started on Mon Jan  9 09:40:33 2017
+
+
+ Performance counter stats for 'opam install coq-aac-tactics -v -j1':
+
+    45,336,959,184      instructions:u            #    1.12  insns per cycle        
+    40,554,386,994      cycles:u                 
+
+      14.585342176 seconds time elapsed
+

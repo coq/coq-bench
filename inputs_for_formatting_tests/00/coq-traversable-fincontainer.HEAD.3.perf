@@ -1,0 +1,10 @@
+# started on Tue Jan 10 23:39:36 2017
+
+
+ Performance counter stats for 'opam install coq-traversable-fincontainer -v -j1':
+
+    31,794,766,014      instructions:u            #    1.25  insns per cycle        
+    25,365,466,068      cycles:u                 
+
+       9.015799714 seconds time elapsed
+

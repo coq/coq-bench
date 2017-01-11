@@ -1,0 +1,10 @@
+# started on Tue Jan 10 06:15:30 2017
+
+
+ Performance counter stats for 'opam install coq-ipc -v -j1':
+
+    65,279,706,602      instructions:u            #    1.11  insns per cycle        
+    58,920,530,698      cycles:u                 
+
+      23.738261508 seconds time elapsed
+

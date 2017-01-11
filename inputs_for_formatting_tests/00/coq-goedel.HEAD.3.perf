@@ -1,0 +1,10 @@
+# started on Tue Jan 10 03:43:22 2017
+
+
+ Performance counter stats for 'opam install coq-goedel -v -j1':
+
+   339,027,913,001      instructions:u            #    1.19  insns per cycle        
+   284,968,203,631      cycles:u                 
+
+      86.190800999 seconds time elapsed
+

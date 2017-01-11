@@ -1,0 +1,10 @@
+# started on Tue Jan 10 00:57:02 2017
+
+
+ Performance counter stats for 'opam install coq-float -v -j1':
+
+   178,434,555,119      instructions:u            #    0.96  insns per cycle        
+   186,645,605,171      cycles:u                 
+
+      64.331392280 seconds time elapsed
+

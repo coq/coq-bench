@@ -1,0 +1,10 @@
+# started on Tue Jan 10 23:15:45 2017
+
+
+ Performance counter stats for 'opam install coq-three-gap -v -j1':
+
+    41,701,919,892      instructions:u            #    1.14  insns per cycle        
+    36,540,185,492      cycles:u                 
+
+      12.665557900 seconds time elapsed
+

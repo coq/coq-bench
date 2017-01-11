@@ -1,0 +1,10 @@
+# started on Tue Jan 10 10:48:48 2017
+
+
+ Performance counter stats for 'opam install coq-miniml -v -j1':
+
+    29,584,115,971      instructions:u            #    1.24  insns per cycle        
+    23,828,059,491      cycles:u                 
+
+      14.662897907 seconds time elapsed
+

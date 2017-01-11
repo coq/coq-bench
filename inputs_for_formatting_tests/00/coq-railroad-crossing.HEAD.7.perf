@@ -1,0 +1,10 @@
+# started on Tue Jan 10 18:48:54 2017
+
+
+ Performance counter stats for 'opam install coq-railroad-crossing -v -j1':
+
+    31,169,698,851      instructions:u            #    1.22  insns per cycle        
+    25,545,012,034      cycles:u                 
+
+       8.947019637 seconds time elapsed
+

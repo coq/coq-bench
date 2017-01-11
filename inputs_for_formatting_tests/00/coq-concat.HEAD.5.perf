@@ -1,0 +1,10 @@
+# started on Mon Jan  9 18:48:06 2017
+
+
+ Performance counter stats for 'opam install coq-concat -v -j1':
+
+    53,510,468,919      instructions:u            #    1.18  insns per cycle        
+    45,329,201,206      cycles:u                 
+
+      18.477262346 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Wed Jan 11 00:12:55 2017
+
+
+ Performance counter stats for 'opam install coq-zfc -v -j1':
+
+    33,919,814,627      instructions:u            #    1.17  insns per cycle        
+    28,975,271,614      cycles:u                 
+
+      10.313699808 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 22:31:27 2017
+
+
+ Performance counter stats for 'opam install coq-sum-of-two-square -v -j1':
+
+    81,086,466,390      instructions:u            #    1.06  insns per cycle        
+    76,295,077,566      cycles:u                 
+
+      23.949944833 seconds time elapsed
+

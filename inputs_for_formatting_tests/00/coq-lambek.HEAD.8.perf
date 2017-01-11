@@ -1,0 +1,10 @@
+# started on Tue Jan 10 08:52:24 2017
+
+
+ Performance counter stats for 'opam install coq-lambek -v -j1':
+
+    34,059,603,568      instructions:u            #    1.22  insns per cycle        
+    27,956,957,915      cycles:u                 
+
+      10.562971577 seconds time elapsed
+

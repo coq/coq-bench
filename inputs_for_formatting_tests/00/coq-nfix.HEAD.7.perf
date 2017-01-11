@@ -1,0 +1,10 @@
+# started on Tue Jan 10 11:18:42 2017
+
+
+ Performance counter stats for 'opam install coq-nfix -v -j1':
+
+    25,553,799,978      instructions:u            #    1.30  insns per cycle        
+    19,658,762,911      cycles:u                 
+
+       8.272775519 seconds time elapsed
+

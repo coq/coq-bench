@@ -1,0 +1,10 @@
+# started on Tue Jan 10 12:14:33 2017
+
+
+ Performance counter stats for 'opam install coq-pautomata -v -j1':
+
+    57,070,485,466      instructions:u            #    1.15  insns per cycle        
+    49,464,392,547      cycles:u                 
+
+      24.064873695 seconds time elapsed
+

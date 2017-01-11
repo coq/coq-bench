@@ -1,0 +1,10 @@
+# started on Mon Jan  9 16:29:48 2017
+
+
+ Performance counter stats for 'opam install coq-ccs -v -j1':
+
+    24,861,228,492      instructions:u            #    1.29  insns per cycle        
+    19,205,235,868      cycles:u                 
+
+       6.987653251 seconds time elapsed
+

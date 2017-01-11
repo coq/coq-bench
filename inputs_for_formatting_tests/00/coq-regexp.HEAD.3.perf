@@ -1,0 +1,10 @@
+# started on Tue Jan 10 19:43:42 2017
+
+
+ Performance counter stats for 'opam install coq-regexp -v -j1':
+
+    33,886,413,296      instructions:u            #    1.22  insns per cycle        
+    27,791,394,676      cycles:u                 
+
+      10.311791917 seconds time elapsed
+

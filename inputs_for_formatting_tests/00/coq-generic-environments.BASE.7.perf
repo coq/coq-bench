@@ -1,0 +1,10 @@
+# started on Tue Jan 10 03:38:49 2017
+
+
+ Performance counter stats for 'opam install coq-generic-environments -v -j1':
+
+    30,781,531,862      instructions:u            #    1.19  insns per cycle        
+    25,847,365,284      cycles:u                 
+
+      11.328773710 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 18:58:30 2017
+
+
+ Performance counter stats for 'opam install coq-ramsey -v -j1':
+
+    24,620,785,682      instructions:u            #    1.31  insns per cycle        
+    18,831,950,433      cycles:u                 
+
+       6.561290406 seconds time elapsed
+

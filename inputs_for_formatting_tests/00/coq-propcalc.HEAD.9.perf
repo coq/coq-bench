@@ -1,0 +1,10 @@
+# started on Tue Jan 10 17:06:10 2017
+
+
+ Performance counter stats for 'opam install coq-propcalc -v -j1':
+
+    33,130,650,493      instructions:u            #    1.22  insns per cycle        
+    27,264,107,612      cycles:u                 
+
+       9.497786669 seconds time elapsed
+

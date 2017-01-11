@@ -1,0 +1,10 @@
+# started on Tue Jan 10 21:48:52 2017
+
+
+ Performance counter stats for 'opam install coq-string -v -j1':
+
+    30,848,945,509      instructions:u            #    1.26  insns per cycle        
+    24,573,714,404      cycles:u                 
+
+       9.310888373 seconds time elapsed
+

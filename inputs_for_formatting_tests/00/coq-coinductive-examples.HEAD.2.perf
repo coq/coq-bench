@@ -1,0 +1,10 @@
+# started on Mon Jan  9 18:06:03 2017
+
+
+ Performance counter stats for 'opam install coq-coinductive-examples -v -j1':
+
+    25,358,006,358      instructions:u            #    1.30  insns per cycle        
+    19,447,713,626      cycles:u                 
+
+       9.344713064 seconds time elapsed
+

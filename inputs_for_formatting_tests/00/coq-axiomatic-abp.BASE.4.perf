@@ -1,0 +1,10 @@
+# started on Mon Jan  9 14:54:18 2017
+
+
+ Performance counter stats for 'opam install coq-axiomatic-abp -v -j1':
+
+    37,951,749,813      instructions:u            #    1.18  insns per cycle        
+    32,125,993,965      cycles:u                 
+
+      14.356925318 seconds time elapsed
+

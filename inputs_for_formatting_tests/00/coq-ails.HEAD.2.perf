@@ -1,0 +1,10 @@
+# started on Mon Jan  9 09:57:19 2017
+
+
+ Performance counter stats for 'opam install coq-ails -v -j1':
+
+    86,327,147,042      instructions:u            #    1.14  insns per cycle        
+    75,611,403,636      cycles:u                 
+
+      25.100654677 seconds time elapsed
+

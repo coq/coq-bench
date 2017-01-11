@@ -1,0 +1,10 @@
+# started on Mon Jan  9 10:05:57 2017
+
+
+ Performance counter stats for 'opam install coq-algebra -v -j1':
+
+    94,693,372,030      instructions:u            #    1.16  insns per cycle        
+    81,825,769,027      cycles:u                 
+
+      32.161894165 seconds time elapsed
+

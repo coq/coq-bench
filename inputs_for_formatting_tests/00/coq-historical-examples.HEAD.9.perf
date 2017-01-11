@@ -1,0 +1,10 @@
+# started on Tue Jan 10 05:14:51 2017
+
+
+ Performance counter stats for 'opam install coq-historical-examples -v -j1':
+
+    25,849,494,061      instructions:u            #    1.28  insns per cycle        
+    20,198,667,030      cycles:u                 
+
+       7.432952032 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Tue Jan 10 11:59:45 2017
+
+
+ Performance counter stats for 'opam install coq-paradoxes -v -j1':
+
+    26,179,436,615      instructions:u            #    1.28  insns per cycle        
+    20,383,192,934      cycles:u                 
+
+       7.690669150 seconds time elapsed
+

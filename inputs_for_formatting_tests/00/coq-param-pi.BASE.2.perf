@@ -1,0 +1,10 @@
+# started on Tue Jan 10 12:08:48 2017
+
+
+ Performance counter stats for 'opam install coq-param-pi -v -j1':
+
+    32,884,413,261      instructions:u            #    1.19  insns per cycle        
+    27,549,065,722      cycles:u                 
+
+      10.101731314 seconds time elapsed
+

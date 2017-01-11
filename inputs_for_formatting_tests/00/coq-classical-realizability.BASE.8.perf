@@ -1,0 +1,10 @@
+# started on Mon Jan  9 17:53:49 2017
+
+
+ Performance counter stats for 'opam install coq-classical-realizability -v -j1':
+
+   339,329,630,209      instructions:u            #    1.23  insns per cycle        
+   276,835,674,675      cycles:u                 
+
+      83.868648215 seconds time elapsed
+

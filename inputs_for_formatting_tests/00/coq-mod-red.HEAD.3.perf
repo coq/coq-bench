@@ -1,0 +1,10 @@
+# started on Tue Jan 10 10:54:36 2017
+
+
+ Performance counter stats for 'opam install coq-mod-red -v -j1':
+
+    93,266,263,740      instructions:u            #    1.15  insns per cycle        
+    81,243,638,274      cycles:u                 
+
+      24.223078818 seconds time elapsed
+

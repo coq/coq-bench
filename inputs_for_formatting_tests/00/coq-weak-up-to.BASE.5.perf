@@ -1,0 +1,10 @@
+# started on Tue Jan 10 23:56:28 2017
+
+
+ Performance counter stats for 'opam install coq-weak-up-to -v -j1':
+
+    29,349,376,288      instructions:u            #    1.21  insns per cycle        
+    24,207,740,645      cycles:u                 
+
+       9.097701966 seconds time elapsed
+
