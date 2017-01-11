@@ -419,4 +419,59 @@ for coq_opam_package in $coq_opam_packages; do
     done
 done
 
+# From this point on, you can ignore the following directories
+# - $working_dir/.opam
+# - $working_dir/.opam.*
+# - $working_dir/camlp4
+# - $working_dir/camlp5
+# - $working_dir/coq
+# - $working_dir/custom_opam_repo
+ 
+
+# These files hold the measured data:
+#
+# - for every $coq_opam_package
+#
+#   - for every $iteration
+#
+#     - $working_dir/$coq_opam_package.HEAD.$iteration.time
+#
+#         This file contains the output of the
+#
+#           /usr/bin/time --format="%U" ...
+#
+#         command that was used to measure compilation time of a particular $coq_opam_package
+#         in a particular $iteration at the HEAD of a given $coq_branch.
+#
+#     - $working_dir/$coq_opam_package.HEAD.$iteration.perf
+#
+#         This file contains the output of the
+#
+#           perf stat -e instructions:u,cycles:u ...
+#
+#         command that was used to measure the total number of CPU instructions and CPU cycles
+#         executed during the compilation of a particular $coq_opam_package in a particular $iteration
+#         at the HEAD of a given $coq_branch.
+#
+#     - $working_dir/$coq_opam_package.BASE$iteration.time
+#
+#         This file contains the output of the
+#
+#           /usr/bin/time --format="%U" ...
+#
+#         command that was used to measure compilation time of a particular $coq_opam_package
+#         in a particular $iteration at the BASE of a given $coq_branch.
+#
+#     - $working_dir/$coq_opam_package.BASE.$iteration.perf
+#
+#         This file contains the output of the
+#
+#           perf stat -e instructions:u,cycles:u ...
+#
+#         command that was used to measure the total number of CPU instructions and CPU cycles
+#         executed during the compilation of a particular $coq_opam_package in a particular $iteration
+#         at the BASE of a given $coq_branch.
+#
+# The following script processes all these files and prints results in a comprehensible way.
+
 $program_path/bench.ml "$working_dir" $num_of_iterations 0 $coq_opam_packages

@@ -7,11 +7,13 @@
 *)
 
 (* ASSUMPTIONS:
-   - 1-st command line argument (working directory):
+   - the 1-st command line argument (working directory):
      - designates an existing readable directory
      - which contains *.time and *.perf files produced by bench.sh script
-   - 2-nd command line argument (number of iterations):
+   - the 2-nd command line argument (number of iterations):
      - is a positive integer
+   - the 3-rd command line argument (minimal user time):
+     - is a positive floating point number
    - the rest of the command line-arguments
      - are names of benchamarked Coq OPAM packages for which bench.sh script generated *.time and *.perf files
  *)
@@ -32,6 +34,13 @@ let working_directory = Sys.argv.(1) in
 let num_of_iterations = int_of_string Sys.argv.(2) in
 let minimal_user_time = float_of_string Sys.argv.(3) in
 let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 4 in
+
+(* ASSUMPTIONS:
+
+   "working_directory" contains all the files produced by the following command:
+
+      ./bench.sh $working_directory $coq_repository $coq_branch[:$head:$base] $num_of_iterations coq_opam_package_1 coq_opam_package_2 ...
+*)
 
 (* Run a given bash command;
    wait until it termines;
