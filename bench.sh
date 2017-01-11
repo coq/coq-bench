@@ -474,4 +474,6 @@ done
 #
 # The following script processes all these files and prints results in a comprehensible way.
 
-$program_path/bench.ml "$working_dir" $num_of_iterations 0 $coq_opam_packages
+echo DEBUG: $program_path/bench.ml "$working_dir" $num_of_iterations 0 $coq_opam_packages
+
+$program_path/bench.ml "$working_dir" $num_of_iterations 0 user_time_pdiff $coq_opam_packages

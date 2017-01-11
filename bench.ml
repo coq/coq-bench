@@ -14,6 +14,10 @@
      - is a positive integer
    - the 3-rd command line argument (minimal user time):
      - is a positive floating point number
+   - the 4-th command line argument determines the name of the column according to which the resulting table will be sorted.
+     Valid values are:
+     - package_name
+     - user_time_pdiff
    - the rest of the command line-arguments
      - are names of benchamarked Coq OPAM packages for which bench.sh script generated *.time and *.perf files
  *)
@@ -29,11 +33,12 @@ open Unix
 
 ;;
 (* process command line paramters *)
-assert (Array.length Sys.argv > 3);
+assert (Array.length Sys.argv > 4);
 let working_directory = Sys.argv.(1) in
 let num_of_iterations = int_of_string Sys.argv.(2) in
 let minimal_user_time = float_of_string Sys.argv.(3) in
-let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 4 in
+let sorting_column = Sys.argv.(4) in
+let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 5 in
 
 (* ASSUMPTIONS:
 
@@ -156,11 +161,19 @@ coq_opam_packages
     (float * int * int) *
     (float * float * float)) list *)
 
-(* sort wrt. the proportional difference in user-time *)
+(* sort the table with results *)
 |> List.sort
-     (fun measurement1 measurement2 ->
-        let get_user_time = Tuple4.fourth %> Tuple3.first in
-        compare (get_user_time measurement1) (get_user_time measurement2))
+     (match sorting_column with
+      | "user_time_pdiff" ->
+         (fun measurement1 measurement2 ->
+           let get_user_time = Tuple4.fourth %> Tuple3.first in
+           compare (get_user_time measurement1) (get_user_time measurement2))
+      | "package_name" ->
+         (fun measurement1 measurement2 ->
+           compare (Tuple4.first measurement1) (Tuple4.first measurement2))
+      | _ ->
+         assert false
+     )
 
 (* Keep only measurements that took at least "minimal_user_time" (in seconds). *)
 
@@ -314,7 +327,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 (* TESTS:
 
-   ./bench.ml inputs_for_formatting_tests/a 3 0 coq-aac-tactics
+   ./bench.ml inputs_for_formatting_tests/a 3 0 user_time_pdiff coq-aac-tactics
 
         ┌─────────────────┬─────────────────────┬─────────────────────────────────┬─────────────────────────────────┐
         │                 │      user time      │           CPU cycles            │        CPU instructions         │
@@ -325,7 +338,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
         └─────────────────┴─────────────────────┴─────────────────────────────────┴─────────────────────────────────┘
 
 
-   ./bench.ml inputs_for_formatting_tests/b 1 0 coq-abp coq-zf
+   ./bench.ml inputs_for_formatting_tests/b 1 0 user_time_pdiff coq-abp coq-zf
 
         ┌──────────────┬─────────────────────┬──────────────────────────────────┬─────────────────────────────────┐
         │              │      user time      │            CPU cycles            │        CPU instructions         │
@@ -338,7 +351,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
         └──────────────┴─────────────────────┴──────────────────────────────────┴─────────────────────────────────┘
 
 
-   ./bench.ml inputs_for_formatting_tests/c 3 0 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect
+   ./bench.ml inputs_for_formatting_tests/c 3 0 user_time_pdiff coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect
 
         ┌────────────────────────┬──────────────────────────┬───────────────────────────────────────┬───────────────────────────────────────┐
         │                        │        user time         │              CPU cycles               │           CPU instructions            │
@@ -360,7 +373,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 
     (* notebook: ThinkPad X230 *)
-    ./bench.ml inputs_for_formatting_tests/d 10 0 coq-persistent-union-find
+    ./bench.ml inputs_for_formatting_tests/d 10 0 user_time_pdiff coq-persistent-union-find
 
         ┌───────────────────────────┬──────────────────────┬───────────────────────────────────┬────────────────────────────────────┐
         │                           │      user time       │            CPU cycles             │          CPU instructions          │
@@ -372,7 +385,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 
     (* notebook: ThinkPad X230 *)
-    ./bench.ml inputs_for_formatting_tests/e 10 0 coq-persistent-union-find
+    ./bench.ml inputs_for_formatting_tests/e 10 0 user_time_pdiff coq-persistent-union-find
 
         ┌───────────────────────────┬──────────────────────┬───────────────────────────────────┬────────────────────────────────────┐
         │                           │      user time       │            CPU cycles             │          CPU instructions          │
@@ -384,7 +397,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 
     (* notebook: ThinkPad X230 *)
-    ./bench.ml inputs_for_formatting_tests/f 10 0 coq-gc
+    ./bench.ml inputs_for_formatting_tests/f 10 0 user_time_pdiff coq-gc
 
         ┌──────────────┬────────────────────────┬────────────────────────────────────┬────────────────────────────────────┐
         │              │       user time        │             CPU cycles             │          CPU instructions          │
@@ -396,7 +409,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 
     (* notebook: ThinkPad X230 *)
-    ./bench.ml inputs_for_formatting_tests/g 10 0 coq-gc
+    ./bench.ml inputs_for_formatting_tests/g 10 0 user_time_pdiff coq-gc
 
         ┌──────────────┬────────────────────────┬────────────────────────────────────┬────────────────────────────────────┐
         │              │       user time        │             CPU cycles             │          CPU instructions          │
@@ -408,7 +421,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 
     (* notebook: ThinkPad X230 *)
-    ./bench.ml inputs_for_formatting_tests/h 10 0 coq-pi-calc coq-otway-rees coq-lazy-pcf
+    ./bench.ml inputs_for_formatting_tests/h 10 0 user_time_pdiff coq-pi-calc coq-otway-rees coq-lazy-pcf
 
         ┌────────────────┬──────────────────────┬────────────────────────────────────┬────────────────────────────────────┐
         │                │      user time       │             CPU cycles             │          CPU instructions          │
@@ -424,7 +437,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 
     (* notebook: ThinkPad X230 *)
-    ./bench.ml inputs_for_formatting_tests/i 10 0 coq-pi-calc coq-otway-rees coq-lazy-pcf
+    ./bench.ml inputs_for_formatting_tests/i 10 0 user_time_pdiff coq-pi-calc coq-otway-rees coq-lazy-pcf
 
         ┌────────────────┬──────────────────────┬────────────────────────────────────┬────────────────────────────────────┐
         │                │      user time       │             CPU cycles             │          CPU instructions          │
