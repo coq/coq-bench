@@ -170,7 +170,7 @@ echo DEBUG: coq_opam_packages = $coq_opam_packages
 
 # Some sanity checks of command-line arguments provided by the user that can be done right now.
 
-if which perf; then
+if which perf > /dev/null; then
     echo -n
 else
     echo > /dev/stderr
