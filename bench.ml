@@ -323,6 +323,30 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
 (* TESTS:
 
+   (* roquableu *)
+
+      (* ./bench.sh ~/tmp/a https://github.com/psteckler/coq.git array-loops-experiment 10 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect *)
+
+      (* ./bench.ml inputs_for_formatting_tests/00-mathcomp 10 0 user_time_pdiff coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect *)
+
+         ┌────────────────────────┬───────────────────────┬─────────────────────────────────────┬─────────────────────────────────────┐
+         │                        │     user time [s]     │             CPU cycles              │          CPU instructions           │
+         │                        │                       │                                     │                                     │
+         │           package_name │   HEAD   BASE PDIFF   │          HEAD          BASE PDIFF   │          HEAD          BASE PDIFF   │
+         ├────────────────────────┼───────────────────────┼─────────────────────────────────────┼─────────────────────────────────────┤
+         │     coq-mathcomp-field │ 583.70 590.71 -1.19 % │ 1990210621655 2015346144557 -1.25 % │ 2296309961124 2306640764467 -0.45 % │
+         ├────────────────────────┼───────────────────────┼─────────────────────────────────────┼─────────────────────────────────────┤
+         │  coq-mathcomp-fingroup │  74.32  74.85 -0.71 % │  238554660588  241040236784 -1.03 % │  246335263268  246673624198 -0.14 % │
+         ├────────────────────────┼───────────────────────┼─────────────────────────────────────┼─────────────────────────────────────┤
+         │ coq-mathcomp-character │ 319.23 320.73 -0.47 % │ 1082643740546 1088323627566 -0.52 % │ 1139504493386 1141713412512 -0.19 % │
+         ├────────────────────────┼───────────────────────┼─────────────────────────────────────┼─────────────────────────────────────┤
+         │ coq-mathcomp-ssreflect │  60.36  60.63 -0.45 % │  178116867145  178136150304 -0.01 % │  171282677609  171356983582 -0.04 % │
+         ├────────────────────────┼───────────────────────┼─────────────────────────────────────┼─────────────────────────────────────┤
+         │   coq-mathcomp-algebra │ 212.63 213.44 -0.38 % │  706464058475  709196805165 -0.39 % │  711451702236  712651567085 -0.17 % │
+         ├────────────────────────┼───────────────────────┼─────────────────────────────────────┼─────────────────────────────────────┤
+         │  coq-mathcomp-solvable │ 241.83 242.75 -0.38 % │  806892494982  810003913076 -0.38 % │  861227921524  862801463112 -0.18 % │
+         └────────────────────────┴───────────────────────┴─────────────────────────────────────┴─────────────────────────────────────┘
+
    (* marelle1 *)
 
       (* ./bench.sh /tmp/a ~/git/coq/v8.6 v8.6:HEAD:d0afde58b3320b65fc755cca5600af3b1bc9fa82 10 coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees *)
@@ -646,8 +670,4 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
      ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
      │          coq-persistent-union-find │  48.21  28.24 +70.72 % │  180815018920  105128433939 +71.99 % │  181435152299  116933614986 +55.16 % │
      └────────────────────────────────────┴────────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┘
-     
-     
-     PDIFF ... proportional difference of the HEAD and BASE measurements
-               (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%
 *)

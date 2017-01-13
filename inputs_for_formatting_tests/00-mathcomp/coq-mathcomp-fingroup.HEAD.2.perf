@@ -1,0 +1,10 @@
+# started on Thu Jan 12 10:42:21 2017
+
+
+ Performance counter stats for 'opam install coq-mathcomp-fingroup -v -j1':
+
+   246,390,381,182      instructions:u            #    1.02  insn per cycle                                            
+   240,386,808,268      cycles:u                                                    
+
+     136.806170566 seconds time elapsed
+

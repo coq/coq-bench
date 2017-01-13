@@ -1,0 +1,10 @@
+# started on Thu Jan 12 23:26:12 2017
+
+
+ Performance counter stats for 'opam install coq-mathcomp-ssreflect -v -j1':
+
+   171,396,458,044      instructions:u            #    0.96  insn per cycle                                            
+   178,874,706,033      cycles:u                                                    
+
+     137.319657980 seconds time elapsed
+

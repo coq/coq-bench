@@ -1,0 +1,10 @@
+# started on Wed Jan 11 15:48:54 2017
+
+
+ Performance counter stats for 'opam install coq-mathcomp-algebra -v -j1':
+
+   711,758,967,709      instructions:u            #    1.00  insn per cycle                                            
+   710,103,707,045      cycles:u                                                    
+
+     298.219089682 seconds time elapsed
+
