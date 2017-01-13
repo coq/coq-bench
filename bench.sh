@@ -396,30 +396,26 @@ for coq_opam_package in $coq_opam_packages; do
     rm -r -f "$OPAMROOT"
     cp -r "$OPAMROOT.HEAD" "$OPAMROOT"
     opam install $coq_opam_package -v -j$number_of_processors --deps-only -y
-    mv "$OPAMROOT" "$OPAMROOT.$coq_opam_package.HEAD.with_deps"
     for iteration in $(seq $num_of_iterations); do
-        rm -r -f "$OPAMROOT"
-        cp -r "$OPAMROOT.$coq_opam_package.HEAD.with_deps" "$OPAMROOT"
         /usr/bin/time -o "$working_dir/$coq_opam_package.HEAD.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.HEAD.$iteration.perf" \
             opam install $coq_opam_package -v -j1
+        opam uninstall $coq_opam_package -v
     done
 
     # perform measurements for the BASE of the branch (provided by the user)
     rm -r -f "$OPAMROOT"
     cp -r "$OPAMROOT.BASE" "$OPAMROOT"
     opam install $coq_opam_package -v -j$number_of_processors --deps-only -y
-    mv "$OPAMROOT" "$OPAMROOT.$coq_opam_package.BASE.with_deps"
     for iteration in $(seq $num_of_iterations); do
-        rm -r -f "$OPAMROOT"
-        cp -r "$OPAMROOT.$coq_opam_package.BASE.with_deps" "$OPAMROOT"
         /usr/bin/time -o "$working_dir/$coq_opam_package.BASE.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.BASE.$iteration.perf" \
             opam install $coq_opam_package -v -j1
+        opam uninstall $coq_opam_package -v
     done
 done
 
-# From this point on, you can ignore the following directories
+# The following directories are no longer relevant:
 # - $working_dir/.opam
 # - $working_dir/.opam.*
 # - $working_dir/camlp4
