@@ -360,7 +360,7 @@ opam repo list
 cd "$coq_dir"
 git checkout $head
 echo DEBUG git commit for HEAD = $(git log | head -n 1 | awk '{print $2}')
-opam install coq.$coq_opam_version -v -j$number_of_processors
+$program_path/opam_install.sh coq.$coq_opam_version -v -j$number_of_processors
 
 mv "$OPAMROOT" "$OPAMROOT.HEAD"
 
@@ -378,7 +378,7 @@ opam repo list
 cd "$coq_dir"
 git checkout $base
 echo DEBUG git commit for BASE = $(git log | head -n 1 | awk '{print $2}')
-opam install coq.$coq_opam_version -v -j$number_of_processors
+$program_path/opam_install.sh coq.$coq_opam_version -v -j$number_of_processors
 
 mv "$OPAMROOT" "$OPAMROOT.BASE"
 
@@ -395,22 +395,22 @@ for coq_opam_package in $coq_opam_packages; do
     # perform measurements for the HEAD of the branch (provided by the user)
     rm -r -f "$OPAMROOT"
     cp -r "$OPAMROOT.HEAD" "$OPAMROOT"
-    opam install $coq_opam_package -v -j$number_of_processors --deps-only -y
+    $program_path/opam_install.sh $coq_opam_package -v -j$number_of_processors --deps-only -y
     for iteration in $(seq $num_of_iterations); do
         /usr/bin/time -o "$working_dir/$coq_opam_package.HEAD.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.HEAD.$iteration.perf" \
-            opam install $coq_opam_package -v -j1
+            $program_path/opam_install.sh $coq_opam_package -v -j1
         opam uninstall $coq_opam_package -v
     done
 
     # perform measurements for the BASE of the branch (provided by the user)
     rm -r -f "$OPAMROOT"
     cp -r "$OPAMROOT.BASE" "$OPAMROOT"
-    opam install $coq_opam_package -v -j$number_of_processors --deps-only -y
+    $program_path/opam_install.sh $coq_opam_package -v -j$number_of_processors --deps-only -y
     for iteration in $(seq $num_of_iterations); do
         /usr/bin/time -o "$working_dir/$coq_opam_package.BASE.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.BASE.$iteration.perf" \
-            opam install $coq_opam_package -v -j1
+            $program_path/opam_install.sh $coq_opam_package -v -j1
         opam uninstall $coq_opam_package -v
     done
 done
