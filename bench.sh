@@ -416,12 +416,13 @@ for coq_opam_package in $coq_opam_packages; do
 done
 
 # The following directories are no longer relevant:
-# - $working_dir/.opam
-# - $working_dir/.opam.*
+# - $working_dir/coq
 # - $working_dir/camlp4
 # - $working_dir/camlp5
-# - $working_dir/coq
 # - $working_dir/custom_opam_repo
+# - $working_dir/.opam
+# - $working_dir/.opam.BASE
+# - $working_dir/.opam.HEAD
  
 
 # These files hold the measured data:
