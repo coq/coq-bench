@@ -36,9 +36,11 @@ open Unix
 assert (Array.length Sys.argv > 4);
 let working_directory = Sys.argv.(1) in
 let num_of_iterations = int_of_string Sys.argv.(2) in
-let minimal_user_time = float_of_string Sys.argv.(3) in
-let sorting_column = Sys.argv.(4) in
-let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 5 in
+let head_commit = Sys.argv.(3) in
+let base_commit = Sys.argv.(4) in
+let minimal_user_time = float_of_string Sys.argv.(5) in
+let sorting_column = Sys.argv.(6) in
+let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 7 in
 
 (* ASSUMPTIONS:
 
@@ -319,7 +321,10 @@ printf "
 PDIFF ... proportional difference of the HEAD and BASE measurements
           (HEAD_measurement - BASE_measurement) / BASE_measurement * 100%%
 
-";
+HEAD = %s
+BASE = %s
+
+" head_commit base_commit;
 
 (* TESTS:
 
@@ -327,7 +332,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
       (* ./bench.sh ~/tmp/a https://github.com/psteckler/coq.git array-loops-experiment 10 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect *)
 
-      (* ./bench.ml inputs_for_formatting_tests/00-mathcomp-00 10 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect *)
+      (* ./bench.ml inputs_for_formatting_tests/00-mathcomp-00 10 062afabae15e4d7d96029211effd760d8d730484 37817bb5ac6bb9fa9a4d67a5604a35424f7b343d 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect *)
 
       ┌────────────────────────┬───────────────────────┬─────────────────────────────────────┬─────────────────────────────────────┐
       │                        │     user time [s]     │             CPU cycles              │          CPU instructions           │
@@ -349,7 +354,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
       (* ./bench.sh ~/tmp/b https://github.com/psteckler/coq.git array-loops-experiment 10 coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect *)
 
-      (* ./bench.ml inputs_for_formatting_tests/00-mathcomp-01 10 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect *)
+      (* ./bench.ml inputs_for_formatting_tests/00-mathcomp-01 10 062afabae15e4d7d96029211effd760d8d730484 37817bb5ac6bb9fa9a4d67a5604a35424f7b343d 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect *)
 
       ┌────────────────────────┬───────────────────────┬─────────────────────────────────────┬─────────────────────────────────────┐
       │                        │     user time [s]     │             CPU cycles              │          CPU instructions           │
@@ -373,7 +378,7 @@ PDIFF ... proportional difference of the HEAD and BASE measurements
 
       (* ./bench.sh /tmp/a ~/git/coq/v8.6 v8.6:HEAD:d0afde58b3320b65fc755cca5600af3b1bc9fa82 10 coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees *)
 
-     ./bench.ml inputs_for_formatting_tests/01-coq-contribs-00 10 0 package_name coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees
+     ./bench.ml inputs_for_formatting_tests/01-coq-contribs-00 10 6424a49842ed9982c7edd1b847d88d66508f072b d0afde58b3320b65fc755cca5600af3b1bc9fa82 0 package_name coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees
 
       ┌────────────────────────────────────┬────────────────────────┬──────────────────────────────────────┬──────────────────────────────────────┐
       │                                    │     user time [s]      │              CPU cycles              │           CPU instructions           │

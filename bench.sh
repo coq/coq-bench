@@ -359,14 +359,15 @@ opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo list
 cd "$coq_dir"
 git checkout $head
-echo DEBUG git commit for HEAD = $(git log | head -n 1 | awk '{print $2}')
+head_long=$(git log --pretty=%H | head -n 1)
+echo DEBUG git commit for HEAD = $head_long
 $program_path/opam_install.sh coq.$coq_opam_version -v -j$number_of_processors
 
 mv "$OPAMROOT" "$OPAMROOT.HEAD"
 
 # --------------------------------------------------------------------------------
 
-# Create a new OPAM-root to which we will install the corresponding official branch of Coq
+# Create a new OPAM-root to which we will install the BASE of the designated branch of Coq
 
 export OPAMROOT="$working_dir/.opam"
 
@@ -377,7 +378,8 @@ opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo list
 cd "$coq_dir"
 git checkout $base
-echo DEBUG git commit for BASE = $(git log | head -n 1 | awk '{print $2}')
+base_long=$(git log --pretty=%H | head -n 1)
+echo DEBUG git commit for BASE = $base_long
 $program_path/opam_install.sh coq.$coq_opam_version -v -j$number_of_processors
 
 mv "$OPAMROOT" "$OPAMROOT.BASE"
@@ -471,6 +473,6 @@ done
 #
 # The following script processes all these files and prints results in a comprehensible way.
 
-echo DEBUG: $program_path/bench.ml "$working_dir" $num_of_iterations 0 $coq_opam_packages
+echo DEBUG: $program_path/bench.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $coq_opam_packages
 
-$program_path/bench.ml "$working_dir" $num_of_iterations 0 user_time_pdiff $coq_opam_packages
+$program_path/bench.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $coq_opam_packages
