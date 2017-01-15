@@ -1,0 +1,10 @@
+# started on Sat Jan 14 06:53:22 2017
+
+
+ Performance counter stats for 'opam install coq-mathcomp-character -v -j1':
+
+ 1,141,357,953,675      instructions:u            #    1.05  insn per cycle                                            
+ 1,090,501,463,745      cycles:u                                                    
+
+     383.009685196 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sat Jan 14 18:57:04 2017
+
+
+ Performance counter stats for 'opam install coq-mathcomp-solvable -v -j1':
+
+   861,002,561,579      instructions:u            #    1.07  insn per cycle                                            
+   808,243,329,771      cycles:u                                                    
+
+     327.059696311 seconds time elapsed
+
