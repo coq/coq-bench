@@ -1,0 +1,10 @@
+# started on Sun Jan 15 06:15:21 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-exact-real-arithmetic -v -j1':
+
+    83,562,955,713      instructions:u            #    1.10  insns per cycle        
+    76,257,102,930      cycles:u                 
+
+      26.808899201 seconds time elapsed
+

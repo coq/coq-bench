@@ -1,0 +1,10 @@
+# started on Sun Jan 15 23:20:57 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-ptsf -v -j1':
+
+    61,474,092,725      instructions:u            #    1.12  insns per cycle        
+    55,007,961,448      cycles:u                 
+
+      17.184813256 seconds time elapsed
+

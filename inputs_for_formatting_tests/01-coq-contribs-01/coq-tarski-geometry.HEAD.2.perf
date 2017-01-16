@@ -1,0 +1,10 @@
+# started on Mon Jan 16 03:53:06 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-tarski-geometry -v -j1':
+
+   150,059,353,631      instructions:u            #    0.93  insns per cycle        
+   161,682,742,729      cycles:u                 
+
+      45.662273379 seconds time elapsed
+

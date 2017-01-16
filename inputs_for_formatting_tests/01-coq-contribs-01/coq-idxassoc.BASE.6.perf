@@ -1,0 +1,10 @@
+# started on Sun Jan 15 12:22:08 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-idxassoc -v -j1':
+
+    26,159,703,207      instructions:u            #    1.29  insns per cycle        
+    20,301,434,890      cycles:u                 
+
+       7.205033271 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Mon Jan 16 00:07:09 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-quicksort-complexity -v -j1':
+
+   212,214,831,685      instructions:u            #    1.06  insns per cycle        
+   199,514,561,940      cycles:u                 
+
+      61.342983636 seconds time elapsed
+

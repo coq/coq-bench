@@ -1,0 +1,10 @@
+# started on Sun Jan 15 00:45:03 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-classical-realizability -v -j1':
+
+   339,306,894,201      instructions:u            #    1.22  insns per cycle        
+   277,006,974,249      cycles:u                 
+
+      79.323340595 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 16:28:16 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-markov -v -j1':
+
+    28,754,706,653      instructions:u            #    1.24  insns per cycle        
+    23,251,394,716      cycles:u                 
+
+       7.897501329 seconds time elapsed
+

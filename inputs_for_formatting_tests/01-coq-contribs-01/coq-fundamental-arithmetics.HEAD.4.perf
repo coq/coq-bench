@@ -1,0 +1,10 @@
+# started on Sun Jan 15 09:21:43 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-fundamental-arithmetics -v -j1':
+
+    45,979,147,652      instructions:u            #    1.16  insns per cycle        
+    39,703,737,021      cycles:u                 
+
+      13.795629772 seconds time elapsed
+

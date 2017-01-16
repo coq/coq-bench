@@ -1,0 +1,10 @@
+# started on Mon Jan 16 04:49:45 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-weak-up-to -v -j1':
+
+    29,417,521,472      instructions:u            #    1.21  insns per cycle        
+    24,291,074,804      cycles:u                 
+
+       9.018153440 seconds time elapsed
+

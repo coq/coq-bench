@@ -1,0 +1,10 @@
+# started on Sun Jan 15 01:27:18 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-coinductive-reals -v -j1':
+
+   363,287,861,544      instructions:u            #    1.08  insns per cycle        
+   336,171,405,100      cycles:u                 
+
+      95.697279126 seconds time elapsed
+

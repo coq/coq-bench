@@ -1,0 +1,10 @@
+# started on Mon Jan 16 00:04:10 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-qarith-stern-brocot -v -j1':
+
+   421,029,743,968      instructions:u            #    1.25  insns per cycle        
+   336,632,180,779      cycles:u                 
+
+      97.702115351 seconds time elapsed
+

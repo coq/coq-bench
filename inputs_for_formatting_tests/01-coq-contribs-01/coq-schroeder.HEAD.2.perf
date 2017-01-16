@@ -1,0 +1,10 @@
+# started on Mon Jan 16 01:51:12 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-schroeder -v -j1':
+
+    25,411,336,813      instructions:u            #    1.30  insns per cycle        
+    19,484,194,803      cycles:u                 
+
+       7.153586976 seconds time elapsed
+

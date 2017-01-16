@@ -1,0 +1,10 @@
+# started on Sun Jan 15 11:27:10 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-hedges -v -j1':
+
+    32,446,405,085      instructions:u            #    1.19  insns per cycle        
+    27,169,181,674      cycles:u                 
+
+      10.406834964 seconds time elapsed
+

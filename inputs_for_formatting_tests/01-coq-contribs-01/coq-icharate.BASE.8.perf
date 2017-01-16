@@ -1,0 +1,10 @@
+# started on Sun Jan 15 12:16:31 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-icharate -v -j1':
+
+    98,706,632,033      instructions:u            #    1.14  insns per cycle        
+    86,500,663,228      cycles:u                 
+
+      31.283843689 seconds time elapsed
+

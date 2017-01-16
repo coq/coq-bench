@@ -1,0 +1,10 @@
+# started on Sat Jan 14 21:42:08 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-axiomatic-abp -v -j1':
+
+    38,094,787,533      instructions:u            #    1.19  insns per cycle        
+    32,143,652,335      cycles:u                 
+
+      11.230628350 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 15:09:54 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-lambek -v -j1':
+
+    34,140,131,366      instructions:u            #    1.22  insns per cycle        
+    28,067,629,243      cycles:u                 
+
+      10.478139704 seconds time elapsed
+

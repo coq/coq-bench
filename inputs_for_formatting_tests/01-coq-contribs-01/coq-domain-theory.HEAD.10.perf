@@ -1,0 +1,10 @@
+# started on Sun Jan 15 04:24:38 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-domain-theory -v -j1':
+
+    31,902,672,595      instructions:u            #    1.22  insns per cycle        
+    26,190,128,668      cycles:u                 
+
+       9.387227077 seconds time elapsed
+

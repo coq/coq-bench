@@ -1,0 +1,10 @@
+# started on Mon Jan 16 04:14:41 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-three-gap -v -j1':
+
+    41,759,746,169      instructions:u            #    1.14  insns per cycle        
+    36,658,833,169      cycles:u                 
+
+      12.909467589 seconds time elapsed
+

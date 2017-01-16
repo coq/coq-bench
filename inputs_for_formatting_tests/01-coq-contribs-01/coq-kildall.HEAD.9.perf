@@ -1,0 +1,10 @@
+# started on Sun Jan 15 14:50:45 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-kildall -v -j1':
+
+   142,428,340,174      instructions:u            #    1.13  insns per cycle        
+   126,122,245,837      cycles:u                 
+
+      42.781224192 seconds time elapsed
+

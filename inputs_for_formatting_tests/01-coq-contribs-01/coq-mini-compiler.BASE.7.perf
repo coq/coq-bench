@@ -1,0 +1,10 @@
+# started on Sun Jan 15 16:47:58 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-mini-compiler -v -j1':
+
+    25,897,133,051      instructions:u            #    1.29  insns per cycle        
+    20,040,094,663      cycles:u                 
+
+       7.488204037 seconds time elapsed
+

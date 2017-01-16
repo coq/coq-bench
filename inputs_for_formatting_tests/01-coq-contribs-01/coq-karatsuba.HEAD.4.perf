@@ -1,0 +1,10 @@
+# started on Sun Jan 15 14:38:05 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-karatsuba -v -j1':
+
+    49,696,168,229      instructions:u            #    1.27  insns per cycle        
+    39,217,473,742      cycles:u                 
+
+      14.131017316 seconds time elapsed
+

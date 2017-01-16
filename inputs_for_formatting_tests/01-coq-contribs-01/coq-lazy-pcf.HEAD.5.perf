@@ -1,0 +1,10 @@
+# started on Sun Jan 15 15:14:27 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-lazy-pcf -v -j1':
+
+    31,728,871,768      instructions:u            #    1.25  insns per cycle        
+    25,297,152,616      cycles:u                 
+
+       9.571104209 seconds time elapsed
+

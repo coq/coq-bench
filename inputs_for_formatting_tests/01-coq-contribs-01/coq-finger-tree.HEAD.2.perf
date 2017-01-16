@@ -1,0 +1,10 @@
+# started on Sun Jan 15 06:57:40 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-finger-tree -v -j1':
+
+   270,139,350,058      instructions:u            #    0.99  insns per cycle        
+   272,845,772,606      cycles:u                 
+
+      77.796391187 seconds time elapsed
+

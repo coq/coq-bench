@@ -1,0 +1,10 @@
+# started on Sun Jan 15 06:03:52 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-euler-formula -v -j1':
+
+    57,001,190,796      instructions:u            #    1.07  insns per cycle        
+    53,408,979,995      cycles:u                 
+
+      16.380864498 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 08:08:44 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-founify -v -j1':
+
+    33,477,262,409      instructions:u            #    1.21  insns per cycle        
+    27,732,869,733      cycles:u                 
+
+      10.462932882 seconds time elapsed
+

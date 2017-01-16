@@ -1,0 +1,10 @@
+# started on Sun Jan 15 04:16:15 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-distributed-reference-counting -v -j1':
+
+   149,237,635,402      instructions:u            #    1.06  insns per cycle        
+   140,613,197,832      cycles:u                 
+
+      52.119596889 seconds time elapsed
+

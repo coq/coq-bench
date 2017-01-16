@@ -1,0 +1,10 @@
+# started on Sun Jan 15 03:53:54 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-descente-infinie -v -j1':
+
+    25,434,672,477      instructions:u            #    1.30  insns per cycle        
+    19,587,192,195      cycles:u                 
+
+       7.025481583 seconds time elapsed
+

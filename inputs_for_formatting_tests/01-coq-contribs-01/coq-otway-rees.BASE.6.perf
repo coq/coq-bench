@@ -1,0 +1,10 @@
+# started on Sun Jan 15 17:38:19 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-otway-rees -v -j1':
+
+    35,952,270,764      instructions:u            #    1.27  insns per cycle        
+    28,411,162,287      cycles:u                 
+
+      10.951652244 seconds time elapsed
+

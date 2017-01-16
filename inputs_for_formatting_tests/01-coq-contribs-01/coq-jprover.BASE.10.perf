@@ -1,0 +1,10 @@
+# started on Sun Jan 15 14:36:32 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-jprover -v -j1':
+
+    29,963,061,026      instructions:u            #    1.31  insns per cycle        
+    22,830,778,740      cycles:u                 
+
+       9.177410743 seconds time elapsed
+

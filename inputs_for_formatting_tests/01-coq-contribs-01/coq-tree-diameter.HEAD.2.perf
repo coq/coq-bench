@@ -1,0 +1,10 @@
+# started on Mon Jan 16 04:39:54 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-tree-diameter -v -j1':
+
+    33,089,233,315      instructions:u            #    1.19  insns per cycle        
+    27,772,404,509      cycles:u                 
+
+      11.282503528 seconds time elapsed
+

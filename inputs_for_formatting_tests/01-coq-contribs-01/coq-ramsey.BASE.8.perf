@@ -1,0 +1,10 @@
+# started on Mon Jan 16 00:38:22 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-ramsey -v -j1':
+
+    24,685,731,074      instructions:u            #    1.31  insns per cycle        
+    18,865,485,026      cycles:u                 
+
+       6.795873093 seconds time elapsed
+

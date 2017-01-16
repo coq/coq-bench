@@ -1,0 +1,10 @@
+# started on Mon Jan 16 01:25:07 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-relation-extraction -v -j1':
+
+    27,686,230,458      instructions:u            #    1.31  insns per cycle        
+    21,115,346,663      cycles:u                 
+
+       8.194838374 seconds time elapsed
+

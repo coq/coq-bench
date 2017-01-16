@@ -1,0 +1,10 @@
+# started on Mon Jan 16 01:05:48 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-recursive-definition -v -j1':
+
+    38,639,964,697      instructions:u            #    1.23  insns per cycle        
+    31,380,383,787      cycles:u                 
+
+      11.729434371 seconds time elapsed
+

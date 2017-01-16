@@ -1,0 +1,10 @@
+# started on Mon Jan 16 00:33:29 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-railroad-crossing -v -j1':
+
+    31,218,093,663      instructions:u            #    1.22  insns per cycle        
+    25,489,242,912      cycles:u                 
+
+       8.909267698 seconds time elapsed
+

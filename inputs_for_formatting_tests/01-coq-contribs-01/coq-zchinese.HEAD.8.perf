@@ -1,0 +1,10 @@
+# started on Mon Jan 16 04:52:29 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-zchinese -v -j1':
+
+    30,194,893,869      instructions:u            #    1.25  insns per cycle        
+    24,189,494,325      cycles:u                 
+
+       9.246628070 seconds time elapsed
+

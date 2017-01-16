@@ -376,7 +376,7 @@ BASE = %s
 
    (* marelle1 *)
 
-      (* ./bench.sh /tmp/a ~/git/coq/v8.6 v8.6:HEAD:d0afde58b3320b65fc755cca5600af3b1bc9fa82 10 coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees *)
+      (* ./bench.sh ~/tmp/a ~/git/coq/v8.6 v8.6:HEAD:d0afde58b3320b65fc755cca5600af3b1bc9fa82 10 coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees *)
 
      ./bench.ml inputs_for_formatting_tests/01-coq-contribs-00 10 6424a49842ed9982c7edd1b847d88d66508f072b d0afde58b3320b65fc755cca5600af3b1bc9fa82 0 package_name coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees
 
@@ -698,4 +698,325 @@ BASE = %s
       │                  coq-zsearch-trees │   7.10   6.85  +3.65 % │   24804446144   24090373677  +2.96 % │   30064571979   29602594451  +1.56 % │
       └────────────────────────────────────┴────────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┘
 
+      (* ./bench.sh ~/tmp/b ~/git/coq/v8.6 v8.6:HEAD:d0afde58b3320b65fc755cca5600af3b1bc9fa82 10 coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees *)
+
+     ./bench.ml inputs_for_formatting_tests/01-coq-contribs-01 10 6424a49842ed9982c7edd1b847d88d66508f072b d0afde58b3320b65fc755cca5600af3b1bc9fa82 0 package_name coq-aac-tactics coq-abp coq-additions coq-ails coq-algebra coq-amm11262 coq-angles coq-area-method coq-atbr coq-automata coq-axiomatic-abp coq-bdds coq-bertrand coq-buchberger coq-canon-bdds coq-cantor coq-cats-in-zfc coq-ccs coq-cfgv coq-checker coq-chinese coq-circuits coq-classical-realizability coq-coalgebras coq-coinductive-examples coq-coinductive-reals coq-concat coq-constructive-geometry coq-containers coq-continuations coq-coq-in-coq coq-coqoban coq-counting coq-cours-de-coq coq-ctltctl coq-dblib coq-demos coq-dep-map coq-descente-infinie coq-dictionaries coq-distributed-reference-counting coq-domain-theory coq-ergo coq-euclidean-geometry coq-euler-formula coq-exact-real-arithmetic coq-exceptions coq-fairisle coq-fermat4 coq-finger-tree coq-firing-squad coq-float coq-founify coq-free-groups coq-fsets coq-fssec-model coq-functions-in-zfc coq-fundamental-arithmetics coq-gc coq-generic-environments coq-goedel coq-graph-basics coq-graphs coq-group-theory coq-groups coq-hardware coq-hedges coq-higman-cf coq-higman-nw coq-higman-s coq-historical-examples coq-hoare-tut coq-huffman coq-icharate coq-idxassoc coq-ieee754 coq-int-map coq-ipc coq-izf coq-jordan-curve-theorem coq-jprover coq-karatsuba coq-kildall coq-lambda coq-lambek coq-lazy-pcf coq-lc coq-lesniewski-mereology coq-lin-alg coq-ltl coq-maple-mode coq-markov coq-maths coq-matrices coq-mini-compiler coq-minic coq-miniml coq-mod-red coq-multiplier coq-mutual-exclusion coq-nfix coq-orb-stab coq-otway-rees coq-paco coq-paradoxes coq-param-pi coq-pautomata coq-persistent-union-find coq-pi-calc coq-pocklington coq-presburger coq-prfx coq-projective-geometry coq-propcalc coq-pts coq-ptsatr coq-ptsf coq-qarith coq-qarith-stern-brocot coq-quicksort-complexity coq-railroad-crossing coq-ramsey coq-random coq-rational coq-recursive-definition coq-reflexive-first-order coq-regexp coq-relation-extraction coq-rem coq-rsa coq-ruler-compass-geometry coq-schroeder coq-search-trees coq-semantics coq-shuffle coq-smc coq-square-matrices coq-stalmarck coq-streams coq-string coq-subst coq-sudoku coq-sum-of-two-square coq-tait coq-tarski-geometry coq-three-gap coq-topology coq-tortoise-hare-algorithm coq-traversable-fincontainer coq-tree-diameter coq-weak-up-to coq-zchinese coq-zf coq-zfc coq-zorns-lemma coq-zsearch-trees
+
+     ┌────────────────────────────────────┬────────────────────────┬──────────────────────────────────────┬──────────────────────────────────────┐
+     │                                    │     user time [s]      │              CPU cycles              │           CPU instructions           │
+     │                                    │                        │                                      │                                      │
+     │                       package_name │   HEAD   BASE  PDIFF   │          HEAD          BASE  PDIFF   │          HEAD          BASE  PDIFF   │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                    coq-aac-tactics │  11.42  11.44  -0.17 % │   40553353953   40260980059  +0.73 % │   45398542920   45353600375  +0.10 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-abp │   7.67   7.67  +0.00 % │   27284346406   27265874564  +0.07 % │   33294014183   33288977178  +0.02 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-additions │  11.94  11.87  +0.59 % │   42436806051   42910723435  -1.10 % │   50353841055   50739697578  -0.76 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-ails │  20.66  19.92  +3.71 % │   74032530547   70906866360  +4.41 % │   83656700409   78858221836  +6.08 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-algebra │  22.46  23.26  -3.44 % │   81518128951   84636679435  -3.68 % │   94743276293   99010838506  -4.31 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-amm11262 │  10.42  10.41  +0.10 % │   36973553214   36913594356  +0.16 % │   42938734308   42977363386  -0.09 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-angles │   9.18   9.27  -0.97 % │   33237006713   32887169790  +1.06 % │   37635503106   37484412037  +0.40 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                    coq-area-method │ 517.52 489.68  +5.69 % │ 1948175604007 1842151018461  +5.76 % │ 2059413004786 1970132643754  +4.53 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-atbr │ 246.94 241.94  +2.07 % │  922400022048  905287652716  +1.89 % │  867635802837  858601276257  +1.05 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-automata │   8.78   8.98  -2.23 % │   31486469921   31622531842  -0.43 % │   36918947418   37043665375  -0.34 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                  coq-axiomatic-abp │   8.96   8.99  -0.33 % │   32105473989   32183874007  -0.24 % │   38066296190   38004256144  +0.16 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-bdds │  25.87  26.06  -0.73 % │   92692790535   93649495727  -1.02 % │  104995370154  105579792651  -0.55 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-bertrand │  29.46  29.27  +0.65 % │  108851389461  107382328621  +1.37 % │  120988667297  119019325559  +1.65 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-buchberger │  29.56  29.22  +1.16 % │  106458652180  105627185026  +0.79 % │  116621418781  115654229903  +0.84 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-canon-bdds │  10.44  10.40  +0.38 % │   36204966992   36448648455  -0.67 % │   42071300966   42228038802  -0.37 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-cantor │  23.47  23.56  -0.38 % │   86241938778   85840260175  +0.47 % │   93445243422   93664281137  -0.23 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                    coq-cats-in-zfc │  91.25  91.50  -0.27 % │  340056547199  341011242353  -0.28 % │  390361150428  388822508835  +0.40 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-ccs │   5.47   5.50  -0.55 % │   19181693871   19169718263  +0.06 % │   24927367982   24936258304  -0.04 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-cfgv │ 111.94 111.53  +0.37 % │  418889303845  417231439879  +0.40 % │  439919406599  440585053139  -0.15 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-checker │   5.32   5.33  -0.19 % │   18560342949   18554709557  +0.03 % │   24420016745   24438479530  -0.08 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-chinese │   8.70   8.78  -0.91 % │   30303581001   30544224472  -0.79 % │   37071341904   37247913184  -0.47 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-circuits │   8.40   8.34  +0.72 % │   29813166637   30023124599  -0.70 % │   36362347140   36511263954  -0.41 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │        coq-classical-realizability │  73.35  74.15  -1.08 % │  272833732390  276372525610  -1.28 % │  332662311920  339248535617  -1.94 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-coalgebras │  10.42  10.38  +0.39 % │   36861180316   36889092379  -0.08 % │   44936939880   45001450925  -0.14 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │           coq-coinductive-examples │   5.50   5.59  -1.61 % │   19525757913   19541168631  -0.08 % │   25419368515   25451305036  -0.13 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │              coq-coinductive-reals │  94.16  89.87  +4.77 % │  350471528924  334935061274  +4.64 % │  377364560854  362692150454  +4.05 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-concat │  12.44  12.35  +0.73 % │   45269148975   45690102022  -0.92 % │   53564807104   53884145768  -0.59 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │          coq-constructive-geometry │   5.81   5.78  +0.52 % │   20514377303   20414995635  +0.49 % │   26087105155   26114313610  -0.10 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-containers │ 159.39 159.13  +0.16 % │  596777030813  595157908120  +0.27 % │  588032402971  594773546391  -1.13 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                  coq-continuations │   9.02   9.08  -0.66 % │   32164571501   32321848275  -0.49 % │   38569295381   38731880881  -0.42 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-coq-in-coq │  17.76  17.65  +0.62 % │   64171481067   63304178647  +1.37 % │   68753564671   68190898870  +0.83 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-coqoban │   6.51   6.58  -1.06 % │   22604472844   22668880240  -0.28 % │   29043358333   29055936962  -0.04 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-counting │   5.60   5.59  +0.18 % │   19204313408   19216621138  -0.06 % │   25112335526   25128555013  -0.06 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                   coq-cours-de-coq │   6.72   6.72  +0.00 % │   23641491387   23752814949  -0.47 % │   30030363097   30110713734  -0.27 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-ctltctl │   6.41   6.46  -0.77 % │   22635147914   22659894501  -0.11 % │   28739830619   28804454472  -0.22 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                          coq-dblib │  15.54  15.37  +1.11 % │   56868555187   55902796493  +1.73 % │   63205624799   62421301700  +1.26 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                          coq-demos │   6.67   6.84  -2.49 % │   23785456370   23816567181  -0.13 % │   30347764872   30352304038  -0.01 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-dep-map │  10.76  10.84  -0.74 % │   38476796327   38866376779  -1.00 % │   44097797665   44474067312  -0.85 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │               coq-descente-infinie │   5.67   5.55  +2.16 % │   19559249011   19586442527  -0.14 % │   25429509837   25438565462  -0.04 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                   coq-dictionaries │   7.06   6.79  +3.98 % │   24694888068   24035630567  +2.74 % │   30132337806   29673020885  +1.55 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │ coq-distributed-reference-counting │  38.81  39.62  -2.04 % │  138877339491  140520507631  -1.17 % │  148403001733  149226672954  -0.55 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                  coq-domain-theory │   7.25   7.34  -1.23 % │   26020604880   26003018383  +0.07 % │   31892036865   31911718457  -0.06 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-ergo │ 198.55 196.24  +1.18 % │  741857398666  732883535605  +1.22 % │  802637688628  793762577264  +1.12 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │             coq-euclidean-geometry │  42.18  40.46  +4.25 % │  151645454803  147101610215  +3.09 % │  165728510724  158211471106  +4.75 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                  coq-euler-formula │  14.57  14.64  -0.48 % │   53216722709   52894050877  +0.61 % │   57001190796   56685211253  +0.56 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │          coq-exact-real-arithmetic │  21.37  21.31  +0.28 % │   76222536021   76478870111  -0.34 % │   83484947005   83793152156  -0.37 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-exceptions │   5.56   5.62  -1.07 % │   19389522839   19319344058  +0.36 % │   25214161059   25238779483  -0.10 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-fairisle │  45.97  46.23  -0.56 % │  168445678192  168675018843  -0.14 % │  206183944579  206601077948  -0.20 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-fermat4 │  15.66  15.32  +2.22 % │   57009598448   55929722183  +1.93 % │   63151048740   62033989674  +1.80 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                    coq-finger-tree │  73.00 130.80 -44.19 % │  271787227650  490992517820 -44.65 % │  270121927331  469199252028 -42.43 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                   coq-firing-squad │  12.43  12.43  +0.00 % │   43638942807   43655630992  -0.04 % │   49436747218   49417874055  +0.04 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                          coq-float │  50.55  50.06  +0.98 % │  186265226306  183450315471  +1.53 % │  178538855156  176138402550  +1.36 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-founify │   7.84   7.91  -0.88 % │   27539321636   27614265791  -0.27 % │   33400881463   33477262409  -0.23 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                    coq-free-groups │   5.52   5.52  +0.00 % │   19309379705   19337305959  -0.14 % │   25048530645   25062664250  -0.06 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                          coq-fsets │ 136.76 130.60  +4.72 % │  512461564556  488149307954  +4.98 % │  518322807462  495977243466  +4.51 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                    coq-fssec-model │  22.51  22.16  +1.58 % │   82267181958   80010524041  +2.82 % │   92301207502   90222318592  +2.30 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │               coq-functions-in-zfc │   5.98   6.05  -1.16 % │   21083066140   21540594789  -2.12 % │   26338040318   26513478641  -0.66 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │        coq-fundamental-arithmetics │  11.02  11.14  -1.08 % │   39667417085   39628419062  +0.10 % │   45974721022   45886899092  +0.19 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                             coq-gc │ 138.88 108.69 +27.78 % │  520273290018  405199004446 +28.40 % │  465459883511  373350043813 +24.67 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │           coq-generic-environments │   7.28   7.32  -0.55 % │   25745176956   25904301962  -0.61 % │   30806665786   30850017928  -0.14 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-goedel │  77.24  81.67  -5.42 % │  284600017244  300992354734  -5.45 % │  339071383254  366471148496  -7.48 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                   coq-graph-basics │  10.02  10.14  -1.18 % │   35399842088   35705587337  -0.86 % │   41879582574   42078212771  -0.47 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-graphs │   8.80   8.63  +1.97 % │   30823964266   30614803462  +0.68 % │   36315988214   36060926488  +0.71 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                   coq-group-theory │   7.54   7.56  -0.26 % │   26415434572   26556461860  -0.53 % │   32787710964   32916754954  -0.39 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-groups │   5.25   5.35  -1.87 % │   18522876659   18544142934  -0.11 % │   24369219350   24384099170  -0.06 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-hardware │  13.92  14.16  -1.69 % │   49295715304   49855255700  -1.12 % │   57727165313   58168065445  -0.76 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-hedges │   7.80   7.64  +2.09 % │   27227273813   27146117875  +0.30 % │   32620103740   32435749459  +0.57 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-higman-cf │   6.91   6.64  +4.07 % │   24009142947   23329061710  +2.92 % │   29248670316   28778176511  +1.63 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-higman-nw │   6.10   6.16  -0.97 % │   21327893702   21418167461  -0.42 % │   27415217813   27469538791  -0.20 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-higman-s │   7.95   7.95  +0.00 % │   28165743206   28216643589  -0.18 % │   34536591145   34607259981  -0.20 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │            coq-historical-examples │   5.79   5.78  +0.17 % │   20088755690   20175963262  -0.43 % │   25910731199   25952602929  -0.16 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-hoare-tut │   7.03   7.00  +0.43 % │   25320394537   25145971001  +0.69 % │   30634579371   30560373253  +0.24 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-huffman │  17.45  17.56  -0.63 % │   62327039754   62680893574  -0.56 % │   69588551219   69811811303  -0.32 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-icharate │  23.63  24.00  -1.54 % │   85963633474   86410800473  -0.52 % │   98309629109   98679638486  -0.37 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-idxassoc │   5.85   5.77  +1.39 % │   20280704547   20295965172  -0.08 % │   26128662304   26152671390  -0.09 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-ieee754 │   7.26   7.38  -1.63 % │   25925428716   26187271820  -1.00 % │   32487024931   32616518262  -0.40 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-int-map │  12.08  12.27  -1.55 % │   43568359988   44025050781  -1.04 % │   49023543171   49339391259  -0.64 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-ipc │  16.24  16.30  -0.37 % │   58976400271   58766596570  +0.36 % │   65319157929   65243967052  +0.12 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-izf │   5.84   5.91  -1.18 % │   20413136708   20467344180  -0.26 % │   26229983051   26266960612  -0.14 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │           coq-jordan-curve-theorem │ 290.43 285.49  +1.73 % │ 1093944163676 1075593905864  +1.71 % │ 1134676878656 1101907370108  +2.97 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-jprover │   6.55   6.59  -0.61 % │   22668006382   22671554703  -0.02 % │   29935118909   29951663300  -0.06 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-karatsuba │  10.96  10.99  -0.27 % │   39171235287   39482226754  -0.79 % │   49690488240   49716909091  -0.05 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-kildall │  35.12  35.34  -0.62 % │  125865437968  125733971957  +0.10 % │  142181880526  141520293099  +0.47 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-lambda │   9.19   9.09  +1.10 % │   32347661225   32435945031  -0.27 % │   39270972584   39362593875  -0.23 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-lambek │   7.90   8.01  -1.37 % │   28049616433   28237378076  -0.66 % │   34127834987   34262117864  -0.39 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-lazy-pcf │   7.14   7.14  +0.00 % │   25139110140   25229527410  -0.36 % │   31717724370   31808341635  -0.28 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                             coq-lc │   7.78   7.78  +0.00 % │   27869825504   27658635488  +0.76 % │   33023519866   32847507268  +0.54 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │           coq-lesniewski-mereology │   6.27   6.38  -1.72 % │   22230698961   22242560103  -0.05 % │   27526534917   27529816357  -0.01 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-lin-alg │ 114.95 113.03  +1.70 % │  426562336634  420537015585  +1.43 % │  600138976348  598676904526  +0.24 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-ltl │   5.71   5.73  -0.35 % │   20095764502   20118043985  -0.11 % │   25958369256   25992547654  -0.13 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-maple-mode │  12.74  12.86  -0.93 % │   45184210907   45813986568  -1.37 % │   47147765145   47672370607  -1.10 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-markov │   6.62   6.58  +0.61 % │   23176189649   23123068320  +0.23 % │   28753030203   28699325109  +0.19 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                          coq-maths │   7.88   7.85  +0.38 % │   27874505746   27562340685  +1.13 % │   32911171895   32676281814  +0.72 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-matrices │   7.37   7.34  +0.41 % │   26068092988   26122258747  -0.21 % │   32083759482   32111326904  -0.09 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                  coq-mini-compiler │   5.68   5.79  -1.90 % │   20050968380   20040094663  +0.05 % │   25886349756   25896409103  -0.04 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                          coq-minic │   8.82   8.98  -1.78 % │   31721250218   32090064581  -1.15 % │   38834578029   39068929525  -0.60 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-miniml │   6.80   6.65  +2.26 % │   23850785826   23526370411  +1.38 % │   29648387021   29274155245  +1.28 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-mod-red │  21.94  21.80  +0.64 % │   81314296519   80071135828  +1.55 % │   93332072222   91958104302  +1.49 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-multiplier │   5.92   5.90  +0.34 % │   20623520749   20636566289  -0.06 % │   26450945343   26480373148  -0.11 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │               coq-mutual-exclusion │   5.82   5.71  +1.93 % │   20081489200   20133112495  -0.26 % │   25949450594   25976601222  -0.10 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-nfix │   5.78   5.79  -0.17 % │   19615597964   19639148757  -0.12 % │   25620493932   25643279070  -0.09 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-orb-stab │   6.57   6.51  +0.92 % │   22972461956   22947288011  +0.11 % │   28861852114   28891596241  -0.10 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-otway-rees │   7.99   7.98  +0.13 % │   28293786249   28409784054  -0.41 % │   35831751539   35946023580  -0.32 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-paco │  42.71  51.13 -16.47 % │  159141996685  190882840651 -16.63 % │  194607309839  262931002468 -25.99 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-paradoxes │   5.84   5.93  -1.52 % │   20494724822   20490714951  +0.02 % │   26245542730   26275382165  -0.11 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-param-pi │   7.85   7.84  +0.13 % │   27881751375   27601240184  +1.02 % │   33154327567   32934520757  +0.67 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-pautomata │  13.71  13.81  -0.72 % │   49100350440   49780687969  -1.37 % │   57129473054   57573517626  -0.77 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │          coq-persistent-union-find │  48.54  28.32 +71.40 % │  181910250904  105434919331 +72.53 % │  181500884903  116999296456 +55.13 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-pi-calc │  64.02  51.07 +25.36 % │  239891826002  190474477256 +25.94 % │  263343392091  212471905073 +23.94 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                    coq-pocklington │  10.80  10.72  +0.75 % │   37829511882   38227009230  -1.04 % │   44172495234   44420275094  -0.56 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-presburger │  26.38  25.57  +3.17 % │   95377292555   93355826562  +2.17 % │   97570132274   95796277119  +1.85 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-prfx │  13.13  13.47  -2.52 % │   47522664800   48095794196  -1.19 % │   56421142987   57033122042  -1.07 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │            coq-projective-geometry │ 614.28 582.64  +5.43 % │ 2313329888168 2194233111208  +5.43 % │ 2395949483158 2239087246632  +7.01 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-propcalc │   7.71   7.74  -0.39 % │   27216500904   27317182821  -0.37 % │   33186869543   33323706118  -0.41 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-pts │  12.97  12.92  +0.39 % │   46288351130   46047648343  +0.52 % │   51413799916   51055631924  +0.70 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-ptsatr │  34.16  33.03  +3.42 % │  125249378316  121517201437  +3.07 % │  132552470530  136167266275  -2.65 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-ptsf │  15.07  14.96  +0.74 % │   54980175654   54217045633  +1.41 % │   61453398170   61325549839  +0.21 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-qarith │   7.47   7.54  -0.93 % │   26576892558   26660750342  -0.31 % │   32384682736   32589122737  -0.63 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │            coq-qarith-stern-brocot │  76.30  90.57 -15.76 % │  282561438450  336049078896 -15.92 % │  323974988843  420894111366 -23.03 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │           coq-quicksort-complexity │  54.15  54.15  +0.00 % │  198924769749  199205017580  -0.14 % │  212113394152  213384966584  -0.60 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │              coq-railroad-crossing │   7.18   7.21  -0.42 % │   25517339988   25489242912  +0.11 % │   31233259326   31217710610  +0.05 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-ramsey │   5.38   5.44  -1.10 % │   18752510891   18772883743  -0.11 % │   24667142075   24684397046  -0.07 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-random │  31.45  30.86  +1.91 % │  116035811090  113326359898  +2.39 % │  104854537708  103448926302  +1.36 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-rational │  12.03  12.16  -1.07 % │   41257995300   41674509433  -1.00 % │   50414438266   50747048280  -0.66 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │           coq-recursive-definition │   8.90   8.93  -0.34 % │   31116339821   31367748193  -0.80 % │   38468030925   38634766255  -0.43 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │          coq-reflexive-first-order │  12.00  11.80  +1.69 % │   43141243127   42792929159  +0.81 % │   49275421917   49002856774  +0.56 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-regexp │   7.92   7.91  +0.13 % │   27729744864   27851675855  -0.44 % │   33956245230   34075850124  -0.35 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │            coq-relation-extraction │   6.26   6.21  +0.81 % │   21109918913   21115346663  -0.03 % │   27661105116   27681271904  -0.07 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-rem │   5.44   5.45  -0.18 % │   18758793500   18900021026  -0.75 % │   24646155770   24665165204  -0.08 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-rsa │   7.73   7.73  +0.00 % │   26979540769   27086459683  -0.39 % │   32597409622   32660638706  -0.19 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │         coq-ruler-compass-geometry │  29.38  28.24  +4.04 % │  107235641881  103978378611  +3.13 % │  107681430281  103838266789  +3.70 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-schroeder │   5.56   5.63  -1.24 % │   19458012485   19485550625  -0.14 % │   25409021224   25444931197  -0.14 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                   coq-search-trees │   7.06   6.97  +1.29 % │   24802006620   24772185053  +0.12 % │   31054310807   31093807642  -0.13 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-semantics │  26.70  26.57  +0.49 % │   98500599239   97046040197  +1.50 % │  105134873481  103806583433  +1.28 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-shuffle │   5.72   5.70  +0.35 % │   19973336186   20026722442  -0.27 % │   25837396683   25855402825  -0.07 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-smc │  21.86  21.85  +0.05 % │   79465052605   79512011878  -0.06 % │   85902512742   85614456277  +0.34 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                coq-square-matrices │   5.58   5.58  +0.00 % │   19381069588   19393802155  -0.07 % │   25271991617   25298724028  -0.11 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-stalmarck │  42.60  42.80  -0.47 % │  154418649113  154758607767  -0.22 % │  172745012339  172588906182  +0.09 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                        coq-streams │   5.94   5.82  +2.06 % │   20456937875   20547969708  -0.44 % │   26421213567   26460880602  -0.15 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-string │   7.25   7.10  +2.11 % │   24518556560   24661866056  -0.58 % │   30911710233   30990514998  -0.25 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                          coq-subst │  14.22  13.98  +1.72 % │   51070548165   50700601468  +0.73 % │   51968499075   51764108995  +0.39 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                         coq-sudoku │  38.89  39.36  -1.19 % │  144848432021  146331263910  -1.01 % │  202131374341  202088599716  +0.02 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │              coq-sum-of-two-square │  21.08  20.88  +0.96 % │   76789204182   76271118638  +0.68 % │   81674055876   81129544493  +0.67 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                           coq-tait │  23.47  22.36  +4.96 % │   86097293208   81604720710  +5.51 % │   91447216151   87402780634  +4.63 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                coq-tarski-geometry │  43.06  37.12 +16.00 % │  160930185136  138029529020 +16.59 % │  150052862240  131148889073 +14.41 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                      coq-three-gap │  10.19  10.32  -1.26 % │   36472235902   36515226485  -0.12 % │   41676491393   41755643788  -0.19 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-topology │  27.42  27.18  +0.88 % │   99310128532   99368894114  -0.06 % │  109460439528  109170369792  +0.27 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │        coq-tortoise-hare-algorithm │   5.70   5.66  +0.71 % │   19920874897   19933092732  -0.06 % │   25791615406   25815302966  -0.09 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │       coq-traversable-fincontainer │   7.16   7.16  +0.00 % │   25421875068   25468666307  -0.18 % │   31852583555   31880823778  -0.09 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                  coq-tree-diameter │   7.92   7.67  +3.26 % │   27667562595   27336674772  +1.21 % │   33073860810   32767937971  +0.93 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                     coq-weak-up-to │   6.86   6.86  +0.00 % │   24162171695   24155645646  +0.03 % │   29451597398   29413487715  +0.13 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                       coq-zchinese │   6.92   6.93  -0.14 % │   24181284735   24232184101  -0.21 % │   30193626907   30251927620  -0.19 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                             coq-zf │   7.78   7.74  +0.52 % │   27528575892   27608034117  -0.29 % │   33044064843   32988297098  +0.17 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                            coq-zfc │   8.13   8.10  +0.37 % │   28874006342   28861889725  +0.04 % │   33982665126   33986543923  -0.01 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                    coq-zorns-lemma │  11.30  11.52  -1.91 % │   40224217122   40544669348  -0.79 % │   46796548121   47020825364  -0.48 % │
+     ├────────────────────────────────────┼────────────────────────┼──────────────────────────────────────┼──────────────────────────────────────┤
+     │                  coq-zsearch-trees │   7.11   6.91  +2.89 % │   24910273935   24163040995  +3.09 % │   30125803569   29670472747  +1.53 % │
+     └────────────────────────────────────┴────────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┘
 *)

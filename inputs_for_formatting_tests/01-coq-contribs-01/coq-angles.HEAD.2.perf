@@ -1,0 +1,10 @@
+# started on Sat Jan 14 17:05:46 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-angles -v -j1':
+
+    37,645,091,107      instructions:u            #    1.12  insns per cycle        
+    33,608,024,382      cycles:u                 
+
+      12.342367003 seconds time elapsed
+

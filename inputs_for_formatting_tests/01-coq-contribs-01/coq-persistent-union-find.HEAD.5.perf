@@ -1,0 +1,10 @@
+# started on Sun Jan 15 18:21:51 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-persistent-union-find -v -j1':
+
+   181,545,274,257      instructions:u            #    1.00  insns per cycle        
+   181,910,250,904      cycles:u                 
+
+      50.112760067 seconds time elapsed
+

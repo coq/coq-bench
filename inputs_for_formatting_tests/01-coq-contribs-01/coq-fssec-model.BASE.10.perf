@@ -1,0 +1,10 @@
+# started on Sun Jan 15 09:14:56 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-fssec-model -v -j1':
+
+    90,223,564,030      instructions:u            #    1.12  insns per cycle        
+    80,255,102,200      cycles:u                 
+
+      28.583696327 seconds time elapsed
+

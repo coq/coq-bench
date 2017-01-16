@@ -1,0 +1,10 @@
+# started on Sun Jan 15 19:56:20 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-projective-geometry -v -j1':
+
+ 2,396,224,152,260      instructions:u            #    1.04  insns per cycle        
+ 2,314,302,735,278      cycles:u                 
+
+     626.425633875 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 18:57:49 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-pocklington -v -j1':
+
+    44,178,948,543      instructions:u            #    1.16  insns per cycle        
+    38,040,109,777      cycles:u                 
+
+      14.358181884 seconds time elapsed
+

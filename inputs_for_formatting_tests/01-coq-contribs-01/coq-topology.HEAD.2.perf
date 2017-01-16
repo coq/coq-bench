@@ -1,0 +1,10 @@
+# started on Mon Jan 16 04:16:13 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-topology -v -j1':
+
+   110,689,780,401      instructions:u            #    1.11  insns per cycle        
+    99,906,196,275      cycles:u                 
+
+      35.237995783 seconds time elapsed
+

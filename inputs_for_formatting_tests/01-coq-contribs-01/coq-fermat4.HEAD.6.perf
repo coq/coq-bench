@@ -1,0 +1,10 @@
+# started on Sun Jan 15 06:49:54 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-fermat4 -v -j1':
+
+    63,221,288,504      instructions:u            #    1.11  insns per cycle        
+    57,142,547,517      cycles:u                 
+
+      17.993904039 seconds time elapsed
+

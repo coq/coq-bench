@@ -1,0 +1,10 @@
+# started on Sun Jan 15 06:00:14 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-euclidean-geometry -v -j1':
+
+   158,229,473,461      instructions:u            #    1.07  insns per cycle        
+   147,211,120,384      cycles:u                 
+
+      51.508579561 seconds time elapsed
+

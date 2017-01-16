@@ -1,0 +1,10 @@
+# started on Sun Jan 15 18:00:22 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-paradoxes -v -j1':
+
+    26,251,514,487      instructions:u            #    1.27  insns per cycle        
+    20,660,126,614      cycles:u                 
+
+       7.621041321 seconds time elapsed
+

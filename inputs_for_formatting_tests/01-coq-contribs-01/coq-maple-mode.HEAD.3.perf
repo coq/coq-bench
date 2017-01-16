@@ -1,0 +1,10 @@
+# started on Sun Jan 15 16:20:41 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-maple-mode -v -j1':
+
+    47,150,211,335      instructions:u            #    1.04  insns per cycle        
+    45,334,624,446      cycles:u                 
+
+      16.166410149 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 18:14:39 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-pautomata -v -j1':
+
+    57,579,333,437      instructions:u            #    1.15  insns per cycle        
+    49,969,496,289      cycles:u                 
+
+      18.912332443 seconds time elapsed
+

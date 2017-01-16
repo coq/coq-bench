@@ -1,0 +1,10 @@
+# started on Mon Jan 16 02:14:19 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-shuffle -v -j1':
+
+    25,840,564,285      instructions:u            #    1.29  insns per cycle        
+    20,007,324,301      cycles:u                 
+
+       9.295627508 seconds time elapsed
+

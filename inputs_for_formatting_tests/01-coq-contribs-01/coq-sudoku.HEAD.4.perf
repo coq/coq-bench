@@ -1,0 +1,10 @@
+# started on Mon Jan 16 03:16:17 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-sudoku -v -j1':
+
+   202,162,993,175      instructions:u            #    1.39  insns per cycle        
+   145,205,245,230      cycles:u                 
+
+      42.314919735 seconds time elapsed
+

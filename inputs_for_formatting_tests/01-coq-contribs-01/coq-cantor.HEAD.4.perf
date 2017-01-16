@@ -1,0 +1,10 @@
+# started on Sat Jan 14 22:36:24 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-cantor -v -j1':
+
+    93,526,029,328      instructions:u            #    1.08  insns per cycle        
+    86,562,520,390      cycles:u                 
+
+      28.327876721 seconds time elapsed
+

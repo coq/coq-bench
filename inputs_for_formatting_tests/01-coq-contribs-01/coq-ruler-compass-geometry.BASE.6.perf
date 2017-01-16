@@ -1,0 +1,10 @@
+# started on Mon Jan 16 01:47:31 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-ruler-compass-geometry -v -j1':
+
+   103,840,831,117      instructions:u            #    1.00  insns per cycle        
+   103,978,378,611      cycles:u                 
+
+      34.778158501 seconds time elapsed
+

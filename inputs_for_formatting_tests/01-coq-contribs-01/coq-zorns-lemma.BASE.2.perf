@@ -1,0 +1,10 @@
+# started on Mon Jan 16 05:12:07 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-zorns-lemma -v -j1':
+
+    47,020,825,364      instructions:u            #    1.16  insns per cycle        
+    40,562,277,295      cycles:u                 
+
+      16.992386655 seconds time elapsed
+

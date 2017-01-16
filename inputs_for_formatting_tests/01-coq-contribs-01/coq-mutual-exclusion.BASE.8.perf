@@ -1,0 +1,10 @@
+# started on Sun Jan 15 17:20:22 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-mutual-exclusion -v -j1':
+
+    25,978,429,173      instructions:u            #    1.29  insns per cycle        
+    20,143,184,910      cycles:u                 
+
+       7.547814373 seconds time elapsed
+

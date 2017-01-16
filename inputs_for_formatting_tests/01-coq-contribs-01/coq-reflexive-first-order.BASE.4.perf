@@ -1,0 +1,10 @@
+# started on Mon Jan 16 01:12:50 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-reflexive-first-order -v -j1':
+
+    49,052,240,041      instructions:u            #    1.14  insns per cycle        
+    42,921,280,250      cycles:u                 
+
+      14.811829397 seconds time elapsed
+

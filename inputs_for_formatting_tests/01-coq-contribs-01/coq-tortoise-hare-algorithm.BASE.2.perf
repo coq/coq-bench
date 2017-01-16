@@ -1,0 +1,10 @@
+# started on Mon Jan 16 04:32:02 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-tortoise-hare-algorithm -v -j1':
+
+    25,817,041,835      instructions:u            #    1.29  insns per cycle        
+    20,049,033,710      cycles:u                 
+
+       7.814549368 seconds time elapsed
+

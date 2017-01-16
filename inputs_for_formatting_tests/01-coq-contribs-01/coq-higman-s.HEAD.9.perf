@@ -1,0 +1,10 @@
+# started on Sun Jan 15 11:42:02 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-higman-s -v -j1':
+
+    34,544,017,271      instructions:u            #    1.22  insns per cycle        
+    28,259,481,530      cycles:u                 
+
+       9.879452773 seconds time elapsed
+

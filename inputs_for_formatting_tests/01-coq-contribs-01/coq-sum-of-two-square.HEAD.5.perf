@@ -1,0 +1,10 @@
+# started on Mon Jan 16 03:32:22 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-sum-of-two-square -v -j1':
+
+    81,692,151,650      instructions:u            #    1.06  insns per cycle        
+    76,934,446,749      cycles:u                 
+
+      24.417780555 seconds time elapsed
+

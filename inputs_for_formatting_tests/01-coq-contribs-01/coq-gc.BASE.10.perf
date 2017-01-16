@@ -1,0 +1,10 @@
+# started on Sun Jan 15 10:11:33 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-gc -v -j1':
+
+   373,451,521,552      instructions:u            #    0.92  insns per cycle        
+   406,073,077,850      cycles:u                 
+
+     116.329756357 seconds time elapsed
+

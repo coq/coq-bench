@@ -1,0 +1,10 @@
+# started on Mon Jan 16 02:47:59 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-stalmarck -v -j1':
+
+   172,588,906,182      instructions:u            #    1.11  insns per cycle        
+   155,082,684,955      cycles:u                 
+
+      50.847088556 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 17:32:04 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-orb-stab -v -j1':
+
+    28,905,054,577      instructions:u            #    1.25  insns per cycle        
+    23,093,665,545      cycles:u                 
+
+       7.951406112 seconds time elapsed
+

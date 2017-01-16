@@ -1,0 +1,10 @@
+# started on Sun Jan 15 07:35:04 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-firing-squad -v -j1':
+
+    49,447,348,800      instructions:u            #    1.13  insns per cycle        
+    43,777,330,889      cycles:u                 
+
+      15.757614640 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 04:01:54 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-dictionaries -v -j1':
+
+    29,684,045,913      instructions:u            #    1.23  insns per cycle        
+    24,059,064,366      cycles:u                 
+
+       8.211121854 seconds time elapsed
+

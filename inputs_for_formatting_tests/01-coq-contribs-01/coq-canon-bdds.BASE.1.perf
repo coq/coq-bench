@@ -1,0 +1,10 @@
+# started on Sat Jan 14 22:30:58 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-canon-bdds -v -j1':
+
+    42,232,821,752      instructions:u            #    1.16  insns per cycle        
+    36,465,503,814      cycles:u                 
+
+      22.506546162 seconds time elapsed
+

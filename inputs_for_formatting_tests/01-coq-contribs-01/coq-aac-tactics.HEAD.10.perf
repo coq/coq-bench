@@ -1,0 +1,10 @@
+# started on Sat Jan 14 16:17:15 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-aac-tactics -v -j1':
+
+    45,401,756,659      instructions:u            #    1.12  insns per cycle        
+    40,670,165,297      cycles:u                 
+
+      14.605096011 seconds time elapsed
+

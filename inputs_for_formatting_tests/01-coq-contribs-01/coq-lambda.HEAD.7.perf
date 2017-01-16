@@ -1,0 +1,10 @@
+# started on Sun Jan 15 15:02:43 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-lambda -v -j1':
+
+    39,274,322,484      instructions:u            #    1.21  insns per cycle        
+    32,476,462,269      cycles:u                 
+
+      12.608827333 seconds time elapsed
+

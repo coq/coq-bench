@@ -1,0 +1,10 @@
+# started on Mon Jan 16 04:36:53 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-traversable-fincontainer -v -j1':
+
+    31,882,895,512      instructions:u            #    1.25  insns per cycle        
+    25,493,193,128      cycles:u                 
+
+       8.525919933 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 01:53:53 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-constructive-geometry -v -j1':
+
+    26,116,346,303      instructions:u            #    1.28  insns per cycle        
+    20,451,408,866      cycles:u                 
+
+       9.904884281 seconds time elapsed
+

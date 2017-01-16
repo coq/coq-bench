@@ -1,0 +1,10 @@
+# started on Sun Jan 15 19:07:02 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-presburger -v -j1':
+
+    97,570,132,274      instructions:u            #    1.02  insns per cycle        
+    95,503,777,707      cycles:u                 
+
+      31.046944066 seconds time elapsed
+

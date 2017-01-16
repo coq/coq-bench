@@ -1,0 +1,10 @@
+# started on Sun Jan 15 13:46:44 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-jordan-curve-theorem -v -j1':
+
+ 1,102,012,038,583      instructions:u            #    1.02  insns per cycle        
+ 1,079,093,068,574      cycles:u                 
+
+     290.337046603 seconds time elapsed
+

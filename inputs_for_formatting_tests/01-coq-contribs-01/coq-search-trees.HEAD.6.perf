@@ -1,0 +1,10 @@
+# started on Mon Jan 16 01:57:13 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-search-trees -v -j1':
+
+    31,054,310,807      instructions:u            #    1.25  insns per cycle        
+    24,871,109,757      cycles:u                 
+
+       9.615033465 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 06:33:01 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-fairisle -v -j1':
+
+   206,184,929,107      instructions:u            #    1.22  insns per cycle        
+   168,473,834,470      cycles:u                 
+
+      55.715533039 seconds time elapsed
+

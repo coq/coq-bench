@@ -1,0 +1,10 @@
+# started on Sun Jan 15 15:29:30 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-lesniewski-mereology -v -j1':
+
+    27,533,848,093      instructions:u            #    1.24  insns per cycle        
+    22,278,442,558      cycles:u                 
+
+       8.029433691 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Sun Jan 15 17:05:55 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-mod-red -v -j1':
+
+    91,987,185,877      instructions:u            #    1.15  insns per cycle        
+    80,071,135,828      cycles:u                 
+
+      28.167148617 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Mon Jan 16 01:16:48 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/opam_install.sh coq-regexp -v -j1':
+
+    33,960,521,621      instructions:u            #    1.22  insns per cycle        
+    27,818,296,606      cycles:u                 
+
+      10.264813531 seconds time elapsed
+
