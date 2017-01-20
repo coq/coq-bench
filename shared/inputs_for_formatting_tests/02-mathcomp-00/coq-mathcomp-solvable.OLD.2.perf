@@ -1,0 +1,10 @@
+# started on Sat Jan 21 15:14:42 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/shared/opam_install.sh coq-mathcomp-solvable -v -j1':
+
+ 1,070,369,090,436      instructions:u            #    1.05  insns per cycle        
+ 1,018,239,562,468      cycles:u                 
+
+     281.722459787 seconds time elapsed
+

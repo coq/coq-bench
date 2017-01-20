@@ -1,0 +1,10 @@
+# started on Sat Jan 21 10:05:24 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/shared/opam_install.sh coq-mathcomp-ssreflect -v -j1':
+
+   156,982,644,728      instructions:u            #    0.99  insns per cycle        
+   158,101,695,384      cycles:u                 
+
+      53.601803515 seconds time elapsed
+

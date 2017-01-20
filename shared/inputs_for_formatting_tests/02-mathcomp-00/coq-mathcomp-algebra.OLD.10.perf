@@ -1,0 +1,10 @@
+# started on Fri Jan 20 14:53:41 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/two_versions/opam_install.sh coq-mathcomp-algebra -v -j1':
+
+   929,253,059,628      instructions:u            #    1.01  insns per cycle        
+   920,234,471,105      cycles:u                 
+
+     254.574658863 seconds time elapsed
+

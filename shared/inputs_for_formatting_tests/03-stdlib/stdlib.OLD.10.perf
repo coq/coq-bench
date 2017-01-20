@@ -1,0 +1,10 @@
+# started on Sat Jan 21 18:18:57 2017
+
+
+ Performance counter stats for 'make theories -j1':
+
+ 1,615,010,725,676      instructions:u            #    1.01  insns per cycle        
+ 1,591,829,339,531      cycles:u                 
+
+     520.409702126 seconds time elapsed
+

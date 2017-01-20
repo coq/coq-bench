@@ -1,0 +1,10 @@
+# started on Sat Jan 21 14:11:34 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/shared/opam_install.sh coq-mathcomp-field -v -j1':
+
+ 2,296,259,553,430      instructions:u            #    1.21  insns per cycle        
+ 1,891,398,855,974      cycles:u                 
+
+     512.491636647 seconds time elapsed
+

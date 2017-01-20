@@ -1,0 +1,10 @@
+# started on Fri Jan 20 16:35:53 2017
+
+
+ Performance counter stats for '/home/me/git/coq-bench/two_versions/opam_install.sh coq-mathcomp-character -v -j1':
+
+ 1,455,583,554,494      instructions:u            #    1.01  insns per cycle        
+ 1,447,870,804,765      cycles:u                 
+
+     392.167364660 seconds time elapsed
+
