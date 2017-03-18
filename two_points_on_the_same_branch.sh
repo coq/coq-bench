@@ -362,7 +362,7 @@ cd "$coq_dir"
 git checkout $head
 head_long=$(git log --pretty=%H | head -n 1)
 echo DEBUG git commit for HEAD = $head_long
-$program_path/shared/opam_install.sh coq.$coq_opam_version -v -j$number_of_processors
+$program_path/shared/opam_install.sh coq.$coq_opam_version -v -b -j$number_of_processors
 if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
@@ -385,7 +385,7 @@ cd "$coq_dir"
 git checkout $base
 base_long=$(git log --pretty=%H | head -n 1)
 echo DEBUG git commit for BASE = $base_long
-$program_path/shared/opam_install.sh coq.$coq_opam_version -v -j$number_of_processors
+$program_path/shared/opam_install.sh coq.$coq_opam_version -v -b -j$number_of_processors
 if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
@@ -402,14 +402,15 @@ export OPAMROOT="$working_dir/.opam"
 
 for coq_opam_package in $coq_opam_packages; do
     echo DEBUG: coq_opam_package = $coq_opam_package
+
     # perform measurements for the HEAD of the branch (provided by the user)
     rm -r -f "$OPAMROOT"
     cp -r "$OPAMROOT.NEW" "$OPAMROOT"
-    $program_path/shared/opam_install.sh $coq_opam_package -v -j$number_of_processors --deps-only -y
+    $program_path/shared/opam_install.sh $coq_opam_package -v -b -j$number_of_processors --deps-only -y
     for iteration in $(seq $num_of_iterations); do
         /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
-            $program_path/shared/opam_install.sh $coq_opam_package -v -j1
+            $program_path/shared/opam_install.sh $coq_opam_package -v -b -j1
         opam uninstall $coq_opam_package -v
     done
 
