@@ -356,12 +356,16 @@ opam init --no-setup
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
 opam repo add coq-released https://coq.inria.fr/opam/released
+opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
 git checkout $head
 head_long=$(git log --pretty=%H | head -n 1)
 echo DEBUG git commit for HEAD = $head_long
 $program_path/shared/opam_install.sh coq.$coq_opam_version -v -j$number_of_processors
+if [ ! $coq_opam_version = dev ]; then
+  opam pin add coq $coq_opam_version
+fi
 
 mv "$OPAMROOT" "$OPAMROOT.NEW"
 
@@ -375,12 +379,16 @@ opam init --no-setup
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
 opam repo add coq-released https://coq.inria.fr/opam/released
+opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
 git checkout $base
 base_long=$(git log --pretty=%H | head -n 1)
 echo DEBUG git commit for BASE = $base_long
 $program_path/shared/opam_install.sh coq.$coq_opam_version -v -j$number_of_processors
+if [ ! $coq_opam_version = dev ]; then
+  opam pin add coq $coq_opam_version
+fi
 
 mv "$OPAMROOT" "$OPAMROOT.OLD"
 
