@@ -160,6 +160,7 @@ case $# in
         ;;
 esac
 
+echo DEBUG: ocaml -version = `ocaml -version`
 echo DEBUG: working_dir = $working_dir
 echo DEBUG: coq_repository = $coq_repository
 echo DEBUG: coq_branch = $coq_branch
