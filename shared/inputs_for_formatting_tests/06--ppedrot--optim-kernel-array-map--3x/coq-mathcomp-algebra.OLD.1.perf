@@ -1,0 +1,10 @@
+# started on Thu Mar 23 00:30:29 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-mathcomp-algebra -v -j1':
+
+   682,731,825,921      instructions:u            #    1.43  insns per cycle        
+   477,134,173,012      cycles:u                 
+
+     184.698401387 seconds time elapsed
+

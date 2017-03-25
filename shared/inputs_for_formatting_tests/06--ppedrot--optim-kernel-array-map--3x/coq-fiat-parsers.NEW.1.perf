@@ -1,0 +1,10 @@
+# started on Thu Mar 23 15:52:20 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-fiat-parsers -v -b -j1':
+
+ 2,001,859,614,789      instructions:u            #    1.42  insns per cycle        
+ 1,406,428,684,901      cycles:u                 
+
+     591.757455205 seconds time elapsed
+

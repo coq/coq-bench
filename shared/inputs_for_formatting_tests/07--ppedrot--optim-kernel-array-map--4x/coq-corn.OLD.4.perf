@@ -1,0 +1,10 @@
+# started on Fri Mar 24 09:23:19 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-corn -v -j1':
+
+ 6,850,050,333,885      instructions:u            #    1.60  insns per cycle        
+ 4,287,458,794,140      cycles:u                 
+
+    1629.026772930 seconds time elapsed
+

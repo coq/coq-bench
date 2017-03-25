@@ -1,0 +1,10 @@
+# started on Thu Mar 23 03:51:15 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-unimath -v -b -j1':
+
+ 5,605,376,104,717      instructions:u            #    1.67  insns per cycle        
+ 3,354,371,804,554      cycles:u                 
+
+    1255.904102922 seconds time elapsed
+

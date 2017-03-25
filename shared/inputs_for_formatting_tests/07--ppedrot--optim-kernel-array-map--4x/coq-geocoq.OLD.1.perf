@@ -1,0 +1,10 @@
+# started on Fri Mar 24 14:05:19 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-geocoq -v -j1':
+
+11,379,942,274,325      instructions:u            #    1.71  insns per cycle        
+ 6,661,984,282,044      cycles:u                 
+
+    2427.998898596 seconds time elapsed
+

@@ -1,0 +1,10 @@
+# started on Wed Mar 22 10:33:46 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-mathcomp-fingroup -v -j1':
+
+   225,441,075,129      instructions:u            #    1.41  insns per cycle        
+   160,029,202,517      cycles:u                 
+
+      67.904027462 seconds time elapsed
+

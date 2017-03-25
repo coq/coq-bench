@@ -1,0 +1,10 @@
+# started on Tue Mar 21 22:07:54 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-compcert -v -j1':
+
+ 3,498,203,537,882      instructions:u            #    1.50  insns per cycle        
+ 2,331,556,780,029      cycles:u                 
+
+     906.146684249 seconds time elapsed
+

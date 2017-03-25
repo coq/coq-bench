@@ -1,0 +1,10 @@
+# started on Wed Mar 22 18:19:08 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-coquelicot -v -j1':
+
+   244,767,644,978      instructions:u            #    1.26  insns per cycle        
+   194,185,783,775      cycles:u                 
+
+      76.498224671 seconds time elapsed
+

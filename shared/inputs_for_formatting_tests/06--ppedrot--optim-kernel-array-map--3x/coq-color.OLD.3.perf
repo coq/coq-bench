@@ -1,0 +1,10 @@
+# started on Thu Mar 23 21:50:10 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-color -v -j1':
+
+ 2,290,524,686,550      instructions:u            #    1.30  insns per cycle        
+ 1,755,561,785,786      cycles:u                 
+
+     679.131524983 seconds time elapsed
+

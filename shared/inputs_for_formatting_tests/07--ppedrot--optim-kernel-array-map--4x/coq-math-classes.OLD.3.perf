@@ -1,0 +1,10 @@
+# started on Fri Mar 24 06:01:54 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-math-classes -v -j1':
+
+   862,688,699,021      instructions:u            #    1.41  insns per cycle        
+   610,688,982,875      cycles:u                 
+
+     249.001781169 seconds time elapsed
+

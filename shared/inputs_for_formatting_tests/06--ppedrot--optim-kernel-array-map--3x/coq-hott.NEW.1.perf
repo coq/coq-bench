@@ -1,0 +1,10 @@
+# started on Thu Mar 23 09:40:37 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-hott -v -b -j1':
+
+ 1,039,785,809,125      instructions:u            #    1.67  insns per cycle        
+   622,779,231,454      cycles:u                 
+
+     285.766176977 seconds time elapsed
+

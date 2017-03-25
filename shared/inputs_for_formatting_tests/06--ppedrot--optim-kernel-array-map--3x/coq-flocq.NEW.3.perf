@@ -1,0 +1,10 @@
+# started on Thu Mar 23 14:07:07 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-flocq -v -b -j1':
+
+   182,833,256,686      instructions:u            #    1.28  insns per cycle        
+   143,309,832,828      cycles:u                 
+
+      58.515446903 seconds time elapsed
+

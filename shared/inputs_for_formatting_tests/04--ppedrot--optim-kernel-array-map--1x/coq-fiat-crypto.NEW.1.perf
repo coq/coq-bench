@@ -1,0 +1,10 @@
+# started on Tue Mar 21 22:43:50 2017
+
+
+ Performance counter stats for '/home/jenkins/git/coq-bench/shared/opam_install.sh coq-fiat-crypto -v -b -j1':
+
+13,008,099,815,235      instructions:u            #    1.66  insns per cycle        
+ 7,832,947,451,714      cycles:u                 
+
+    2893.461128685 seconds time elapsed
+
