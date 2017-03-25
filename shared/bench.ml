@@ -7,6 +7,10 @@
    - swap the order of "instructions" and "cpu cycles"
      (the order in which we store them into the file)
      (the order in which we represent them in the memory)
+   - Give this script a better name.
+     (maybe: "render_results.ml")
+     Update ../two_{versions,points_on_the_same_branch}.sh
+     Check if Jenkins jobs are still working after this update.
 *)
 
 (* ASSUMPTIONS:

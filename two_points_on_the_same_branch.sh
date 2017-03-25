@@ -13,38 +13,67 @@
 #   (or, at least, their version matches)
 
 # TODO
+# - flatten this TODO list (include sub-TODO list referenced in this TODO list)
+# - Simplify the Jenkins jobs:
+#   - https://ci.inria.fr/coq/view/coq-contribs/job/coq-contribs/
+#   - https://ci.inria.fr/coq/view/opam/job/opam-install/
+#   - https://ci.inria.fr/coq/view/benchmarking/job/benchmark-the-whole-branch/
+#   - https://ci.inria.fr/coq/view/benchmarking/job/benchmark-part-of-the-branch/
+#   Instead of requiring to specify two pieces of clumsy data:
+#   - the git repository
+#   - the name of the branch
+#   require just one string that identifies github repo and the branch and can be copy&pasted from the github's pull request:
+#   e.g.:
+# - TODO list mentioned here:
+#   https://ci.inria.fr/coq/view/benchmarking/job/benchmark-the-whole-branch/
+# - Compare our set of the tracked OPAM packages with the one tracked via Travis.
+#   - start tracking:
+#     - tlc
+#     - coq-unicoq
+#     - coq-metacoq
 # - reuse the real *.opam file for Coq (we just need custom "url" file)
-# - use this script to confirm/refute the prior measurements:
-#   https://ci.inria.fr/coq/job/TEST10/13/console
-# - add checks that user-provided HEAD and BASE values have proper chronological order
-#   (i.e. HEAD is a more recent commit than BASE)
-# - improve initial checks (whether all the things that we need exist)
+# - add checks that user-provided NEW and OLD values have the expected chronological order
+#   (i.e. NEW is a more recent commit than OLD)
+# - improve initial checks (whether our assumptions hold)
 # - camlp{4,5} ... probably we do not need the fake "camlp4" and "camlp5" packages
 #   (there is a way to tell OPAM to use the camlp4/5 available on the system instead of compiling/installing it when some package depends on it)
-# - describe the effect of that EXAMPLE command ... what kind of files are generated and what is their meaning
-# - describe the effect of this command in general .... what kind of files are generated and what is their meaning
-# - print a summary at the end
-#   - for each package
-#     - for each iteration
-#       - user-time
-#     - the minimum user-time
-#     - the proportional variation
-# - figure out some way to measure just the interpretation of "build" section
+# - describe the effect of the commands in the  EXAMPLES section
+# - Figure out some way to measure just the interpretation of "build" section.
 #   (not interpretation of the "url" file or "install" section in the *.opam file)
-# - make experiments with working directory located in a ramdisk; can I get real-time speedup?
-# - would it help if the tested package were downloaded via "opam source ..." and then added as a package to "custom-repo"?
-# - figure out how to avoid measuring downloading of the actual OPAM package that is being done during "opam install"
+#   Figure out how to avoid measuring downloading of the actual OPAM package that is being done during "opam install".
 #   (even when all its dependencies were already installed by "opam install --deps-only ...")
-# - the stdout/stderr during the benchmarked compilation should probably go to /dev/null, no?
+#   (suggested also by https://github.com/matejkosik/coq-bench/issues/1)
+# - shared/bench.ml ... deal with the TODO list which is located there
+# - there are are multiple ways how to improve repsonsibility (shorten the benchmarking time)
+#   - what we actually want to do is:
+#     - given some set of OPAM packages that the user is interested in to benchmark
+#     - we should use an existing machinery to infer all the OPAM packages that need to be install so that we can benchmark
+#       all the OPAM packages required by the user
+#     - install all these OPAM packages in the topological order
+#     - where benchmarked packages will be installed with "-j1" and one by one
+#       and non-benchmarked packages (in the topological order in betweeen the two benchmarked packages)
+#       will be installed with "-j4"
+#       - Hmmm, now I realize that we could use more processors;
+#         it could indeed contribute to the speedup (of installation of the non-benchmarked packages)
+# - instead of abusing "opam" for the purposes for which it wasn't designed
+#   ("opam" does not make it easy for me to test custom Coq branches)
+#   make a cleaner implementation of this script by using some tool that directly supports what I need
+#   (we can piggy-back on the ecosystem of "opam" and "url" file that is in place but shun the "opam" program which serves a different purpose)
+# - merge these scripts under the Coq-organization umbrella (somewhere)
+# - Maxime's suggestion:
+#   - Maybe we could try a hybrid approach, like using opam to install dependencies, but do the build to be benchmarked manually.
+#     This way, we would not need to create a fake package, we would have more control on what we measure,
+#     but could still rely on OPAM to solve dependencies."
+# - Emilio's suggestions
+#   - we should benchmark every commit
+#   - we should gather results per-file (rather than per OPAM package)
+#   - we should gather and compare results per section or per sentence (sercomp will provide necessary mechanisms)
+#   - We should benchmark every commit automatically and save the reports in a format that's easy to browse.
 # - once we create v8.7 branch of Coq
 #   - update:
 #     - the "print_man_page" command
 #     - the piece of code where we set the "official_coq_branch" variable
 #     - the piece of code where we set the "coq_opam_version" variable
-# - Consider the possibility to measure/monitor the load of the system.
-#   This would give us hints about the reliability of the results we've obtained.
-#   (We will know that when we measured and there was a lot of load, the results are not reliable.
-#    On the other hand, if there was no load, we will know that the results should be meaningful.)
 
 r='\033[0m'          # reset (all attributes off)
 b='\033[1m'          # bold
