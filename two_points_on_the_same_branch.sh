@@ -245,7 +245,7 @@ cd "$coq_dir"
 # - 784d82dc1a709c4c262665a4cd4eb0b1bd1487a0 is the oldest commit that is present in "trunk" and "v8.6" and "v8.5" (but not in "v8.4").
 if git log | grep 15edfc8f92477457bcefe525ce1cea160e4c6560 > /dev/null; then
     official_coq_branch=trunk
-elif git log | grep d0afde58b3320b65fc755cca5600af3b1bc9fa82 > /dev/null; then
+elif git log | grep bb43730ac876b8de79967090afa50f00858af6d5 > /dev/null; then
     official_coq_branch=v8.6
 elif git log | grep 784d82dc1a709c4c262665a4cd4eb0b1bd1487a0 > /dev/null; then
     official_coq_branch=v8.5
