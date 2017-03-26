@@ -13,7 +13,6 @@
 #   (or, at least, their version matches)
 
 # TODO
-# - give "bench.ml" a better name
 # - run benchmarks that compare Coq 8.5 and 8.6 (for those OPAM packages that be installed to either version)
 # - check how Ocaml people tackled the same problem
 # - documentation ... add missing bits
@@ -66,7 +65,7 @@
 #   Figure out how to avoid measuring downloading of the actual OPAM package that is being done during "opam install".
 #   (even when all its dependencies were already installed by "opam install --deps-only ...")
 #   (suggested also by https://github.com/matejkosik/coq-bench/issues/1)
-# - shared/bench.ml ... deal with the TODO list which is located there
+# - shared/*.ml ... deal with the TODO list which is located there
 # - there are are multiple ways how to improve repsonsibility (shorten the benchmarking time)
 #   - what we actually want to do is:
 #     - given some set of OPAM packages that the user is interested in to benchmark
@@ -538,6 +537,6 @@ done
 #
 # The following script processes all these files and prints results in a comprehensible way.
 
-echo DEBUG: $program_path/bench.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $coq_opam_packages
+echo DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $coq_opam_packages
 
-$program_path/shared/bench.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $coq_opam_packages
+$program_path/shared/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $coq_opam_packages
