@@ -13,7 +13,30 @@
 #   (or, at least, their version matches)
 
 # TODO
-# - flatten this TODO list (include sub-TODO list referenced in this TODO list)
+# - give "bench.ml" a better name
+# - run benchmarks that compare Coq 8.5 and 8.6 (for those OPAM packages that be installed to either version)
+# - check how Ocaml people tackled the same problem
+# - documentation ... add missing bits
+#   - Emilio's suggestions (https://github.com/coq/coq/pull/434)
+#     - Indeed I would add a section such as "Interpreting the numbers: for a 4x job,
+#       the numbers mean the minimum time of 4 executions of opam install package ."
+#   - Théos suggestions
+#     - explain why it makes sense to take minimum
+# - track compilation times of individual files
+# - send a message to coq-dev about the benchmarking machinery
+# - check Travis ... what it is building ... whether we are tracking the same set
+#   - vst
+# - compile released versions (if there is no released version, let's create some some unnoficial tar.gz and use that)
+#   instead of a HEAD of some branch
+# - observe the dependency between
+#   - the total benchmarking time wrt. the number of iterations
+#   - the achieved precision wrt. the number of iterations
+#   and documented this.
+# - figure out what to do with the "coq-hott" package
+#   - currently we clone (and patch) Emilio's branch which is patched version of some old commit of upstream
+#   - what we would like to compile is the HEAD of the upstream master branch
+#   - how can we do that?
+#   - track HoTT via our "opam-install*" jobs
 # - Simplify the Jenkins jobs:
 #   - https://ci.inria.fr/coq/view/coq-contribs/job/coq-contribs/
 #   - https://ci.inria.fr/coq/view/opam/job/opam-install/
@@ -69,6 +92,9 @@
 #   - we should gather results per-file (rather than per OPAM package)
 #   - we should gather and compare results per section or per sentence (sercomp will provide necessary mechanisms)
 #   - We should benchmark every commit automatically and save the reports in a format that's easy to browse.
+# - benchmarking results (for the official branches; for the released packages)
+#   should be stored in some way to enable further proessing
+#   - e.g. to display the trend for a given package
 # - once we create v8.7 branch of Coq
 #   - update:
 #     - the "print_man_page" command
@@ -241,7 +267,7 @@ cd "$coq_dir"
 #
 # The computation below is based on the following assumptions:
 # - 15edfc8f92477457bcefe525ce1cea160e4c6560 is the oldest commit in "trunk" which is not present neither in "v8.6", nor in "v8.5" branches.
-# - d0afde58b3320b65fc755cca5600af3b1bc9fa82 is the oldest commit in "trunk" and "v8.6" which is not present in "v8.5".
+# - bb43730ac876b8de79967090afa50f00858af6d5 is the oldest commit in "trunk" and "v8.6" which is not present in "v8.5".
 # - 784d82dc1a709c4c262665a4cd4eb0b1bd1487a0 is the oldest commit that is present in "trunk" and "v8.6" and "v8.5" (but not in "v8.4").
 if git log | grep 15edfc8f92477457bcefe525ce1cea160e4c6560 > /dev/null; then
     official_coq_branch=trunk

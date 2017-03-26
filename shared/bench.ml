@@ -64,7 +64,8 @@ List.iteri (printf "DEBUG 1: coq_opam_package[%d] = %s\n") coq_opam_packages;
 
    "working_dir" contains all the files produced by the following command:
 
-      ./bench.sh $working_directory $coq_repository $coq_branch[:$head:$base] $num_of_iterations coq_opam_package_1 coq_opam_package_2 ...
+      two_points_on_the_same_branch.sh $working_directory $coq_repository $coq_branch[:$new:$old] $num_of_iterations coq_opam_package_1 coq_opam_package_2 ... coq_opam_package_N
+-sf
 *)
 
 (* Run a given bash command;
