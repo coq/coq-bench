@@ -534,6 +534,10 @@ for coq_opam_package in $coq_opam_packages; do
     mv "$OPAMROOT" "$OPAMROOT.OLD"
 
     installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
+
+    # Print the intermediate results after we finish benchmarking an OPAM package.
+    echo "DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages"
+    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
 done
 
 echo "DEBUG: coq_opam_packages = $coq_opam_packages"
@@ -621,6 +625,7 @@ function print_singular_or_plural {
     fi
 }
 
+# Print the final results.
 if [ -z "$installable_coq_opam_packages" ]; then
     # Tell the user that none of the OPAM-package(s) the user provided is/are installable.
     printf "INFO: "; print_singular_or_plural "the given OPAM-package" "none of the given OPAM-packages" $coq_opam_packages; echo ":"
