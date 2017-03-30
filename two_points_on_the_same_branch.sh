@@ -487,7 +487,7 @@ for coq_opam_package in $coq_opam_packages; do
     for iteration in $(seq $num_of_iterations); do
         if /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
-           $program_path/shared/opam_install.sh $coq_opam_package -v -b -j1;
+           opam install $coq_opam_package -v -b -j1;
         then
             # "opam install ...", we have started above, was successful.
 
@@ -516,7 +516,7 @@ for coq_opam_package in $coq_opam_packages; do
     for iteration in $(seq $num_of_iterations); do
         if /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
-           $program_path/shared/opam_install.sh $coq_opam_package -v -j1;
+           opam install $coq_opam_package -v -j1;
         then
             # "opam install ...", we have started above, was successful.
 
