@@ -6,12 +6,16 @@
 #
 # We use the following command to overcome this problem.
 
+echo DEBUG B01
 while true; do
+    echo DEBUG B02
     bash -c "opam install $*"
 
     opam_install_exit_status=$?
     echo DEBUG: opam_install.sh: opam_install_exit_status = $opam_install_exit_status
+    echo DEBUG B03
     echo DEBUG: opam_install.sh: which coqtop = `which coqtop`
+    echo DEBUG B04
 
     # See also:
     #
@@ -41,4 +45,6 @@ while true; do
             exit 1
             ;;
     esac
+    echo DEBUG B05
 done
+echo DEBUG B06

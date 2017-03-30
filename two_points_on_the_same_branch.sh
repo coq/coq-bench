@@ -13,6 +13,9 @@
 #   (or, at least, their version matches)
 
 # TODO
+# - HACK: cut down the benchmarking time by assuming that the OPAM packages are provided in a topological order (wrt. dependency relationship).
+# - make sure that the user can provide OPAM packages (for benchmarking) in arbitrary order
+#   (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
 # - remove the (in fact) superfluous argument of this script.
 #   - remove it also from the corresponding Jenkins jobs
 # - run benchmarks that compare Coq 8.5 and 8.6 (for those OPAM packages that be installed to either version)
@@ -421,7 +424,9 @@ echo DEBUG 0: $PATH
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
+echo DEBUG A10
 opam repo add coq-released https://coq.inria.fr/opam/released
+echo DEBUG A11
 opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
@@ -448,7 +453,9 @@ echo n | opam init -v -j$number_of_processors
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
+echo DEBUG A12
 opam repo add coq-released https://coq.inria.fr/opam/released
+echo DEBUG A13
 opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
@@ -479,6 +486,7 @@ export OPAMROOT="$working_dir/.opam"
 installable_coq_opam_packages=
 
 for coq_opam_package in $coq_opam_packages; do
+    echo DEBUG A20
     echo DEBUG: coq_opam_package = $coq_opam_package
 
     # perform measurements for the HEAD of the branch (provided by the user)
@@ -493,6 +501,7 @@ for coq_opam_package in $coq_opam_packages; do
             $program_path/shared/opam_install.sh $coq_opam_package -v -b -j1 || continue 2
         opam uninstall $coq_opam_package -v
     done
+    echo DEBUG A21
 
     # perform measurements for the BASE of the branch (provided by the user)
     rm -r -f "$OPAMROOT"
@@ -506,9 +515,12 @@ for coq_opam_package in $coq_opam_packages; do
             $program_path/shared/opam_install.sh $coq_opam_package -v -j1 || continue 2
         opam uninstall $coq_opam_package -v
     done
+    echo DEBUG A22
 
     installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
 done
+
+echo DEBUG A30
 
 echo DEBUG: coq_opam_packages = $coq_opam_packages
 echo DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages
@@ -569,8 +581,15 @@ echo DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages
 #
 # The following script processes all these files and prints results in a comprehensible way.
 
+echo DEBUG A31
+
 echo DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
 
+echo DEBUG A32
+
 if [ ! -z "$installable_coq_opam_packages" ]; then
+    echo DEBUG A33
     $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
 fi
+
+echo DEBUG A33
