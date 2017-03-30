@@ -13,6 +13,8 @@
 #   (or, at least, their version matches)
 
 # TODO
+# - remove the (in fact) superfluous argument of this script.
+#   - remove it also from the corresponding Jenkins jobs
 # - run benchmarks that compare Coq 8.5 and 8.6 (for those OPAM packages that be installed to either version)
 # - check how Ocaml people tackled the same problem
 # - documentation ... add missing bits
@@ -403,11 +405,20 @@ touch $custom_opam_repo/packages/coq/coq.$coq_opam_version/descr
 
 # --------------------------------------------------------------------------------
 
-# Create a new OPAM-root to which we will install the HEAD of the designated branch of Coq
+# Set the OPAM root
 
 export OPAMROOT="$working_dir/.opam"
 
-opam init --no-setup
+# --------------------------------------------------------------------------------
+
+# Create a new OPAM-root to which we will install the HEAD of the designated branch of Coq
+
+echo n | opam init -v
+echo DEBUG 0
+echo $PATH
+. "$OPAMROOT"/opam-init/init.sh
+echo DEBUG 0: $PATH
+
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
 opam repo add coq-released https://coq.inria.fr/opam/released
@@ -417,10 +428,15 @@ cd "$coq_dir"
 git checkout $head
 head_long=$(git log --pretty=%H | head -n 1)
 echo DEBUG git commit for HEAD = $head_long
+echo DEBUG 1: PATH = $PATH
+echo DEBUG 1: which coqtop = `which coqtop`
 $program_path/shared/opam_install.sh coq.$coq_opam_version -v -b -j$number_of_processors
 if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
+
+echo DEBUG 2: PATH = $PATH
+echo DEBUG 2: which coqtop = `which coqtop`
 
 mv "$OPAMROOT" "$OPAMROOT.NEW"
 
@@ -428,9 +444,8 @@ mv "$OPAMROOT" "$OPAMROOT.NEW"
 
 # Create a new OPAM-root to which we will install the BASE of the designated branch of Coq
 
-export OPAMROOT="$working_dir/.opam"
+echo n | opam init -v -j$number_of_processors
 
-opam init --no-setup
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
 opam repo add coq-released https://coq.inria.fr/opam/released
@@ -439,11 +454,16 @@ opam repo list
 cd "$coq_dir"
 git checkout $base
 base_long=$(git log --pretty=%H | head -n 1)
-echo DEBUG git commit for BASE = $base_long
+echo DEBUG 3: git commit for BASE = $base_long
+echo DEBUG 3: PATH = $PATH
+echo DEBUG 3: which coqtop = `which coqtop`
 $program_path/shared/opam_install.sh coq.$coq_opam_version -v -b -j$number_of_processors
 if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
+
+echo DEBUG 4: PATH = $PATH
+echo DEBUG 4: which coqtop = `which coqtop`
 
 mv "$OPAMROOT" "$OPAMROOT.OLD"
 
@@ -455,31 +475,43 @@ mv "$OPAMROOT" "$OPAMROOT.OLD"
 
 export OPAMROOT="$working_dir/.opam"
 
+# The following variable will be set in the following cycle:
+installable_coq_opam_packages=
+
 for coq_opam_package in $coq_opam_packages; do
     echo DEBUG: coq_opam_package = $coq_opam_package
 
     # perform measurements for the HEAD of the branch (provided by the user)
     rm -r -f "$OPAMROOT"
     cp -r "$OPAMROOT.NEW" "$OPAMROOT"
+    echo DEBUG PATH = $PATH
+    echo DEBUG which coq = `which coqtop`
     $program_path/shared/opam_install.sh $coq_opam_package -v -b -j$number_of_processors --deps-only -y
     for iteration in $(seq $num_of_iterations); do
         /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
-            $program_path/shared/opam_install.sh $coq_opam_package -v -b -j1
+            $program_path/shared/opam_install.sh $coq_opam_package -v -b -j1 || continue 2
         opam uninstall $coq_opam_package -v
     done
 
     # perform measurements for the BASE of the branch (provided by the user)
     rm -r -f "$OPAMROOT"
     cp -r "$OPAMROOT.OLD" "$OPAMROOT"
+    echo DEBUG PATH = $PATH
+    echo DEBUG which coqtop = `which coqtop`
     $program_path/shared/opam_install.sh $coq_opam_package -v -j$number_of_processors --deps-only -y
     for iteration in $(seq $num_of_iterations); do
         /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
-            $program_path/shared/opam_install.sh $coq_opam_package -v -j1
+            $program_path/shared/opam_install.sh $coq_opam_package -v -j1 || continue 2
         opam uninstall $coq_opam_package -v
     done
+
+    installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
 done
+
+echo DEBUG: coq_opam_packages = $coq_opam_packages
+echo DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages
 
 # The following directories are no longer relevant:
 # - $working_dir/coq
@@ -537,6 +569,8 @@ done
 #
 # The following script processes all these files and prints results in a comprehensible way.
 
-echo DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $coq_opam_packages
+echo DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
 
-$program_path/shared/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $coq_opam_packages
+if [ ! -z "$installable_coq_opam_packages" ]; then
+    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
+fi
