@@ -13,7 +13,10 @@
 #   (or, at least, their version matches)
 
 # TODO
-# - HACK: cut down the benchmarking time by assuming that the OPAM packages are provided in a topological order (wrt. dependency relationship).
+# - Take advantage of the --show-actions:
+#   - make sure that the user can provide OPAM packages (for benchmarking) in arbitrary order
+#     (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
+# - Figure out how to separate `download`, `build` and `install` actions.
 # - make sure that the user can provide OPAM packages (for benchmarking) in arbitrary order
 #   (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
 # - remove the (in fact) superfluous argument of this script.
@@ -295,9 +298,9 @@ else
     base=$(git merge-base upstream/$official_coq_branch "$coq_branch")
 fi
 
-echo DEBUG: coq_branch = $coq_branch
-echo DEBUG: head = $head
-echo DEBUG: base = $base
+echo "DEBUG: coq_branch = $coq_branch"
+echo "DEBUG: NEW (commit) = $head"
+echo "DEBUG: OLD (commit) = $base"
 
 ## Compute the OPAM version code corresponding to the compute name of the Coq branch
 case $official_coq_branch in
@@ -417,31 +420,22 @@ export OPAMROOT="$working_dir/.opam"
 # Create a new OPAM-root to which we will install the HEAD of the designated branch of Coq
 
 echo n | opam init -v
-echo DEBUG 0
 echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
-echo DEBUG 0: $PATH
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
-echo DEBUG A10
 opam repo add coq-released https://coq.inria.fr/opam/released
-echo DEBUG A11
 opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
 git checkout $head
 head_long=$(git log --pretty=%H | head -n 1)
-echo DEBUG git commit for HEAD = $head_long
-echo DEBUG 1: PATH = $PATH
-echo DEBUG 1: which coqtop = `which coqtop`
+echo "DEBUG: git commit for HEAD = $head_long"
 $program_path/shared/opam_install.sh coq.$coq_opam_version -v -b -j$number_of_processors
 if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
-
-echo DEBUG 2: PATH = $PATH
-echo DEBUG 2: which coqtop = `which coqtop`
 
 mv "$OPAMROOT" "$OPAMROOT.NEW"
 
@@ -453,24 +447,17 @@ echo n | opam init -v -j$number_of_processors
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
-echo DEBUG A12
 opam repo add coq-released https://coq.inria.fr/opam/released
-echo DEBUG A13
 opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
 git checkout $base
 base_long=$(git log --pretty=%H | head -n 1)
-echo DEBUG 3: git commit for BASE = $base_long
-echo DEBUG 3: PATH = $PATH
-echo DEBUG 3: which coqtop = `which coqtop`
+echo "DEBUG: git commit for BASE = $base_long"
 $program_path/shared/opam_install.sh coq.$coq_opam_version -v -b -j$number_of_processors
 if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
-
-echo DEBUG 4: PATH = $PATH
-echo DEBUG 4: which coqtop = `which coqtop`
 
 mv "$OPAMROOT" "$OPAMROOT.OLD"
 
@@ -486,8 +473,7 @@ export OPAMROOT="$working_dir/.opam"
 installable_coq_opam_packages=
 
 for coq_opam_package in $coq_opam_packages; do
-    echo DEBUG A20
-    echo DEBUG: coq_opam_package = $coq_opam_package
+    echo "DEBUG: coq_opam_package = $coq_opam_package"
 
     # perform measurements for the NEW commit (provided by the user)
     mv "$OPAMROOT.NEW" "$OPAMROOT"
@@ -497,21 +483,25 @@ for coq_opam_package in $coq_opam_packages; do
     # remove it.
     opam uninstall $coq_opam_package -v
 
-    echo DEBUG PATH = $PATH
-    echo DEBUG which coq = `which coqtop`
     $program_path/shared/opam_install.sh $coq_opam_package -v -b -j$number_of_processors --deps-only -y
     for iteration in $(seq $num_of_iterations); do
-        /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
-            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
-            $program_path/shared/opam_install.sh $coq_opam_package -v -b -j1 || continue 2
+        if /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
+           perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
+           $program_path/shared/opam_install.sh $coq_opam_package -v -b -j1;
+        then
+            # "opam install ...", we have started above, was successful.
 
-        # Remove the benchmarked OPAM-package, unless this is the very last iteration
-        # (we want to keep this OPAM-package because other OPAM-packages we will benchmark later might depend on it --- it would be a waste of time to remove it now just to install it later)
-        if [ $iteration != $num_of_iterations ]; then
-            opam uninstall $coq_opam_package -v
+            # Remove the benchmarked OPAM-package, unless this is the very last iteration
+            # (we want to keep this OPAM-package because other OPAM-packages we will benchmark later might depend on it --- it would be a waste of time to remove it now just to install it later)
+            if [ $iteration != $num_of_iterations ]; then
+                opam uninstall $coq_opam_package -v
+            fi
+        else
+            # "opam install ...", we have started above, failed.
+            mv "$OPAMROOT" "$OPAMROOT.NEW"
+            continue 2
         fi
     done
-    echo DEBUG A21
     mv "$OPAMROOT" "$OPAMROOT.NEW"
 
     # perform measurements for the OLD commit (provided by the user)
@@ -522,30 +512,32 @@ for coq_opam_package in $coq_opam_packages; do
     # remove it.
     opam uninstall $coq_opam_package -v
 
-    echo DEBUG PATH = $PATH
-    echo DEBUG which coqtop = `which coqtop`
     $program_path/shared/opam_install.sh $coq_opam_package -v -j$number_of_processors --deps-only -y
     for iteration in $(seq $num_of_iterations); do
-        /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
-            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
-            $program_path/shared/opam_install.sh $coq_opam_package -v -j1 || continue 2
+        if /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
+           perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
+           $program_path/shared/opam_install.sh $coq_opam_package -v -j1;
+        then
+            # "opam install ...", we have started above, was successful.
 
-        # Remove the benchmarked OPAM-package, unless this is the very last iteration
-        # (we want to keep this OPAM-package because other OPAM-packages we will benchmark later might depend on it --- it would be a waste of time to remove it now just to install it later)
-        if [ $iteration != $num_of_iterations ]; then
-            opam uninstall $coq_opam_package -v
+            # Remove the benchmarked OPAM-package, unless this is the very last iteration
+            # (we want to keep this OPAM-package because other OPAM-packages we will benchmark later might depend on it --- it would be a waste of time to remove it now just to install it later)
+            if [ $iteration != $num_of_iterations ]; then
+                opam uninstall $coq_opam_package -v
+            fi
+        else
+            # "opam install ...", we have started above, failed.
+            mv "$OPAMROOT" "$OPAMROOT.OLD"
+            continue 2
         fi
     done
-    echo DEBUG A22
     mv "$OPAMROOT" "$OPAMROOT.OLD"
 
     installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
 done
 
-echo DEBUG A30
-
-echo DEBUG: coq_opam_packages = $coq_opam_packages
-echo DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages
+echo "DEBUG: coq_opam_packages = $coq_opam_packages"
+echo "DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages"
 
 # The following directories are no longer relevant:
 # - $working_dir/coq
@@ -603,15 +595,52 @@ echo DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages
 #
 # The following script processes all these files and prints results in a comprehensible way.
 
-echo DEBUG A31
+# This command:
+#
+#   print_singular_or_plural  phrase_in_singular  phrase_in_plural   foo1 bar2 baz3 ... fooN
+#
+# will print
+#
+#   phrase_in_singular
+#
+# if N = 1 and:
+#
+#   phrase_in_plural
+#
+# otherwise.
+function print_singular_or_plural {
+    phrase_in_singular="$1"
+    phrase_in_plural="$2"
+    shift 2
+    list_of_words="$*"
 
-echo DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
+    if [ $(echo $list_of_words | wc -w) = 1 ]; then
+        echo -n "$phrase_in_singular"
+    else
+        echo -n "$phrase_in_plural"
+    fi
+}
 
-echo DEBUG A32
+if [ -z "$installable_coq_opam_packages" ]; then
+    # Tell the user that none of the OPAM-package(s) the user provided is/are installable.
+    printf "INFO: "; print_singular_or_plural "the given OPAM-package" "none of the given OPAM-packages" $coq_opam_packages; echo ":"
+    for coq_opam_package in $coq_opam_packages; do
+        echo "- $coq_opam_package"
+    done
+    print_singular_or_plural "is not" "are" $coq_opam_packages; echo " installable."
+else
+    not_installable_coq_opam_packages=`comm -1 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
+    echo "DEBUG: not_installable_coq_opam_packages = $not_installable_coq_opam_packages"
 
-if [ ! -z "$installable_coq_opam_packages" ]; then
-    echo DEBUG A33
+    if [ ! -z $not_installable_coq_opam_packages ]; then
+        # Tell the user that some of the provided OPAM-package(s) is/are not installable.
+        printf "INFO: the following OPAM-"; print_singular_or_plural "package" "packages" $not_installable_coq_opam_packages; echo ":"
+        for coq_opam_package in $not_installable_coq_opam_packages; do
+            echo "- $coq_opam_package"
+        done
+        printf "%s not installable.\n" $(print_singular_or_plural is are $not_installable_coq_opam_packages)
+    fi
+
+    echo "DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages"
     $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
 fi
-
-echo DEBUG A33
