@@ -489,9 +489,14 @@ for coq_opam_package in $coq_opam_packages; do
     echo DEBUG A20
     echo DEBUG: coq_opam_package = $coq_opam_package
 
-    # perform measurements for the HEAD of the branch (provided by the user)
-    rm -r -f "$OPAMROOT"
-    cp -r "$OPAMROOT.NEW" "$OPAMROOT"
+    # perform measurements for the NEW commit (provided by the user)
+    mv "$OPAMROOT.NEW" "$OPAMROOT"
+
+    # If a given OPAM-package was already installed
+    # (as a dependency of some OPAM-package that we have benchmarked before),
+    # remove it.
+    opam uninstall $coq_opam_package -v
+
     echo DEBUG PATH = $PATH
     echo DEBUG which coq = `which coqtop`
     $program_path/shared/opam_install.sh $coq_opam_package -v -b -j$number_of_processors --deps-only -y
@@ -499,13 +504,24 @@ for coq_opam_package in $coq_opam_packages; do
         /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
             $program_path/shared/opam_install.sh $coq_opam_package -v -b -j1 || continue 2
-        opam uninstall $coq_opam_package -v
+
+        # Remove the benchmarked OPAM-package, unless this is the very last iteration
+        # (we want to keep this OPAM-package because other OPAM-packages we will benchmark later might depend on it --- it would be a waste of time to remove it now just to install it later)
+        if [ $iteration != $num_of_iterations ]; then
+            opam uninstall $coq_opam_package -v
+        fi
     done
     echo DEBUG A21
+    mv "$OPAMROOT" "$OPAMROOT.NEW"
 
-    # perform measurements for the BASE of the branch (provided by the user)
-    rm -r -f "$OPAMROOT"
-    cp -r "$OPAMROOT.OLD" "$OPAMROOT"
+    # perform measurements for the OLD commit (provided by the user)
+    mv "$OPAMROOT.OLD" "$OPAMROOT"
+
+    # If a given OPAM-package was already installed
+    # (as a dependency of some OPAM-package that we have benchmarked before),
+    # remove it.
+    opam uninstall $coq_opam_package -v
+
     echo DEBUG PATH = $PATH
     echo DEBUG which coqtop = `which coqtop`
     $program_path/shared/opam_install.sh $coq_opam_package -v -j$number_of_processors --deps-only -y
@@ -513,9 +529,15 @@ for coq_opam_package in $coq_opam_packages; do
         /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
             perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
             $program_path/shared/opam_install.sh $coq_opam_package -v -j1 || continue 2
-        opam uninstall $coq_opam_package -v
+
+        # Remove the benchmarked OPAM-package, unless this is the very last iteration
+        # (we want to keep this OPAM-package because other OPAM-packages we will benchmark later might depend on it --- it would be a waste of time to remove it now just to install it later)
+        if [ $iteration != $num_of_iterations ]; then
+            opam uninstall $coq_opam_package -v
+        fi
     done
     echo DEBUG A22
+    mv "$OPAMROOT" "$OPAMROOT.OLD"
 
     installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
 done
