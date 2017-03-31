@@ -637,7 +637,7 @@ else
     not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
     echo "DEBUG: not_installable_coq_opam_packages = $not_installable_coq_opam_packages"
 
-    if [ ! -z $not_installable_coq_opam_packages ]; then
+    if [ ! -z "$not_installable_coq_opam_packages" ]; then
         # Tell the user that some of the provided OPAM-package(s) is/are not installable.
         printf "INFO: the following OPAM-"; print_singular_or_plural "package" "packages" $not_installable_coq_opam_packages; echo ":"
         for coq_opam_package in $not_installable_coq_opam_packages; do
