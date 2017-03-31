@@ -634,7 +634,7 @@ if [ -z "$installable_coq_opam_packages" ]; then
     done
     print_singular_or_plural "is not" "are" $coq_opam_packages; echo " installable."
 else
-    not_installable_coq_opam_packages=`comm -1 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
+    not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
     echo "DEBUG: not_installable_coq_opam_packages = $not_installable_coq_opam_packages"
 
     if [ ! -z $not_installable_coq_opam_packages ]; then
