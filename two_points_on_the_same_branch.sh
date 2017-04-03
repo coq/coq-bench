@@ -13,6 +13,11 @@
 #   (or, at least, their version matches)
 
 # TODO
+# - Get rid of the "minimal_user_time" related stuff.
+# - Be more refined wrt. the exit status.
+#   (indicate more precisely what went wrong)
+# - Make sure that the compilation of each OPAM package is (also) logged into a separate directory
+#   - Then, if some of them fails to compile, we can give the user a link to it.
 # - Take advantage of the --show-actions:
 #   - make sure that the user can provide OPAM packages (for benchmarking) in arbitrary order
 #     (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
