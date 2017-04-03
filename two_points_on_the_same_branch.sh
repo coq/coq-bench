@@ -499,7 +499,14 @@ for coq_opam_package in $coq_opam_packages; do
     # remove it.
     opam uninstall $coq_opam_package -v
 
-    $program_path/shared/opam_install.sh $coq_opam_package -v -b -j$number_of_processors --deps-only -y
+    if opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y; then
+        # all is well
+        :
+    else
+        echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
+        exit 1
+    fi
+
     for iteration in $(seq $num_of_iterations); do
         if /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
@@ -528,7 +535,14 @@ for coq_opam_package in $coq_opam_packages; do
     # remove it.
     opam uninstall $coq_opam_package -v
 
-    $program_path/shared/opam_install.sh $coq_opam_package -v -j$number_of_processors --deps-only -y
+    if opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y; then
+        # all is well
+        :
+    else
+        echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
+        exit 1
+    fi
+
     for iteration in $(seq $num_of_iterations); do
         if /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
