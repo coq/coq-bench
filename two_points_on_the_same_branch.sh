@@ -658,22 +658,22 @@ function print_singular_or_plural {
 # Print the final results.
 if [ -z "$installable_coq_opam_packages" ]; then
     # Tell the user that none of the OPAM-package(s) the user provided is/are installable.
-    printf "INFO: "; print_singular_or_plural "the given OPAM-package" "none of the given OPAM-packages" $coq_opam_packages; echo ":"
+    printf "\n\nINFO: "; print_singular_or_plural "the given OPAM-package" "none of the given OPAM-packages" $coq_opam_packages; echo ":"
     for coq_opam_package in $coq_opam_packages; do
         echo "- $coq_opam_package"
     done
-    print_singular_or_plural "is not" "are" $coq_opam_packages; echo " installable."
+    print_singular_or_plural "is not" "are" $coq_opam_packages; echo " installable.\n\n\n"
 else
     not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
     echo "DEBUG: not_installable_coq_opam_packages = $not_installable_coq_opam_packages"
 
     if [ ! -z "$not_installable_coq_opam_packages" ]; then
         # Tell the user that some of the provided OPAM-package(s) is/are not installable.
-        printf "INFO: the following OPAM-"; print_singular_or_plural "package" "packages" $not_installable_coq_opam_packages; echo ":"
+        printf "\n\nINFO: the following OPAM-"; print_singular_or_plural "package" "packages" $not_installable_coq_opam_packages; echo ":"
         for coq_opam_package in $not_installable_coq_opam_packages; do
             echo "- $coq_opam_package"
         done
-        printf "%s not installable.\n" $(print_singular_or_plural is are $not_installable_coq_opam_packages)
+        printf "%s not installable.\n\n\n" $(print_singular_or_plural is are $not_installable_coq_opam_packages)
     fi
 
     echo "DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages"
