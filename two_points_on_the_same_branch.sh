@@ -123,7 +123,7 @@ program_name="$0"
 program_path=$(readlink -f "${program_name%/*}")
 program_name="${program_name##*/}"
 synopsys1="\t$b$program_name$r  [$b-h$r | $b--help$r]"
-synopsys2="\t$b$program_name$r  ${u}working_dir$r  ${u}coq_repository$r  ${u}new_coq_commit$r${b}  $r${u}old_coq_commit$r  ${u}num_of_iterations$r  ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
+synopsys2="\t$b$program_name$r  ${u}working_dir$r  ${u}new_coq_repository$r  ${u}new_coq_commit$r${b}  ${u}old_coq_repository$r  $r${u}old_coq_commit$r  ${u}num_of_iterations$r  ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
 
 # Print the "manual page" for this script.
 print_man_page () {
@@ -146,20 +146,18 @@ print_man_page () {
     echo
     echo -e "$synopsys2"
     echo
-    echo -e "\t\tClone a given ${u}coq_repository$r."
+    echo -e "\t\tCompare the compilation times of given OPAM packages when we use two given versions of Coq."
     echo
-    echo -e "\t\tMeasure the compilation times of given OPAM packages for the ${u}new_coq_commit$r as well as the ${u}old_coq_commit$r."
-    echo
-    echo -e "\t\tCompare the compilation times and print the summary."
-    echo
-    echo -e "\t\tWhile:"
+    echo -e "\t\tHere:"
+    echo -e "\t\t- ${u}working_dir$r determines the directory where all the necessary temporary files should be stored"
+    echo -e "\t\t- ${u}new_coq_repository$r and ${u}new_coq_commit$r identifies the newer version of Coq"
+    echo -e "\t\t- ${u}old_coq_repository$r and ${u}old_coq_commit$r identifies the older version of Coq"
     echo -e "\t\t- ${u}num_of_iterations$r determines how many times each of the requested OPAM packages should be compiled"
     echo -e "\t\t  (with each of these two versions of Coq)."
-    echo -e "\t\t- ${u}working_dir$r determines the directory where all the necessary temporary files should be stored."
     echo
     echo -e ${b}EXAMPLES$r
     echo
-    echo -e "\t$b$program_name /tmp https://github.com/coq/coq.git 3df2431 a204941 1 coq-sf$r"
+    echo -e "\t$b$program_name  /tmp  https://github.com/gmalecha/coq.git  3df2431  https://github.com/coq/coq.git  a204941  1  coq-sf$r"
     echo
 }
 
@@ -194,7 +192,7 @@ case $# in
                 ;;
         esac
         ;;
-    2 | 3 | 4 | 5)
+    2 | 3 | 4 | 5 | 6)
         echo > /dev/stderr
         echo ERROR: wrong number of arguments. > /dev/stderr
         print_man_page_hint
@@ -202,10 +200,11 @@ case $# in
         ;;
     *)
         working_dir="$1"
-        coq_repository="$2"
+        new_coq_repository="$2"
         new_coq_commit="$3"
-        old_coq_commit="$4"
-        num_of_iterations="$5"
+        old_coq_repository="$4"
+        old_coq_commit="$5"
+        num_of_iterations="$6"
         if echo "$num_of_iterations" | grep '^[1-9][0-9]*$' 2> /dev/null > /dev/null; then
             :
         else
@@ -214,14 +213,15 @@ case $# in
             print_man_page_hint
             exit 1
         fi
-        shift 5
+        shift 6
         coq_opam_packages=$@
         ;;
 esac
 
 echo DEBUG: ocaml -version = `ocaml -version`
 echo DEBUG: working_dir = $working_dir
-echo DEBUG: coq_repository = $coq_repository
+echo DEBUG: new_coq_repository = $new_coq_repository
+echo DEBUG: old_coq_repository = $old_coq_repository
 echo DEBUG: new_coq_commit = $new_coq_commit
 echo DEBUG: old_coq_commit = $old_coq_commit
 echo DEBUG: num_of_iterations = $num_of_iterations
@@ -262,15 +262,16 @@ fi
 
 # --------------------------------------------------------------------------------
 
-# Clone the designated git-branch from the designated git-repository.
+# Clone the indicated git-repository.
 
-coq_dir="$working_dir/coq"
 echo DEBUG 0
-git clone "$coq_repository" "$coq_dir"
-echo DEBUG 1
+coq_dir="$working_dir/coq"
+git clone "$new_coq_repository" "$coq_dir"
 cd "$coq_dir"
-echo DEBUG 2
-git co $new_coq_commit
+git remote rename origin new_coq_repository
+git remote add old_coq_repository "$old_coq_repository"
+git fetch "$old_coq_repository"
+git checkout $new_coq_commit
 
 # Detect the official Coq branch
 #
