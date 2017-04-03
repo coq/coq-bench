@@ -260,8 +260,12 @@ fi
 # Clone the designated git-branch from the designated git-repository.
 
 coq_dir="$working_dir/coq"
+echo DEBUG 0
 git clone "$coq_repository" "$coq_dir"
+echo DEBUG 1
 cd "$coq_dir"
+echo DEBUG 2
+git co $new_coq_commit
 
 # Detect the official Coq branch
 #
@@ -639,11 +643,13 @@ if [ -z "$installable_coq_opam_packages" ]; then
     for coq_opam_package in $coq_opam_packages; do
         echo "- $coq_opam_package"
     done
-    print_singular_or_plural "is not" "are" $coq_opam_packages; echo " installable.\n\n\n"
+    print_singular_or_plural "is not" "are" $coq_opam_packages; printf " installable.\n\n\n"
+    exit 1
 else
     not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
     echo "DEBUG: not_installable_coq_opam_packages = $not_installable_coq_opam_packages"
 
+    exit_code=0
     if [ ! -z "$not_installable_coq_opam_packages" ]; then
         # Tell the user that some of the provided OPAM-package(s) is/are not installable.
         printf "\n\nINFO: the following OPAM-"; print_singular_or_plural "package" "packages" $not_installable_coq_opam_packages; echo ":"
@@ -651,8 +657,10 @@ else
             echo "- $coq_opam_package"
         done
         printf "%s not installable.\n\n\n" $(print_singular_or_plural is are $not_installable_coq_opam_packages)
+        exit_code=1
     fi
 
     echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $new_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
     $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
+    exit $exit_code
 fi
