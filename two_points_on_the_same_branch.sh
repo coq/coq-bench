@@ -432,7 +432,15 @@ cd "$coq_dir"
 git checkout $head
 head_long=$(git log --pretty=%H | head -n 1)
 echo "DEBUG: git commit for HEAD = $head_long"
-$program_path/shared/opam_install.sh coq.$coq_opam_version -v -b -j$number_of_processors
+
+if opam install coq.$coq_opam_version -v -b -j$number_of_processors; then
+    # all is well
+    :
+else
+    echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the NEWER commit = $head_long)."
+    exit 1
+fi
+
 if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
@@ -454,7 +462,15 @@ cd "$coq_dir"
 git checkout $base
 base_long=$(git log --pretty=%H | head -n 1)
 echo "DEBUG: git commit for BASE = $base_long"
-$program_path/shared/opam_install.sh coq.$coq_opam_version -v -b -j$number_of_processors
+
+if opam install coq.$coq_opam_version -v -b -j$number_of_processors; then
+    # all is well
+    :
+else
+    echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the NEWER commit = $head_long)."
+    exit 1
+fi
+
 if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
