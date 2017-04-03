@@ -118,8 +118,7 @@ program_name="$0"
 program_path=$(readlink -f "${program_name%/*}")
 program_name="${program_name##*/}"
 synopsys1="\t$b$program_name$r  [$b-h$r | $b--help$r]"
-synopsys2="\t$b$program_name$r  ${u}working_dir$r  ${u}coq_repository$r  ${u}coq_branch$r  ${u}num_of_iterations$r  ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
-synopsys3="\t$b$program_name$r  ${u}working_dir$r  ${u}coq_repository$r  ${u}coq_branch$r${b}:$r${u}head$r${b}:$r${u}base$r  ${u}num_of_iterations$r  ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
+synopsys2="\t$b$program_name$r  ${u}working_dir$r  ${u}coq_repository$r  ${u}new_coq_commit$r${b}  $r${u}old_coq_commit$r  ${u}num_of_iterations$r  ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
 
 # Print the "manual page" for this script.
 print_man_page () {
@@ -134,8 +133,6 @@ print_man_page () {
     echo
     echo -e "$synopsys2"
     echo
-    echo -e "$synopsys3"
-    echo
     echo -e ${b}DESCRIPTION
     echo
     echo -e "$synopsys1"
@@ -144,27 +141,20 @@ print_man_page () {
     echo
     echo -e "$synopsys2"
     echo
-    echo -e "\t\tClone a given ${u}coq_branch$r from a given ${u}coq_repository$r."
-    echo -e "\t\tDetermine the name of the official Coq branch (i.e. either ${b}trunk$r or ${b}v8.6$r or ${b}v8.5$r)"
-    echo -e "\t\t  from which a given ${u}coq_branch$r was branched."
-    echo -e "\t\tMeasure compilation times of given Coq OPAM packages on this official Coq branch."
-    echo -e "\t\tMeasure compilation times of given Coq OPAM packages at the HEAD of a given ${u}coq_branch$r."
+    echo -e "\t\tClone a given ${u}coq_repository$r."
+    echo
+    echo -e "\t\tMeasure the compilation times of given OPAM packages for the ${u}new_coq_commit$r as well as the ${u}old_coq_commit$r."
+    echo
     echo -e "\t\tCompare the compilation times and print the summary."
     echo
-    echo -e "\t\t${u}num_of_iterations$r determines how many times each of the Coq OPAM packages should be compiled."
-    echo
-    echo -e "\t\tAll the temporary files are created inside a given ${u}working_dir$r."
-    echo
-    echo -e "$synopsys3"
-    echo
-    echo -e "\t\tLike above but instead of comparing the HEAD of the branch with the corresponding merge-base point,"
-    echo -e "\t\tcompare the commits explicitely provided by the user (${u}head$r and ${u}base$r)."
+    echo -e "\t\tWhile:"
+    echo -e "\t\t- ${u}num_of_iterations$r determines how many times each of the requested OPAM packages should be compiled"
+    echo -e "\t\t  (with each of these two versions of Coq)."
+    echo -e "\t\t- ${u}working_dir$r determines the directory where all the necessary temporary files should be stored."
     echo
     echo -e ${b}EXAMPLES$r
     echo
-    echo -e "\t$b$program_name /tmp https://github.com/SkySkimmer/coq.git always-fast-typeops 3 coq-mathcomp-algebra coq-mathcomp-character$r"
-    echo
-    echo -e "\t$b$program_name /tmp https://github.com/coq/coq.git v8.6:HEAD:d0afde58 3 coq-persistent-union-find$r"
+    echo -e "\t$b$program_name /tmp https://github.com/coq/coq.git 3df2431 a204941 1 coq-sf$r"
     echo
 }
 
@@ -199,7 +189,7 @@ case $# in
                 ;;
         esac
         ;;
-    2 | 3 | 4)
+    2 | 3 | 4 | 5)
         echo > /dev/stderr
         echo ERROR: wrong number of arguments. > /dev/stderr
         print_man_page_hint
@@ -208,16 +198,18 @@ case $# in
     *)
         working_dir="$1"
         coq_repository="$2"
-        coq_branch="$3"
-        if echo "$4" | grep '^[1-9][0-9]*$' 2> /dev/null > /dev/null; then
-            num_of_iterations=$4
+        new_coq_commit="$3"
+        old_coq_commit="$4"
+        num_of_iterations="$5"
+        if echo "$num_of_iterations" | grep '^[1-9][0-9]*$' 2> /dev/null > /dev/null; then
+            :
         else
             echo
-            echo ERROR: the fourth command-line argument \"$4\" is not a positive integer.
+            echo ERROR: the third command-line argument \"$4\" is not a positive integer.
             print_man_page_hint
             exit 1
         fi
-        shift 4
+        shift 5
         coq_opam_packages=$@
         ;;
 esac
@@ -225,7 +217,8 @@ esac
 echo DEBUG: ocaml -version = `ocaml -version`
 echo DEBUG: working_dir = $working_dir
 echo DEBUG: coq_repository = $coq_repository
-echo DEBUG: coq_branch = $coq_branch
+echo DEBUG: new_coq_commit = $new_coq_commit
+echo DEBUG: old_coq_commit = $old_coq_commit
 echo DEBUG: num_of_iterations = $num_of_iterations
 echo DEBUG: coq_opam_packages = $coq_opam_packages
 
@@ -267,7 +260,7 @@ fi
 # Clone the designated git-branch from the designated git-repository.
 
 coq_dir="$working_dir/coq"
-git clone -b "${coq_branch%%:*}" "$coq_repository" "$coq_dir"
+git clone "$coq_repository" "$coq_dir"
 cd "$coq_dir"
 
 # Detect the official Coq branch
@@ -287,22 +280,9 @@ else
     exit 1
 fi
 
-if echo "$coq_branch" | grep '^[^:]*:[^:]*:[^:]*$' > /dev/null; then
-    head=$(echo $coq_branch | awk -F: '{print $2}')
-    base=$(echo $coq_branch | awk -F: '{print $3}')
-    coq_branch=$(echo $coq_branch | awk -F: '{print $1}')
-else
-    head=HEAD
-    git remote add upstream https://github.com/coq/coq.git
-    git fetch upstream $official_coq_branch
-    base=$(git merge-base upstream/$official_coq_branch "$coq_branch")
-fi
+echo DEBUG: official_coq_branch = $official_coq_branch
 
-echo "DEBUG: coq_branch = $coq_branch"
-echo "DEBUG: NEW (commit) = $head"
-echo "DEBUG: OLD (commit) = $base"
-
-## Compute the OPAM version code corresponding to the compute name of the Coq branch
+# Compute the OPAM version code corresponding to the compute name of the Coq branch
 case $official_coq_branch in
     trunk)
         coq_opam_version=dev
@@ -318,7 +298,6 @@ case $official_coq_branch in
         exit 1
 esac
 
-echo DEBUG: official_coq_branch = $official_coq_branch
 echo DEBUG: coq_opam_version = $coq_opam_version
 
 # --------------------------------------------------------------------------------
@@ -417,7 +396,7 @@ export OPAMROOT="$working_dir/.opam"
 
 # --------------------------------------------------------------------------------
 
-# Create a new OPAM-root to which we will install the HEAD of the designated branch of Coq
+# Create a new OPAM-root to which we will install the NEW version of Coq.
 
 echo n | opam init -v
 echo $PATH
@@ -429,12 +408,12 @@ opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
-git checkout $head
-head_long=$(git log --pretty=%H | head -n 1)
-echo "DEBUG: git commit for HEAD = $head_long"
+echo "DEBUG: new_coq_commit = $new_coq_commit"
+git checkout $new_coq_commit
+new_coq_commit_long=$(git log --pretty=%H | head -n 1)
+echo "DEBUG: new_coq_commit_long = $new_coq_commit_long"
 
 if opam install coq.$coq_opam_version -v -b -j$number_of_processors; then
-    # all is well
     :
 else
     echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the NEWER commit = $head_long)."
@@ -449,7 +428,7 @@ mv "$OPAMROOT" "$OPAMROOT.NEW"
 
 # --------------------------------------------------------------------------------
 
-# Create a new OPAM-root to which we will install the BASE of the designated branch of Coq
+# Create a new OPAM-root to which we will install the OLD version of Coq.
 
 echo n | opam init -v -j$number_of_processors
 
@@ -459,12 +438,12 @@ opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
-git checkout $base
-base_long=$(git log --pretty=%H | head -n 1)
-echo "DEBUG: git commit for BASE = $base_long"
+echo "DEBUG: old_coq_commit = $old_coq_commit"
+git checkout $old_coq_commit
+old_coq_commit_long=$(git log --pretty=%H | head -n 1)
+echo "DEBUG: old_coq_commit_long = $old_coq_commit_long"
 
 if opam install coq.$coq_opam_version -v -b -j$number_of_processors; then
-    # all is well
     :
 else
     echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the NEWER commit = $head_long)."
@@ -480,8 +459,8 @@ mv "$OPAMROOT" "$OPAMROOT.OLD"
 # --------------------------------------------------------------------------------
 
 # Measure the compilation times of the specified OPAM packages
-# - at the HEAD of the indicated branch
-# - at the BASE of the indicated branch
+# - for the NEW commit
+# - for the OLD commit
 
 export OPAMROOT="$working_dir/.opam"
 
@@ -500,7 +479,6 @@ for coq_opam_package in $coq_opam_packages; do
     opam uninstall $coq_opam_package -v
 
     if opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y; then
-        # all is well
         :
     else
         echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
@@ -536,7 +514,6 @@ for coq_opam_package in $coq_opam_packages; do
     opam uninstall $coq_opam_package -v
 
     if opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y; then
-        # all is well
         :
     else
         echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
@@ -566,8 +543,8 @@ for coq_opam_package in $coq_opam_packages; do
     installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
 
     # Print the intermediate results after we finish benchmarking an OPAM package.
-    echo "DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages"
-    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
+    echo "DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
+    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
 done
 
 echo "DEBUG: coq_opam_packages = $coq_opam_packages"
@@ -579,8 +556,8 @@ echo "DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages"
 # - $working_dir/camlp5
 # - $working_dir/custom_opam_repo
 # - $working_dir/.opam
-# - $working_dir/.opam.BASE
-# - $working_dir/.opam.HEAD
+# - $working_dir/.opam.OLD
+# - $working_dir/.opam.NEW
  
 
 # These files hold the measured data:
@@ -589,16 +566,16 @@ echo "DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages"
 #
 #   - for every $iteration
 #
-#     - $working_dir/$coq_opam_package.HEAD.$iteration.time
+#     - $working_dir/$coq_opam_package.NEW.$iteration.time
 #
 #         This file contains the output of the
 #
 #           /usr/bin/time --format="%U" ...
 #
 #         command that was used to measure compilation time of a particular $coq_opam_package
-#         in a particular $iteration at the HEAD of a given $coq_branch.
+#         in a particular $iteration at the NEW commit.
 #
-#     - $working_dir/$coq_opam_package.HEAD.$iteration.perf
+#     - $working_dir/$coq_opam_package.NEW.$iteration.perf
 #
 #         This file contains the output of the
 #
@@ -606,18 +583,18 @@ echo "DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages"
 #
 #         command that was used to measure the total number of CPU instructions and CPU cycles
 #         executed during the compilation of a particular $coq_opam_package in a particular $iteration
-#         at the HEAD of a given $coq_branch.
+#         at the NEW commit.
 #
-#     - $working_dir/$coq_opam_package.BASE$iteration.time
+#     - $working_dir/$coq_opam_package.OLD.$iteration.time
 #
 #         This file contains the output of the
 #
 #           /usr/bin/time --format="%U" ...
 #
 #         command that was used to measure compilation time of a particular $coq_opam_package
-#         in a particular $iteration at the BASE of a given $coq_branch.
+#         in a particular $iteration at the OLD commit.
 #
-#     - $working_dir/$coq_opam_package.BASE.$iteration.perf
+#     - $working_dir/$coq_opam_package.OLD.$iteration.perf
 #
 #         This file contains the output of the
 #
@@ -625,7 +602,7 @@ echo "DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages"
 #
 #         command that was used to measure the total number of CPU instructions and CPU cycles
 #         executed during the compilation of a particular $coq_opam_package in a particular $iteration
-#         at the BASE of a given $coq_branch.
+#         at the OLD commit.
 #
 # The following script processes all these files and prints results in a comprehensible way.
 
@@ -676,6 +653,6 @@ else
         printf "%s not installable.\n\n\n" $(print_singular_or_plural is are $not_installable_coq_opam_packages)
     fi
 
-    echo "DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages"
-    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $head_long $base_long 0 user_time_pdiff $installable_coq_opam_packages
+    echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $new_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
+    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
 fi

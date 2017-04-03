@@ -334,11 +334,7 @@ OLD = %s
 
 (* TESTS:
 
-   (* roquableu *)
-
-      (* coq-bench/two_points_on_the_same_branch.sh ~/tmp/a https://github.com/psteckler/coq.git array-loops-experiment 10 coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
-
-      (* coq-bench/shared/bench.ml coq-bench/shared/inputs_for_formatting_tests/00-mathcomp-00 10 062afabae15e4d7d96029211effd760d8d730484 37817bb5ac6bb9fa9a4d67a5604a35424f7b343d 0 package_name coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
+      (* coq-bench/shared/render_results.ml coq-bench/shared/inputs_for_formatting_tests/00-mathcomp-00 10 062afabae15e4d7d96029211effd760d8d730484 37817bb5ac6bb9fa9a4d67a5604a35424f7b343d 0 package_name coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
 
       ┌────────────────────────┬───────────────────────┬─────────────────────────────────────┬─────────────────────────────────────┐
       │                        │     user time [s]     │             CPU cycles              │          CPU instructions           │
@@ -358,9 +354,7 @@ OLD = %s
       │ coq-mathcomp-ssreflect │  60.36  60.63 -0.45 % │  178116867145  178136150304 -0.01 % │  171282677609  171356983582 -0.04 % │
       └────────────────────────┴───────────────────────┴─────────────────────────────────────┴─────────────────────────────────────┘
 
-      (* coq-bench/two_points_on_the_same_branch.sh ~/tmp/b https://github.com/psteckler/coq.git array-loops-experiment 10 coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
-
-      (* coq-bench/shared/bench.ml coq-bench/shared/inputs_for_formatting_tests/00-mathcomp-01 10 062afabae15e4d7d96029211effd760d8d730484 37817bb5ac6bb9fa9a4d67a5604a35424f7b343d 0 package_name coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
+      (* coq-bench/shared/render_results.ml coq-bench/shared/inputs_for_formatting_tests/00-mathcomp-01 10 062afabae15e4d7d96029211effd760d8d730484 37817bb5ac6bb9fa9a4d67a5604a35424f7b343d 0 package_name coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
 
       ┌────────────────────────┬───────────────────────┬─────────────────────────────────────┬─────────────────────────────────────┐
       │                        │     user time [s]     │             CPU cycles              │          CPU instructions           │
@@ -382,11 +376,7 @@ OLD = %s
 
    (* marelle1 *)
 
-      (* d=~/tmp/d; rm -r -f $d; mkdir $d; date > $d.date; ./two_versions.sh $d 8.6 8.5.3 10 coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} | tee $d.out; date >> $d.date *)
-
-      (* ./two_versions.sh /tmp 8.6 8.5.3 10 coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
-
-      (* coq-bench/shared/bench.ml coq-bench/shared/inputs_for_formatting_tests/02-mathcomp-00 10 8.6 8.5.3 0 user_time_pdiff coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
+      (* coq-bench/shared/render_results.ml coq-bench/shared/inputs_for_formatting_tests/02-mathcomp-00 10 8.6 8.5.3 0 user_time_pdiff coq-mathcomp-{algebra,character,field,fingroup,solvable,ssreflect} *)
 
       ┌────────────────────────┬────────────────────────┬──────────────────────────────────────┬──────────────────────────────────────┐
       │                        │     user time [s]      │              CPU cycles              │           CPU instructions           │
@@ -406,14 +396,7 @@ OLD = %s
       │  coq-mathcomp-fingroup │  57.09  70.39 -18.89 % │  211574889864  261327328228 -19.04 % │  232001619180  274457482721 -15.47 % │
       └────────────────────────┴────────────────────────┴──────────────────────────────────────┴──────────────────────────────────────┘
 
-      (* d=~/tmp/a; rm -r -f $d; mkdir $d; date > $d.date; ./stdlib.sh $d https://github.com/coq/coq.git V8.6 V8.5pl3 10 | tee $d.out; date >> $d.date *)
-
-      (* coq-bench/stdlib.sh ~/tmp/a https://github.com/coq/coq.git V8.6 V8.5pl3 10 *)
-
-      (* coq-bench/shared/bench.ml coq-bench/shared/inputs_for_formatting_tests/03-stdlib 10 8.6 8.5.3 0 package_name stdlib *)
-
-      (* Sat Jan 21 16:57:04 CET 2017
-         Sat Jan 21 19:44:31 CET 2017 *)
+      (* coq-bench/shared/render_results.ml coq-bench/shared/inputs_for_formatting_tests/03-stdlib 10 8.6 8.5.3 0 package_name stdlib *)
 
       ┌──────────────┬────────────────────────┬─────────────────────────────────────┬─────────────────────────────────────┐
       │              │     user time [s]      │             CPU cycles              │          CPU instructions           │
@@ -423,9 +406,7 @@ OLD = %s
       │       stdlib │ 385.71 452.74 -14.81 % │ 1444996061570 1589989599510 -9.12 % │ 1484837046549 1615010725676 -8.06 % │
       └──────────────┴────────────────────────┴─────────────────────────────────────┴─────────────────────────────────────┘
 
-      (* https://ci.inria.fr/coq/view/benchmarking/job/benchmark-the-whole-branch/70/console *)
-
-      (* ./bench.ml inputs_for_formatting_tests/04--ppedrot--optim-kernel-array-map--1x 1 2b8ad7e04002ebe9fec5790da924673418f2fa7f 7707396c5010d88c3d0be6ecee816d8da7ed0ee0 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect coq-unimath coq-math-classes coq-corn coq-iris coq-hott coq-geocoq coq-flocq coq-coquelicot coq-compcert coq-fiat-parsers coq-fiat-crypto coq-color coq-sf *)
+      (* coq-bench/shared/render_results.ml inputs_for_formatting_tests/04--ppedrot--optim-kernel-array-map--1x 1 2b8ad7e04002ebe9fec5790da924673418f2fa7f 7707396c5010d88c3d0be6ecee816d8da7ed0ee0 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect coq-unimath coq-math-classes coq-corn coq-iris coq-hott coq-geocoq coq-flocq coq-coquelicot coq-compcert coq-fiat-parsers coq-fiat-crypto coq-color coq-sf *)
 
       ┌────────────────────────┬──────────────────────────┬──────────────────────────────────────┬────────────────────────────────────────┐
       │                        │      user time [s]       │              CPU cycles              │            CPU instructions            │
@@ -471,9 +452,7 @@ OLD = %s
       │            coq-unimath │ 1225.31 1300.68  -5.79 % │ 3398824074880 3605612714343  -5.74 % │  5603181113316  5966571696259  -6.09 % │
       └────────────────────────┴──────────────────────────┴──────────────────────────────────────┴────────────────────────────────────────┘
 
-      (* https://ci.inria.fr/coq/view/benchmarking/job/benchmark-the-whole-branch/72/console *)
-
-      (* ./bench.ml inputs_for_formatting_tests/05--ppedrot--optim-kernel-array-map--2x/ 2 2b8ad7e04002ebe9fec5790da924673418f2fa7f 7707396c5010d88c3d0be6ecee816d8da7ed0ee0 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect coq-unimath coq-math-classes coq-corn coq-iris coq-hott coq-geocoq coq-flocq coq-coquelicot coq-compcert coq-fiat-parsers coq-fiat-crypto coq-color coq-sf *)
+      (* coq-bench/shared/render_results.ml inputs_for_formatting_tests/05--ppedrot--optim-kernel-array-map--2x/ 2 2b8ad7e04002ebe9fec5790da924673418f2fa7f 7707396c5010d88c3d0be6ecee816d8da7ed0ee0 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect coq-unimath coq-math-classes coq-corn coq-iris coq-hott coq-geocoq coq-flocq coq-coquelicot coq-compcert coq-fiat-parsers coq-fiat-crypto coq-color coq-sf *)
 
       ┌────────────────────────┬─────────────────────────┬─────────────────────────────────────┬───────────────────────────────────────┐
       │                        │      user time [s]      │             CPU cycles              │           CPU instructions            │
@@ -519,9 +498,7 @@ OLD = %s
       │            coq-unimath │ 1210.59 1286.37 -5.89 % │ 3355432194448 3568318753607 -5.97 % │  5603408474428  5966451346906 -6.08 % │
       └────────────────────────┴─────────────────────────┴─────────────────────────────────────┴───────────────────────────────────────┘
 
-      (* https://ci.inria.fr/coq/view/benchmarking/job/benchmark-the-whole-branch/73/console *)
-
-      (* ./bench.ml inputs_for_formatting_tests/06--ppedrot--optim-kernel-array-map--3x 3 2b8ad7e04002ebe9fec5790da924673418f2fa7f 7707396c5010d88c3d0be6ecee816d8da7ed0ee0 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect coq-unimath coq-math-classes coq-corn coq-iris coq-hott coq-geocoq coq-flocq coq-coquelicot coq-compcert coq-fiat-parsers coq-fiat-crypto coq-color coq-sf *)
+      (* coq-bench/shared/render_results.ml inputs_for_formatting_tests/06--ppedrot--optim-kernel-array-map--3x 3 2b8ad7e04002ebe9fec5790da924673418f2fa7f 7707396c5010d88c3d0be6ecee816d8da7ed0ee0 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect coq-unimath coq-math-classes coq-corn coq-iris coq-hott coq-geocoq coq-flocq coq-coquelicot coq-compcert coq-fiat-parsers coq-fiat-crypto coq-color coq-sf *)
 
       ┌────────────────────────┬─────────────────────────┬─────────────────────────────────────┬───────────────────────────────────────┐
       │                        │      user time [s]      │             CPU cycles              │           CPU instructions            │
@@ -567,9 +544,7 @@ OLD = %s
       │            coq-unimath │ 1209.14 1285.05 -5.91 % │ 3353221176309 3564055723614 -5.92 % │  5603642837208  5966129212182 -6.08 % │
       └────────────────────────┴─────────────────────────┴─────────────────────────────────────┴───────────────────────────────────────┘
 
-      (* https://ci.inria.fr/coq/view/benchmarking/job/benchmark-the-whole-branch/74/console *)
-
-      (* ./bench.ml inputs_for_formatting_tests/07--ppedrot--optim-kernel-array-map--4x 4 2b8ad7e04002ebe9fec5790da924673418f2fa7f 7707396c5010d88c3d0be6ecee816d8da7ed0ee0 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect coq-unimath coq-math-classes coq-corn coq-iris coq-hott coq-geocoq coq-flocq coq-coquelicot coq-compcert coq-fiat-parsers coq-fiat-crypto coq-color coq-sf *)
+      (* coq-bench/shared/render_results.ml inputs_for_formatting_tests/07--ppedrot--optim-kernel-array-map--4x 4 2b8ad7e04002ebe9fec5790da924673418f2fa7f 7707396c5010d88c3d0be6ecee816d8da7ed0ee0 0 package_name coq-mathcomp-algebra coq-mathcomp-character coq-mathcomp-field coq-mathcomp-fingroup coq-mathcomp-solvable coq-mathcomp-ssreflect coq-unimath coq-math-classes coq-corn coq-iris coq-hott coq-geocoq coq-flocq coq-coquelicot coq-compcert coq-fiat-parsers coq-fiat-crypto coq-color coq-sf *)
 
       ┌────────────────────────┬─────────────────────────┬─────────────────────────────────────┬───────────────────────────────────────┐
       │                        │      user time [s]      │             CPU cycles              │           CPU instructions            │
