@@ -492,7 +492,8 @@ for coq_opam_package in $coq_opam_packages; do
         :
     else
         echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
-        exit 1
+        mv "$OPAMROOT" "$OPAMROOT.NEW"
+        continue
     fi
 
     for iteration in $(seq $num_of_iterations); do
@@ -527,7 +528,8 @@ for coq_opam_package in $coq_opam_packages; do
         :
     else
         echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
-        exit 1
+        mv "$OPAMROOT" "$OPAMROOT.NEW"
+        continue
     fi
 
     for iteration in $(seq $num_of_iterations); do
