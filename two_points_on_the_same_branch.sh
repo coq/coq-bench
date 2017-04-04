@@ -9,11 +9,12 @@
 # ASSUMPTIONS:
 # - camlp5 is installed and available in $PATH
 # - ocamlfind is installed and available in $PATH
-# - "ocaml*" binaries visible via $PATH are the ones that were installed via "apt-get" rather than "opam".
-#   (or, at least, their version matches)
+# - "ocaml*" binaries visible via $PATH
 
 # TODO
-# - Get rid of the "minimal_user_time" related stuff.
+# - We should avoid mindless renaming of OPAM-roots.
+#   This is not necessary, and it complicates the error-handling
+#   (each "continue" command had to be coupled with renaming --- this is clumsy)
 # - Be more refined wrt. the exit status.
 #   (indicate more precisely what went wrong)
 # - Make sure that the compilation of each OPAM package is (also) logged into a separate directory
@@ -123,7 +124,7 @@ program_name="$0"
 program_path=$(readlink -f "${program_name%/*}")
 program_name="${program_name##*/}"
 synopsys1="\t$b$program_name$r  [$b-h$r | $b--help$r]"
-synopsys2="\t$b$program_name$r  ${u}working_dir$r  ${u}new_coq_repository$r  ${u}new_coq_commit$r${b}  ${u}old_coq_repository$r  $r${u}old_coq_commit$r  ${u}num_of_iterations$r  ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
+synopsys2="\t$b$program_name$r ${u}working_dir$r  ${u}new_coq_repository$r  ${u}new_coq_commit$r${r}  ${u}new_coq_opam_archive_git_uri$r \\\\\\n\t                                 ${u}old_coq_repository$r  $r${u}old_coq_commit$r  ${u}num_of_iterations$r  \\\\\\n\t                                 ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
 
 # Print the "manual page" for this script.
 print_man_page () {
@@ -151,13 +152,16 @@ print_man_page () {
     echo -e "\t\tHere:"
     echo -e "\t\t- ${u}working_dir$r determines the directory where all the necessary temporary files should be stored"
     echo -e "\t\t- ${u}new_coq_repository$r and ${u}new_coq_commit$r identifies the newer version of Coq"
+    echo -e "\t\t- ${u}new_coq_opam_archive_git_uri$r is an URI of git repository holding the definitions of OPAM packages"
+    echo -e "\t\t  that should be used with the ${u}new_coq_commit$r."
     echo -e "\t\t- ${u}old_coq_repository$r and ${u}old_coq_commit$r identifies the older version of Coq"
     echo -e "\t\t- ${u}num_of_iterations$r determines how many times each of the requested OPAM packages should be compiled"
     echo -e "\t\t  (with each of these two versions of Coq)."
     echo
     echo -e ${b}EXAMPLES$r
     echo
-    echo -e "\t$b$program_name  /tmp  https://github.com/gmalecha/coq.git  3df2431  https://github.com/coq/coq.git  a204941  1  coq-sf$r"
+    echo -e "\t$b$program_name  /tmp https://github.com/gmalecha/coq.git  3df2431  https://github.com/coq/opam-coq-archive.git \\"
+    echo -e "\t                                  https://github.com/coq/coq.git  a204941  1  coq-sf$r"
     echo
 }
 
@@ -192,7 +196,7 @@ case $# in
                 ;;
         esac
         ;;
-    2 | 3 | 4 | 5 | 6)
+    2 | 3 | 4 | 5 | 6 | 7)
         echo > /dev/stderr
         echo ERROR: wrong number of arguments. > /dev/stderr
         print_man_page_hint
@@ -202,9 +206,10 @@ case $# in
         working_dir="$1"
         new_coq_repository="$2"
         new_coq_commit="$3"
-        old_coq_repository="$4"
-        old_coq_commit="$5"
-        num_of_iterations="$6"
+        new_coq_opam_archive_git_uri="$4"
+        old_coq_repository="$5"
+        old_coq_commit="$6"
+        num_of_iterations="$7"
         if echo "$num_of_iterations" | grep '^[1-9][0-9]*$' 2> /dev/null > /dev/null; then
             :
         else
@@ -213,19 +218,20 @@ case $# in
             print_man_page_hint
             exit 1
         fi
-        shift 6
+        shift 7
         coq_opam_packages=$@
         ;;
 esac
 
-echo DEBUG: ocaml -version = `ocaml -version`
-echo DEBUG: working_dir = $working_dir
-echo DEBUG: new_coq_repository = $new_coq_repository
-echo DEBUG: old_coq_repository = $old_coq_repository
-echo DEBUG: new_coq_commit = $new_coq_commit
-echo DEBUG: old_coq_commit = $old_coq_commit
-echo DEBUG: num_of_iterations = $num_of_iterations
-echo DEBUG: coq_opam_packages = $coq_opam_packages
+echo "DEBUG: ocaml -version = `ocaml -version`"
+echo "DEBUG: working_dir = $working_dir"
+echo "DEBUG: new_coq_repository = $new_coq_repository"
+echo "DEBUG: new_coq_commit = $new_coq_commit"
+echo "DEBUG: new_coq_opam_archive_git_uri = $new_coq_opam_archive_git_uri"
+echo "DEBUG: old_coq_repository = $old_coq_repository"
+echo "DEBUG: old_coq_commit = $old_coq_commit"
+echo "DEBUG: num_of_iterations = $num_of_iterations"
+echo "DEBUG: coq_opam_packages = $coq_opam_packages"
 
 # --------------------------------------------------------------------------------
 
@@ -264,7 +270,6 @@ fi
 
 # Clone the indicated git-repository.
 
-echo DEBUG 0
 coq_dir="$working_dir/coq"
 git clone "$new_coq_repository" "$coq_dir"
 cd "$coq_dir"
@@ -412,8 +417,12 @@ echo n | opam init -v
 echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
 
+
+new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
+git clone --depth 1 "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
+
 opam repo add custom-opam-repo "$custom_opam_repo"
-opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
+opam repo add coq-extra-dev "$new_coq_opam_archive_dir/extra-dev"
 opam repo add coq-released https://coq.inria.fr/opam/released
 opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
@@ -483,6 +492,13 @@ for coq_opam_package in $coq_opam_packages; do
     # perform measurements for the NEW commit (provided by the user)
     mv "$OPAMROOT.NEW" "$OPAMROOT"
 
+    if opam show $coq_opam_package; then
+	:
+    else
+        mv "$OPAMROOT" "$OPAMROOT.NEW"
+        continue
+    fi	
+
     # If a given OPAM-package was already installed
     # (as a dependency of some OPAM-package that we have benchmarked before),
     # remove it.
@@ -519,6 +535,13 @@ for coq_opam_package in $coq_opam_packages; do
     # perform measurements for the OLD commit (provided by the user)
     mv "$OPAMROOT.OLD" "$OPAMROOT"
 
+    if opam show $coq_opam_package; then
+	:
+    else
+        mv "$OPAMROOT" "$OPAMROOT.NEW"
+        continue
+    fi
+
     # If a given OPAM-package was already installed
     # (as a dependency of some OPAM-package that we have benchmarked before),
     # remove it.
@@ -554,13 +577,17 @@ for coq_opam_package in $coq_opam_packages; do
 
     installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
 
-    # Print the intermediate results after we finish benchmarking an OPAM package.
-    echo "DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
-    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
+    # Print the intermediate results after we finish benchmarking each OPAM package
+    if [ "$coq_opam_package" = "$(echo $coq_opam_packages | sed 's/ /\n/g' | tail -n 1)" ]; then
+        # It does not make sense to print the intermediate results when we finished bechmarking the very last OPAM package
+        # because the next thing will do is that we will print the final results.
+        # It would look lame to print the same table twice.
+	:
+    else
+	echo "DEBUG: $program_path/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
+        $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
+    fi
 done
-
-echo "DEBUG: coq_opam_packages = $coq_opam_packages"
-echo "DEBUG: installable_coq_opam_packages = $installable_coq_opam_packages"
 
 # The following directories are no longer relevant:
 # - $working_dir/coq
@@ -655,7 +682,6 @@ if [ -z "$installable_coq_opam_packages" ]; then
     exit 1
 else
     not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
-    echo "DEBUG: not_installable_coq_opam_packages = $not_installable_coq_opam_packages"
 
     exit_code=0
     if [ ! -z "$not_installable_coq_opam_packages" ]; then
@@ -672,3 +698,39 @@ else
     $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
     exit $exit_code
 fi
+
+# ------------------------------------------------------------------------------
+#
+# Tests:
+#
+# F:
+#
+#   w=~/tmp/f.0 && rm -r -f $w && mkdir $w && nice -n 19 ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3 1 coq-color 2>&1 | tee $w.log
+#
+#   w=~/tmp/f.0 && rm -r -f $w && mkdir $w && nice -n 19 ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3 1 coq-fermat4 2>&1 | tee $w.log
+#
+# P:
+#
+#   w=~/tmp/p.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf | tee $w.log
+#
+# PF:
+#
+#   w=~/tmp/pf.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf coq-compcert | tee $w.log
+#
+# PP:
+#
+#   w=~/tmp/pp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf coq-fiat-parsers | tee $w.log
+#
+#   w=~/tmp/pp.1 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf coq-fiat-parsers | tee $w.log
+#
+# FFP:
+#
+#   w=~/tmp/ffp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-compcert coq-color coq-sf | tee $w.log
+#
+# PPP:
+#
+#   w=~/tmp/ppp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf coq-fiat-parsers coq-fiat-crypto | tee $w.log
+#
+# PPPPPPPP:
+#
+#   w=~/tmp/ppp && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-founify coq-groups coq-free-groups coq-ccs coq-coinductive-examples coq-descente-infinie coq-rem coq-zfc | tee $w.log
