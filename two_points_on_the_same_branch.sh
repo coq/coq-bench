@@ -528,7 +528,7 @@ for coq_opam_package in $coq_opam_packages; do
         :
     else
         echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
-        mv "$OPAMROOT" "$OPAMROOT.NEW"
+        mv "$OPAMROOT" "$OPAMROOT.OLD"
         continue
     fi
 
