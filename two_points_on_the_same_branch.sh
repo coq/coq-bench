@@ -219,7 +219,7 @@ case $# in
             print_man_page_hint
             exit 1
         fi
-        shift 7
+        shift 8
         coq_opam_packages=$@
         ;;
 esac
