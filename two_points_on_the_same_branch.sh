@@ -124,7 +124,7 @@ program_name="$0"
 program_path=$(readlink -f "${program_name%/*}")
 program_name="${program_name##*/}"
 synopsys1="\t$b$program_name$r  [$b-h$r | $b--help$r]"
-synopsys2="\t$b$program_name$r ${u}working_dir$r  ${u}new_coq_repository$r  ${u}new_coq_commit$r${r}  ${u}new_coq_opam_archive_git_uri$r \\\\\\n\t                                 ${u}old_coq_repository$r  $r${u}old_coq_commit$r  ${u}num_of_iterations$r  \\\\\\n\t                                 ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
+synopsys2="\t$b$program_name$r ${u}working_dir$r  ${u}new_coq_repository$r  ${u}new_coq_commit$r${r} \\\\\\n\t                                 ${u}new_coq_opam_archive_git_uri$r  ${u}new_coq_opam_archive_git_branch$r \\\\\\n\t                                 ${u}old_coq_repository$r  $r${u}old_coq_commit$r  ${u}num_of_iterations$r  \\\\\\n\t                                 ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
 
 # Print the "manual page" for this script.
 print_man_page () {
@@ -152,7 +152,8 @@ print_man_page () {
     echo -e "\t\tHere:"
     echo -e "\t\t- ${u}working_dir$r determines the directory where all the necessary temporary files should be stored"
     echo -e "\t\t- ${u}new_coq_repository$r and ${u}new_coq_commit$r identifies the newer version of Coq"
-    echo -e "\t\t- ${u}new_coq_opam_archive_git_uri$r is an URI of git repository holding the definitions of OPAM packages"
+    echo -e "\t\t- ${u}new_coq_opam_archive_git_{uri,branch}$r designates the git repository and the branch holding the definitions of OPAM packages"
+    echo -e "\t\t- ${u}new_coq_opam_archive_git_branch$r is the branch (of the above repository) we want to use"
     echo -e "\t\t  that should be used with the ${u}new_coq_commit$r."
     echo -e "\t\t- ${u}old_coq_repository$r and ${u}old_coq_commit$r identifies the older version of Coq"
     echo -e "\t\t- ${u}num_of_iterations$r determines how many times each of the requested OPAM packages should be compiled"
@@ -160,7 +161,8 @@ print_man_page () {
     echo
     echo -e ${b}EXAMPLES$r
     echo
-    echo -e "\t$b$program_name  /tmp https://github.com/gmalecha/coq.git  3df2431  https://github.com/coq/opam-coq-archive.git \\"
+    echo -e "\t$b$program_name  /tmp https://github.com/gmalecha/coq.git  3df2431 \\"
+    echo -e "\t                                  https://github.com/coq/opam-coq-archive.git  master \\"
     echo -e "\t                                  https://github.com/coq/coq.git  a204941  1  coq-sf$r"
     echo
 }
@@ -407,15 +409,16 @@ touch $custom_opam_repo/packages/coq/coq.$coq_opam_version/descr
 
 # --------------------------------------------------------------------------------
 
-# Set the OPAM root
-
-export OPAMROOT="$working_dir/.opam"
+new_opam_root="$working_dir/.opam.NEW"
+old_opam_root="$working_dir/.opam.OLD"
 
 # --------------------------------------------------------------------------------
 
 # Create a new OPAM-root to which we will install the NEW version of Coq.
 
-echo n | opam init -v
+export OPAMROOT="$new_opam_root"
+
+echo n | opam init -v -j$number_of_processors
 echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
 
@@ -445,13 +448,15 @@ if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
 
-mv "$OPAMROOT" "$OPAMROOT.NEW"
-
 # --------------------------------------------------------------------------------
 
 # Create a new OPAM-root to which we will install the OLD version of Coq.
 
+export OPAMROOT="$old_opam_root"
+
 echo n | opam init -v -j$number_of_processors
+echo $PATH
+. "$OPAMROOT"/opam-init/init.sh
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
@@ -475,8 +480,6 @@ if [ ! $coq_opam_version = dev ]; then
   opam pin add coq $coq_opam_version
 fi
 
-mv "$OPAMROOT" "$OPAMROOT.OLD"
-
 # --------------------------------------------------------------------------------
 
 # Measure the compilation times of the specified OPAM packages
@@ -492,27 +495,17 @@ for coq_opam_package in $coq_opam_packages; do
     echo "DEBUG: coq_opam_package = $coq_opam_package"
 
     # perform measurements for the NEW commit (provided by the user)
-    mv "$OPAMROOT.NEW" "$OPAMROOT"
+    export OPAMROOT="$new_opam_root"
+    . "$OPAMROOT"/opam-init/init.sh
 
-    if opam show $coq_opam_package; then
-	:
-    else
-        mv "$OPAMROOT" "$OPAMROOT.NEW"
-        continue
-    fi	
+    opam show $coq_opam_package || continue
 
     # If a given OPAM-package was already installed
     # (as a dependency of some OPAM-package that we have benchmarked before),
     # remove it.
     opam uninstall $coq_opam_package -v
 
-    if opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y; then
-        :
-    else
-        echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
-        mv "$OPAMROOT" "$OPAMROOT.NEW"
-        continue
-    fi
+    opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y || continue
 
     for iteration in $(seq $num_of_iterations); do
         if /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
@@ -528,34 +521,24 @@ for coq_opam_package in $coq_opam_packages; do
             fi
         else
             # "opam install ...", we have started above, failed.
-            mv "$OPAMROOT" "$OPAMROOT.NEW"
             continue 2
         fi
     done
-    mv "$OPAMROOT" "$OPAMROOT.NEW"
+
+    # --------------------------------------------------------------
 
     # perform measurements for the OLD commit (provided by the user)
-    mv "$OPAMROOT.OLD" "$OPAMROOT"
+    export OPAMROOT="$old_opam_root"
+    . "$OPAMROOT"/opam-init/init.sh
 
-    if opam show $coq_opam_package; then
-	:
-    else
-        mv "$OPAMROOT" "$OPAMROOT.NEW"
-        continue
-    fi
+    opam show $coq_opam_package || continue
 
     # If a given OPAM-package was already installed
     # (as a dependency of some OPAM-package that we have benchmarked before),
     # remove it.
     opam uninstall $coq_opam_package -v
 
-    if opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y; then
-        :
-    else
-        echo "ERROR: \"$coq_opam_package -v -b -j$number_of_processors --deps-only -y\" has failed."
-        mv "$OPAMROOT" "$OPAMROOT.OLD"
-        continue
-    fi
+    opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y || continue
 
     for iteration in $(seq $num_of_iterations); do
         if /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
@@ -571,13 +554,13 @@ for coq_opam_package in $coq_opam_packages; do
             fi
         else
             # "opam install ...", we have started above, failed.
-            mv "$OPAMROOT" "$OPAMROOT.OLD"
             continue 2
         fi
     done
-    mv "$OPAMROOT" "$OPAMROOT.OLD"
 
     installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
+
+    # --------------------------------------------------------------
 
     # Print the intermediate results after we finish benchmarking each OPAM package
     if [ "$coq_opam_package" = "$(echo $coq_opam_packages | sed 's/ /\n/g' | tail -n 1)" ]; then
