@@ -707,32 +707,38 @@ fi
 #
 # F:
 #
-#   w=~/tmp/f.0 && rm -r -f $w && mkdir $w && nice -n 19 ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3 1 coq-color 2>&1 | tee $w.log
+#   w=~/tmp/f.0 && rm -r -f $w && mkdir $w && nice -n 19 ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-color 2>&1 | tee $w.log
 #
-#   w=~/tmp/f.0 && rm -r -f $w && mkdir $w && nice -n 19 ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3 1 coq-fermat4 2>&1 | tee $w.log
+#   w=~/tmp/f.0 && rm -r -f $w && mkdir $w && nice -n 19 ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-fermat4 2>&1 | tee $w.log
 #
 # P:
 #
-#   w=~/tmp/p.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf | tee $w.log
+#   w=~/tmp/p.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-sf | tee $w.log
+#
+#   w=~/tmp/p.1 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-firing-squad | tee $w.log
 #
 # PF:
 #
-#   w=~/tmp/pf.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf coq-compcert | tee $w.log
+#   w=~/tmp/pf.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-sf coq-compcert | tee $w.log
 #
 # PP:
 #
-#   w=~/tmp/pp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf coq-fiat-parsers | tee $w.log
+#   w=~/tmp/pp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-sf coq-fiat-parsers | tee $w.log
 #
-#   w=~/tmp/pp.1 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf coq-fiat-parsers | tee $w.log
+#   w=~/tmp/pp.1 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-sf coq-fiat-parsers | tee $w.log
+#
+#   w=~/tmp/pp.1 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-firing-squad coq-founify | tee $w.log
 #
 # FFP:
 #
-#   w=~/tmp/ffp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-compcert coq-color coq-sf | tee $w.log
+#   w=~/tmp/ffp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-compcert coq-color coq-sf | tee $w.log
 #
 # PPP:
 #
-#   w=~/tmp/ppp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-sf coq-fiat-parsers coq-fiat-crypto | tee $w.log
+#   w=~/tmp/ppp.0 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-sf coq-fiat-parsers coq-fiat-crypto | tee $w.log
+#
+#   w=~/tmp/ppp.1 && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-firing-squad coq-founify coq-zfc | tee $w.log
 #
 # PPPPPPPP:
 #
-#   w=~/tmp/ppp && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  https://github.com/coq/coq.git 9da03d3  1 coq-founify coq-groups coq-free-groups coq-ccs coq-coinductive-examples coq-descente-infinie coq-rem coq-zfc | tee $w.log
+#   w=~/tmp/ppp && rm -r -f $w && mkdir $w && nice -n 19  ./two_points_on_the_same_branch.sh $w https://github.com/matejkosik/coq.git 9fe5dc2a  https://github.com/coq/opam-coq-archive.git  master  https://github.com/coq/coq.git 9da03d3  1  coq-founify coq-groups coq-free-groups coq-ccs coq-coinductive-examples coq-descente-infinie coq-rem coq-zfc | tee $w.log
