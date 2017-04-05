@@ -196,7 +196,7 @@ case $# in
                 ;;
         esac
         ;;
-    2 | 3 | 4 | 5 | 6 | 7)
+    2 | 3 | 4 | 5 | 6 | 7 | 8)
         echo > /dev/stderr
         echo ERROR: wrong number of arguments. > /dev/stderr
         print_man_page_hint
@@ -207,9 +207,10 @@ case $# in
         new_coq_repository="$2"
         new_coq_commit="$3"
         new_coq_opam_archive_git_uri="$4"
-        old_coq_repository="$5"
-        old_coq_commit="$6"
-        num_of_iterations="$7"
+        new_coq_opam_archive_git_branch="$5"
+        old_coq_repository="$6"
+        old_coq_commit="$7"
+        num_of_iterations="$8"
         if echo "$num_of_iterations" | grep '^[1-9][0-9]*$' 2> /dev/null > /dev/null; then
             :
         else
@@ -228,6 +229,7 @@ echo "DEBUG: working_dir = $working_dir"
 echo "DEBUG: new_coq_repository = $new_coq_repository"
 echo "DEBUG: new_coq_commit = $new_coq_commit"
 echo "DEBUG: new_coq_opam_archive_git_uri = $new_coq_opam_archive_git_uri"
+echo "DEBUG: new_coq_opam_archive_git_branch = $new_coq_opam_archive_git_branch"
 echo "DEBUG: old_coq_repository = $old_coq_repository"
 echo "DEBUG: old_coq_commit = $old_coq_commit"
 echo "DEBUG: num_of_iterations = $num_of_iterations"
@@ -419,7 +421,7 @@ echo $PATH
 
 
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
-git clone --depth 1 "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
+git clone --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev "$new_coq_opam_archive_dir/extra-dev"
