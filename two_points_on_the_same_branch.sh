@@ -116,9 +116,15 @@ print_man_page () {
     echo
     echo -e ${b}EXAMPLES$r
     echo
-    echo -e "\t$b$program_name  /tmp https://github.com/gmalecha/coq.git  3df2431 \\"
+    echo -e "\t$b$program_name  /tmp https://github.com/gmalecha/coq.git  a0fc4cc \\"
     echo -e "\t                                  https://github.com/coq/opam-coq-archive.git  master \\"
-    echo -e "\t                                  https://github.com/coq/coq.git  a204941  1  coq-sf$r"
+    echo -e "\t                                  https://github.com/coq/coq.git  907db7e  1 \\"
+    echo -e "\t                                  coq-hott coq-flocq coq-compcert coq-vst coq-geocoq coq-color \\"
+    echo -e "\t                                  coq-fiat-crypto coq-fiat-parsers coq-unimath coq-sf \\"
+    echo -e "\t                                  coq-mathcomp-ssreflect coq-iris coq-mathcomp-fingroup \\"
+    echo -e "\t                                  coq-mathcomp-finmap coq-coquelicot coq-mathcomp-algebra \\"
+    echo -e "\t                                  coq-mathcomp-solvable coq-mathcomp-field coq-mathcomp-character \\"
+    echo -e "\t                                  coq-mathcomp-odd_order$r"
     echo
 }
 
