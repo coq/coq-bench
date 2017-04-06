@@ -1,18 +1,5 @@
 #! /usr/bin/env ocaml
 
-(* TODO:
-   - give this script some more appropriate name
-   - remove "filtering" of measurements that are two short ... this did not actually help
-   - refactor and share the code between the two "bench.ml" scripts
-   - swap the order of "instructions" and "cpu cycles"
-     (the order in which we store them into the file)
-     (the order in which we represent them in the memory)
-   - Give this script a better name.
-     (maybe: "render_results.ml")
-     Update ../two_{versions,points_on_the_same_branch}.sh
-     Check if Jenkins jobs are still working after this update.
-*)
-
 (* ASSUMPTIONS:
    - the 1-st command line argument (working directory):
      - designates an existing readable directory

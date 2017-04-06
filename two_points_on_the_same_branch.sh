@@ -11,64 +11,6 @@
 # - ocamlfind is installed and available in $PATH
 # - "ocaml*" binaries visible via $PATH
 
-# TODO
-# - Take advantage of the --show-actions:
-#   - make sure that the user can provide OPAM packages (for benchmarking) in arbitrary order
-#     (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
-# - Be more refined wrt. the exit status.
-#   (indicate more precisely what went wrong)
-# - Make sure that the compilation of each OPAM package is (also) logged into a separate directory
-#   - Then, if some of them fails to compile, we can give the user a link to it.
-# - Figure out how to separate `download`, `build` and `install` actions.
-#   (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
-# - run benchmarks that compare Coq 8.5 and 8.6 (for those OPAM packages that be installed to either version)
-# - check how Ocaml people tackled the same problem
-# - documentation ... add missing bits
-#   - Emilio's suggestions (https://github.com/coq/coq/pull/434)
-#     - Indeed I would add a section such as "Interpreting the numbers: for a 4x job,
-#       the numbers mean the minimum time of 4 executions of opam install package ."
-#   - Théos suggestions
-#     - explain why it makes sense to take minimum
-# - track compilation times of individual files
-# - send a message to coq-dev about the benchmarking machinery
-# - check Travis ... what it is building ... whether we are tracking the same set
-# - compile released versions (if there is no released version, let's create some some unnoficial tar.gz and use that)
-#   instead of a HEAD of some branch
-# - observe the dependency between
-#   - the total benchmarking time wrt. the number of iterations
-#   - the achieved precision wrt. the number of iterations
-#   and documented this.
-# - figure out what to do with the "coq-hott" package
-#   - currently we clone (and patch) Emilio's branch which is patched version of some old commit of upstream
-#   - what we would like to compile is the HEAD of the upstream master branch
-#   - how can we do that?
-#   - track HoTT via our "opam-install*" jobs
-# - reuse the real *.opam file for Coq (we just need custom "url" file)
-# - add checks that user-provided NEW and OLD values have the expected chronological order
-#   (i.e. NEW is a more recent commit than OLD)
-# - improve initial checks (whether our assumptions hold)
-# - camlp{4,5} ... probably we do not need the fake "camlp4" and "camlp5" packages
-#   (there is a way to tell OPAM to use the camlp4/5 available on the system instead of compiling/installing it when some package depends on it)
-# - describe the effect of the commands in the  EXAMPLES section
-# - shared/*.ml ... deal with the TODO list which is located there
-# - Maxime's suggestion:
-#   - Maybe we could try a hybrid approach, like using opam to install dependencies, but do the build to be benchmarked manually.
-#     This way, we would not need to create a fake package, we would have more control on what we measure,
-#     but could still rely on OPAM to solve dependencies."
-# - Emilio's suggestions
-#   - we should benchmark every commit
-#   - we should gather results per-file (rather than per OPAM package)
-#   - we should gather and compare results per section or per sentence (sercomp will provide necessary mechanisms)
-#   - We should benchmark every commit automatically and save the reports in a format that's easy to browse.
-# - benchmarking results (for the official branches; for the released packages)
-#   should be stored in some way to enable further proessing
-#   - e.g. to display the trend for a given package
-# - once we create v8.7 branch of Coq
-#   - update:
-#     - the "print_man_page" command
-#     - the piece of code where we set the "official_coq_branch" variable
-#     - the piece of code where we set the "coq_opam_version" variable
-
 r='\033[0m'          # reset (all attributes off)
 b='\033[1m'          # bold
 u='\033[4m'          # underline
