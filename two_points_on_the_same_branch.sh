@@ -12,21 +12,15 @@
 # - "ocaml*" binaries visible via $PATH
 
 # TODO
-# - We should avoid mindless renaming of OPAM-roots.
-#   This is not necessary, and it complicates the error-handling
-#   (each "continue" command had to be coupled with renaming --- this is clumsy)
+# - Take advantage of the --show-actions:
+#   - make sure that the user can provide OPAM packages (for benchmarking) in arbitrary order
+#     (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
 # - Be more refined wrt. the exit status.
 #   (indicate more precisely what went wrong)
 # - Make sure that the compilation of each OPAM package is (also) logged into a separate directory
 #   - Then, if some of them fails to compile, we can give the user a link to it.
-# - Take advantage of the --show-actions:
-#   - make sure that the user can provide OPAM packages (for benchmarking) in arbitrary order
-#     (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
 # - Figure out how to separate `download`, `build` and `install` actions.
-# - make sure that the user can provide OPAM packages (for benchmarking) in arbitrary order
 #   (without resorting to brute-force method where, for each of the benchmarked package, we start from scratch (fresh OPAM-root containting just the right version of Coq))
-# - remove the (in fact) superfluous argument of this script.
-#   - remove it also from the corresponding Jenkins jobs
 # - run benchmarks that compare Coq 8.5 and 8.6 (for those OPAM packages that be installed to either version)
 # - check how Ocaml people tackled the same problem
 # - documentation ... add missing bits
@@ -38,7 +32,6 @@
 # - track compilation times of individual files
 # - send a message to coq-dev about the benchmarking machinery
 # - check Travis ... what it is building ... whether we are tracking the same set
-#   - vst
 # - compile released versions (if there is no released version, let's create some some unnoficial tar.gz and use that)
 #   instead of a HEAD of some branch
 # - observe the dependency between
@@ -50,23 +43,6 @@
 #   - what we would like to compile is the HEAD of the upstream master branch
 #   - how can we do that?
 #   - track HoTT via our "opam-install*" jobs
-# - Simplify the Jenkins jobs:
-#   - https://ci.inria.fr/coq/view/coq-contribs/job/coq-contribs/
-#   - https://ci.inria.fr/coq/view/opam/job/opam-install/
-#   - https://ci.inria.fr/coq/view/benchmarking/job/benchmark-the-whole-branch/
-#   - https://ci.inria.fr/coq/view/benchmarking/job/benchmark-part-of-the-branch/
-#   Instead of requiring to specify two pieces of clumsy data:
-#   - the git repository
-#   - the name of the branch
-#   require just one string that identifies github repo and the branch and can be copy&pasted from the github's pull request:
-#   e.g.:
-# - TODO list mentioned here:
-#   https://ci.inria.fr/coq/view/benchmarking/job/benchmark-the-whole-branch/
-# - Compare our set of the tracked OPAM packages with the one tracked via Travis.
-#   - start tracking:
-#     - tlc
-#     - coq-unicoq
-#     - coq-metacoq
 # - reuse the real *.opam file for Coq (we just need custom "url" file)
 # - add checks that user-provided NEW and OLD values have the expected chronological order
 #   (i.e. NEW is a more recent commit than OLD)
@@ -74,28 +50,7 @@
 # - camlp{4,5} ... probably we do not need the fake "camlp4" and "camlp5" packages
 #   (there is a way to tell OPAM to use the camlp4/5 available on the system instead of compiling/installing it when some package depends on it)
 # - describe the effect of the commands in the  EXAMPLES section
-# - Figure out some way to measure just the interpretation of "build" section.
-#   (not interpretation of the "url" file or "install" section in the *.opam file)
-#   Figure out how to avoid measuring downloading of the actual OPAM package that is being done during "opam install".
-#   (even when all its dependencies were already installed by "opam install --deps-only ...")
-#   (suggested also by https://github.com/matejkosik/coq-bench/issues/1)
 # - shared/*.ml ... deal with the TODO list which is located there
-# - there are are multiple ways how to improve repsonsibility (shorten the benchmarking time)
-#   - what we actually want to do is:
-#     - given some set of OPAM packages that the user is interested in to benchmark
-#     - we should use an existing machinery to infer all the OPAM packages that need to be install so that we can benchmark
-#       all the OPAM packages required by the user
-#     - install all these OPAM packages in the topological order
-#     - where benchmarked packages will be installed with "-j1" and one by one
-#       and non-benchmarked packages (in the topological order in betweeen the two benchmarked packages)
-#       will be installed with "-j4"
-#       - Hmmm, now I realize that we could use more processors;
-#         it could indeed contribute to the speedup (of installation of the non-benchmarked packages)
-# - instead of abusing "opam" for the purposes for which it wasn't designed
-#   ("opam" does not make it easy for me to test custom Coq branches)
-#   make a cleaner implementation of this script by using some tool that directly supports what I need
-#   (we can piggy-back on the ecosystem of "opam" and "url" file that is in place but shun the "opam" program which serves a different purpose)
-# - merge these scripts under the Coq-organization umbrella (somewhere)
 # - Maxime's suggestion:
 #   - Maybe we could try a hybrid approach, like using opam to install dependencies, but do the build to be benchmarked manually.
 #     This way, we would not need to create a fake package, we would have more control on what we measure,
