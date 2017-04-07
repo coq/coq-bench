@@ -10,6 +10,7 @@
 # - camlp5 is installed and available in $PATH
 # - ocamlfind is installed and available in $PATH
 # - "ocaml*" binaries visible via $PATH
+# - the OPAM packages, specified by the user, are topologically sorted wrt. to the dependency relationship.
 
 r='\033[0m'          # reset (all attributes off)
 b='\033[1m'          # bold
