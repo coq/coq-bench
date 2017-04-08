@@ -240,58 +240,6 @@ echo DEBUG: coq_opam_version = $coq_opam_version
 custom_opam_repo="$working_dir/custom_opam_repo"
 mkdir -p "$custom_opam_repo/packages/camlp5/camlp5.dev"
 
-cat > "$custom_opam_repo/packages/camlp5/camlp5.dev/opam" <<+
-opam-version: "1.2"
-maintainer: "dummy@value.fr"
-authors: ["Dummy Value"]
-homepage: "https://dummy.value"
-license: "dummy value"
-build: []
-available: []
-bug-reports: "https://dummy.value"
-dev-repo: "https://dummy.value.git"
-doc: "https://dummy.value"
-install: []
-remove: []
-+
-
-camlp5_dir="$working_dir/camlp5"
-mkdir -p "$camlp5_dir"
-cat > "$custom_opam_repo/packages/camlp5/camlp5.dev/url" <<+
-local: "$working_dir/camlp5"
-+
-
-touch "$custom_opam_repo/packages/camlp5/camlp5.dev/descr"
-
-## Create a fake "camlp4.dev" package that, when installed, does nothing.
-## We assume that "camlp4" program is already installed.
-## If we let OPAM install some other camlp4 package, in general we would run into problems.
-
-mkdir -p "$custom_opam_repo/packages/camlp4/camlp4.dev"
-
-cat > "$custom_opam_repo/packages/camlp4/camlp4.dev/opam" <<+
-opam-version: "1.2"
-maintainer: "dummy@value.fr"
-authors: ["Dummy Value"]
-homepage: "https://dummy.value"
-license: "dummy value"
-build: []
-available: []
-bug-reports: "https://dummy.value"
-dev-repo: "https://dummy.value.git"
-doc: "https://dummy.value"
-install: []
-remove: []
-+
-
-camlp4_dir="$working_dir/camlp4"
-mkdir -p "$camlp4_dir"
-cat > "$custom_opam_repo/packages/camlp4/camlp4.dev/url" <<+
-local: "$working_dir/camlp4"
-+
-
-touch "$custom_opam_repo/packages/camlp4/camlp4.dev/descr"
-
 ## Create a OPAM package that represents Coq branch designated by the user.
 mkdir -p "$custom_opam_repo/packages/coq/coq.$coq_opam_version"
 
@@ -327,18 +275,20 @@ old_opam_root="$working_dir/.opam.OLD"
 # Create a new OPAM-root to which we will install the NEW version of Coq.
 
 export OPAMROOT="$new_opam_root"
+opam_switch=4.04.0
+initial_opam_packages="camlp5 ocamlfind"
 
-echo n | opam init -v -j$number_of_processors
+echo n | opam init -v -j$number_of_processors --comp $opam_switch
 echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
-
+yes | opam install -v -j$number_of_processors $initial_opam_packages
 
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
 git clone --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev "$new_coq_opam_archive_dir/extra-dev"
-opam repo add coq-released https://coq.inria.fr/opam/released
+opam repo add coq-released "$new_coq_opam_archive_dir/released"
 opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
@@ -364,9 +314,10 @@ fi
 
 export OPAMROOT="$old_opam_root"
 
-echo n | opam init -v -j$number_of_processors
+echo n | opam init -v -j$number_of_processors --comp $opam_switch
 echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
+yes | opam install -v -j$number_of_processors $initial_opam_packages batteries
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
@@ -395,8 +346,6 @@ fi
 # Measure the compilation times of the specified OPAM packages
 # - for the NEW commit
 # - for the OLD commit
-
-export OPAMROOT="$working_dir/.opam"
 
 # The following variable will be set in the following cycle:
 installable_coq_opam_packages=
