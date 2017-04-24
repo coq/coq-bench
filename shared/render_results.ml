@@ -27,8 +27,6 @@ open Unix
 
 ;;
 
-printf "DEBUG 0\n";
-
 (* process command line paramters *)
 assert (Array.length Sys.argv > 5);
 let working_directory = Sys.argv.(1) in
@@ -38,14 +36,6 @@ let old_coq_version = Sys.argv.(4) in
 let minimal_user_time = float_of_string Sys.argv.(5) in
 let sorting_column = Sys.argv.(6) in
 let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 7 in
-
-printf "DEBUG 1: working_directory = %s\n" working_directory;
-printf "DEBUG 1: num_of_iterations = %d\n" num_of_iterations;
-printf "DEBUG 1: new_coq_version = %s\n" new_coq_version;
-printf "DEBUG 1: old_coq_version = %s\n" old_coq_version;
-printf "DEBUG 1: minimal_user_time = %f\n" minimal_user_time;
-printf "DEBUG 1: sorting_column = %s\n" sorting_column;
-List.iteri (printf "DEBUG 1: coq_opam_package[%d] = %s\n") coq_opam_packages;
 
 (* ASSUMPTIONS:
 
