@@ -364,13 +364,18 @@ for coq_opam_package in $coq_opam_packages; do
     # remove it.
     opam uninstall $coq_opam_package -v
 
-    opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y || continue
+    opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y \
+         3>$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stdout 1>&3 \
+         4>$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stderr 2>&4 || continue
 
     for iteration in $(seq $num_of_iterations); do
         if /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
-           opam install $coq_opam_package -v -b -j1;
+           opam install $coq_opam_package -v -b -j1 \
+           3>$working_dir/$coq_opam_package.NEW.opam_install.$iteration.stdout 1>&3 \
+           4>$working_dir/$coq_opam_package.NEW.opam_install.$iteration.stderr 2>&4;
         then
+            echo $? > $working_dir/$coq_opam_package.NEW.opam_install.$iteration.exit_status
             # "opam install ...", we have started above, was successful.
 
             # Remove the benchmarked OPAM-package, unless this is the very last iteration
@@ -380,6 +385,7 @@ for coq_opam_package in $coq_opam_packages; do
             fi
         else
             # "opam install ...", we have started above, failed.
+            echo $? > $working_dir/$coq_opam_package.NEW.opam_install.$iteration.exit_status
             continue 2
         fi
     done
@@ -397,14 +403,19 @@ for coq_opam_package in $coq_opam_packages; do
     # remove it.
     opam uninstall $coq_opam_package -v
 
-    opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y || continue
+    opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y \
+         3>$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stdout 1>&3 \
+         4>$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stderr 2>&4 || continue
 
     for iteration in $(seq $num_of_iterations); do
         if /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
-           opam install $coq_opam_package -v -j1;
+           opam install $coq_opam_package -v -j1 \
+           3>$working_dir/$coq_opam_package.OLD.opam_install.$iteration.stdout 1>&3 \
+           4>$working_dir/$coq_opam_package.OLD.opam_install.$iteration.stderr 2>&4;
         then
             # "opam install ...", we have started above, was successful.
+            echo $? > $working_dir/$coq_opam_package.OLD.opam_install.$iteration.exit_status
 
             # Remove the benchmarked OPAM-package, unless this is the very last iteration
             # (we want to keep this OPAM-package because other OPAM-packages we will benchmark later might depend on it --- it would be a waste of time to remove it now just to install it later)
@@ -413,6 +424,7 @@ for coq_opam_package in $coq_opam_packages; do
             fi
         else
             # "opam install ...", we have started above, failed.
+            echo $? > $working_dir/$coq_opam_package.OLD.opam_install.$iteration.exit_status
             continue 2
         fi
     done
@@ -521,6 +533,33 @@ if [ -z "$installable_coq_opam_packages" ]; then
     printf "\n\nINFO: "; print_singular_or_plural "the given OPAM-package" "none of the given OPAM-packages" $coq_opam_packages; echo ":"
     for coq_opam_package in $coq_opam_packages; do
         echo "- $coq_opam_package"
+        url_prefix="https://ci.inria.fr/coq/view/benchmarking/job/benchmark-part-of-the-branch/ws/$BUILD_ID"
+        echo "DEBUG 0: url_prefix = $url_prefix"
+        echo "DEBUG 1: $working_dir/$coq_opam_package.NEW.opam_install.deps_only.stdout"
+        if [ -e "$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stdout" ]; then
+            echo "  - $url_prefix/$coq_opam_package.NEW.opam_install.deps_only.stdout/*view*/"
+        fi
+        if [ -e "$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stderr" ]; then
+            echo "  - $url_prefix/$coq_opam_package.NEW.opam_install.deps_only.stderr/*view*/"
+        fi
+        if [ -e "$working_dir/$coq_opam_package.NEW.opam_install.1.stderr" ]; then
+            echo "  - $url_prefix/$coq_opam_package.NEW.opam_install.1.stdout/*view*/"
+        fi
+        if [ -e "$working_dir/$coq_opam_package.NEW.opam_install.1.stderr" ]; then
+            echo "  - $url_prefix/$coq_opam_package.NEW.opam_install.1.stdout/*view*/"
+        fi
+        if [ -e "$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stdout" ]; then
+            echo "  - $url_prefix/$coq_opam_package.OLD.opam_install.deps_only.stdout/*view*/"
+        fi
+        if [ -e "$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stderr" ]; then
+            echo "  - $url_prefix/$coq_opam_package.OLD.opam_install.deps_only.stderr/*view*/"
+        fi
+        if [ -e "$working_dir/$coq_opam_package.OLD.opam_install.1.stderr" ]; then
+            echo "  - $url_prefix/$coq_opam_package.OLD.opam_install.1.stdout/*view*/"
+        fi
+        if [ -e "$working_dir/$coq_opam_package.OLD.opam_install.1.stderr" ]; then
+            echo "  - $url_prefix/$coq_opam_package.OLD.opam_install.1.stdout/*view*/"
+        fi
     done
     print_singular_or_plural "is not" "are" $coq_opam_packages; printf " installable.\n\n\n"
     exit 1
