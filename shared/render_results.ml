@@ -21,7 +21,7 @@
 #print_depth 100000000;;
 #print_length 100000000;;
 
-open Batteries  (* M-x merlin-use batteries *)
+open Batteries
 open Printf
 open Unix
 
