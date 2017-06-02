@@ -304,9 +304,7 @@ else
     exit 1
 fi
 
-if [ ! $coq_opam_version = dev ]; then
-  opam pin add coq $coq_opam_version
-fi
+opam pin --kind=version add coq $coq_opam_version
 
 # --------------------------------------------------------------------------------
 
