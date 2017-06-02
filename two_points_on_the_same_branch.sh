@@ -527,39 +527,13 @@ function print_singular_or_plural {
     fi
 }
 
+echo "INFO: workspace = https://ci.inria.fr/coq/view/benchmarking/job/benchmark-part-of-the-branch/ws/$BUILD_ID"
 # Print the final results.
 if [ -z "$installable_coq_opam_packages" ]; then
     # Tell the user that none of the OPAM-package(s) the user provided is/are installable.
     printf "\n\nINFO: "; print_singular_or_plural "the given OPAM-package" "none of the given OPAM-packages" $coq_opam_packages; echo ":"
     for coq_opam_package in $coq_opam_packages; do
         echo "- $coq_opam_package"
-        url_prefix="https://ci.inria.fr/coq/view/benchmarking/job/benchmark-part-of-the-branch/ws/$BUILD_ID"
-        echo "DEBUG 0: url_prefix = $url_prefix"
-        echo "DEBUG 1: $working_dir/$coq_opam_package.NEW.opam_install.deps_only.stdout"
-        if [ -e "$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stdout" ]; then
-            echo "  - $url_prefix/$coq_opam_package.NEW.opam_install.deps_only.stdout/*view*/"
-        fi
-        if [ -e "$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stderr" ]; then
-            echo "  - $url_prefix/$coq_opam_package.NEW.opam_install.deps_only.stderr/*view*/"
-        fi
-        if [ -e "$working_dir/$coq_opam_package.NEW.opam_install.1.stderr" ]; then
-            echo "  - $url_prefix/$coq_opam_package.NEW.opam_install.1.stdout/*view*/"
-        fi
-        if [ -e "$working_dir/$coq_opam_package.NEW.opam_install.1.stderr" ]; then
-            echo "  - $url_prefix/$coq_opam_package.NEW.opam_install.1.stdout/*view*/"
-        fi
-        if [ -e "$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stdout" ]; then
-            echo "  - $url_prefix/$coq_opam_package.OLD.opam_install.deps_only.stdout/*view*/"
-        fi
-        if [ -e "$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stderr" ]; then
-            echo "  - $url_prefix/$coq_opam_package.OLD.opam_install.deps_only.stderr/*view*/"
-        fi
-        if [ -e "$working_dir/$coq_opam_package.OLD.opam_install.1.stderr" ]; then
-            echo "  - $url_prefix/$coq_opam_package.OLD.opam_install.1.stdout/*view*/"
-        fi
-        if [ -e "$working_dir/$coq_opam_package.OLD.opam_install.1.stderr" ]; then
-            echo "  - $url_prefix/$coq_opam_package.OLD.opam_install.1.stdout/*view*/"
-        fi
     done
     print_singular_or_plural "is not" "are" $coq_opam_packages; printf " installable.\n\n\n"
     exit 1
