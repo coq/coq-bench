@@ -276,7 +276,7 @@ old_opam_root="$working_dir/.opam.OLD"
 
 export OPAMROOT="$new_opam_root"
 opam_switch=4.04.0
-initial_opam_packages="camlp5 ocamlfind"
+initial_opam_packages="camlp5 ocamlfind batteries"
 
 echo n | opam init -v -j$number_of_processors --comp $opam_switch
 echo $PATH
@@ -315,7 +315,7 @@ export OPAMROOT="$old_opam_root"
 echo n | opam init -v -j$number_of_processors --comp $opam_switch
 echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
-yes | opam install -v -j$number_of_processors $initial_opam_packages batteries
+yes | opam install -v -j$number_of_processors $initial_opam_packages
 
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
