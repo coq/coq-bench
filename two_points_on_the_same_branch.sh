@@ -181,6 +181,24 @@ if [ $(echo "$coq_opam_packages_on_separate_lines" | wc -l) != $(echo "$coq_opam
     exit 1
 fi
 
+is_checksum () {
+    echo "$1" | egrep '^[0-9a-f]+$'
+}
+
+if is_checksum "$new_coq_commit"; then
+    :
+else
+    echo "ERROR: new_coq_commit = \"$new_coq_commit\" is not a checksum." > /dev/stderr
+    exit 1
+fi
+
+if is_checksum "$old_coq_commit"; then
+    :
+else
+    echo "ERROR: old_coq_commit = \"$old_coq_commit\" is not a checksum." > /dev/stderr
+    exit 1
+fi
+
 # --------------------------------------------------------------------------------
 
 # Clone the indicated git-repository.
