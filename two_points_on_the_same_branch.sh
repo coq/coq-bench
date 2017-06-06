@@ -96,7 +96,7 @@ case $# in
                 ;;
             *)
                 echo > /dev/stderr
-                echo ERROR: unrecognized command-line argument \"$1\". > /dev/stderr
+                echo "ERROR: unrecognized command-line argument \"$1\"." > /dev/stderr
                 print_man_page_hint
                 exit 1
                 ;;
@@ -104,7 +104,7 @@ case $# in
         ;;
     2 | 3 | 4 | 5 | 6 | 7 | 8)
         echo > /dev/stderr
-        echo ERROR: wrong number of arguments. > /dev/stderr
+        echo "ERROR: wrong number of arguments." > /dev/stderr
         print_man_page_hint
         exit 1
         ;;
@@ -121,7 +121,7 @@ case $# in
             :
         else
             echo
-            echo ERROR: the third command-line argument \"$4\" is not a positive integer.
+            echo "ERROR: the third command-line argument \"$4\" is not a positive integer." > /dev/stderr
             print_man_page_hint
             exit 1
         fi
@@ -149,29 +149,30 @@ if which perf > /dev/null; then
     echo -n
 else
     echo > /dev/stderr
-    echo ERROR: \"perf\" program is not available. > /dev/stderr
+    echo "ERROR: \"perf\" program is not available." > /dev/stderr
     echo > /dev/stderr
     exit 1
 fi
 
 if [ ! -e "$working_dir" ]; then
     echo > /dev/stderr
-    echo ERROR: \"$working_dir\" does not exist. > /dev/stderr
+    echo "ERROR: \"$working_dir\" does not exist." > /dev/stderr
     echo > /dev/stderr
     exit 1
 fi
 
 if [ ! -d "$working_dir" ]; then
     echo > /dev/stderr
-    echo ERROR: \"$working_dir\" is not a directory. > /dev/stderr
+    echo "ERROR: \"$working_dir\" is not a directory." > /dev/stderr
     echo > /dev/stderr
     exit 1
 fi
 
 if [ ! -w "$working_dir" ]; then
     echo > /dev/stderr
-    echo ERROR: \"working_dir\" is not writable. > /dev/stderr
+    echo "ERROR: \"$working_dir\" is not writable." > /dev/stderr
     echo > /dev/stderr
+    exit 1
 fi
 
 coq_opam_packages_on_separate_lines=$(echo "$coq_opam_packages" | sed 's/ /\n/g')
