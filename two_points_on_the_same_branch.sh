@@ -214,11 +214,19 @@ git checkout $new_coq_commit
 # Detect the official Coq branch
 #
 # The computation below is based on the following assumptions:
-# - 15edfc8f92477457bcefe525ce1cea160e4c6560 is the oldest commit in "trunk" which is not present neither in "v8.6", nor in "v8.5" branches.
-# - bb43730ac876b8de79967090afa50f00858af6d5 is the oldest commit in "trunk" and "v8.6" which is not present in "v8.5".
-# - 784d82dc1a709c4c262665a4cd4eb0b1bd1487a0 is the oldest commit that is present in "trunk" and "v8.6" and "v8.5" (but not in "v8.4").
-if git log | grep 15edfc8f92477457bcefe525ce1cea160e4c6560 > /dev/null; then
-    official_coq_branch=trunk
+# - 0986ee250818a5cb517b5e59fbd31e2cd1667775 is the oldest commit in "master" which is not present neither in "v8.7", nor in "v8.6", nor in "v8.5" branches.
+# - 15edfc8f92477457bcefe525ce1cea160e4c6560 is the oldest commit in "master" which is not present neither in "v8.6", nor in "v8.5" branches.
+# - bb43730ac876b8de79967090afa50f00858af6d5 is the oldest commit in "master" and "v8.6" which is not present in "v8.5".
+# - 784d82dc1a709c4c262665a4cd4eb0b1bd1487a0 is the oldest commit that is present in "master" and "v8.6" and "v8.5" (but not in "v8.4").
+#
+# TODO: This is a hack.
+#       We should probably rely on the results of the "git describe --tags" command.
+#       We can't do that right now because the command
+#       gives us misleading information in case of branches based "v8.7" and "master".)
+if git log | grep 0986ee250818a5cb517b5e59fbd31e2cd1667775 > /dev/null; then
+    official_coq_branch=master
+elif git log | grep 15edfc8f92477457bcefe525ce1cea160e4c6560 > /dev/null; then
+    official_coq_branch=v8.7
 elif git log | grep bb43730ac876b8de79967090afa50f00858af6d5 > /dev/null; then
     official_coq_branch=v8.6
 elif git log | grep 784d82dc1a709c4c262665a4cd4eb0b1bd1487a0 > /dev/null; then
@@ -232,8 +240,11 @@ echo DEBUG: official_coq_branch = $official_coq_branch
 
 # Compute the OPAM version code corresponding to the compute name of the Coq branch
 case $official_coq_branch in
-    trunk)
+    master)
         coq_opam_version=dev
+        ;;
+    v8.7)
+        coq_opam_version=8.7.dev
         ;;
     v8.6)
         coq_opam_version=8.6.dev
