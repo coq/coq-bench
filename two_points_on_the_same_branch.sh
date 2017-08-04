@@ -282,9 +282,7 @@ license: "LGPL 2"
 build: [
   ["./configure"
    "-prefix" prefix
-    "-usecamlp5"
     "-coqide" "no"
-    "-nodoc"
   ]
   [make "-j%{jobs}%"]
 ]
