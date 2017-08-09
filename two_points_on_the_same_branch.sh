@@ -561,7 +561,7 @@ if [ -z "$installable_coq_opam_packages" ]; then
     for coq_opam_package in $coq_opam_packages; do
         echo "- $coq_opam_package"
     done
-    print_singular_or_plural "is not" "are" $coq_opam_packages; printf " installable.\n\n\n"
+    print_singular_or_plural "cannot" "can" $coq_opam_packages; printf " be installed\n\n\n"
     exit 1
 else
     not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
@@ -573,7 +573,7 @@ else
         for coq_opam_package in $not_installable_coq_opam_packages; do
             echo "- $coq_opam_package"
         done
-        printf "%s not installable.\n\n\n" $(print_singular_or_plural is are $not_installable_coq_opam_packages)
+        printf "cannot be installed\n\n\n"
         exit_code=1
     fi
 
