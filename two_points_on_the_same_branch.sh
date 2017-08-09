@@ -317,7 +317,6 @@ git clone --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev "$new_coq_opam_archive_dir/extra-dev"
 opam repo add coq-released "$new_coq_opam_archive_dir/released"
-opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
 echo "DEBUG: new_coq_commit = $new_coq_commit"
@@ -348,7 +347,6 @@ yes | opam install -v -j$number_of_processors $initial_opam_packages
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
 opam repo add coq-released https://coq.inria.fr/opam/released
-opam repo add coq-bench $HOME/git/coq-bench/opam
 opam repo list
 cd "$coq_dir"
 echo "DEBUG: old_coq_commit = $old_coq_commit"
