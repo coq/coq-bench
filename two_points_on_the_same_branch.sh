@@ -345,8 +345,10 @@ echo $PATH
 yes | opam install -v -j$number_of_processors $initial_opam_packages
 
 opam repo add custom-opam-repo "$custom_opam_repo"
-opam repo add coq-extra-dev https://coq.inria.fr/opam/extra-dev
-opam repo add coq-released https://coq.inria.fr/opam/released
+
+git clone --depth 1 https://github.com/coq/opam-coq-archive.git
+opam repo add coq-extra-dev opam-coq-archive/extra-dev
+opam repo add coq-released opam-coq-archive/released
 opam repo list
 cd "$coq_dir"
 echo "DEBUG: old_coq_commit = $old_coq_commit"
