@@ -65,6 +65,10 @@ let proportional_difference_of_integers new_value old_value =
   else float_of_int (new_value - old_value) /. float_of_int old_value *. 100.0
 in
 
+let count_number_of_digits_before_decimal_point =
+  log10 %> floor %> int_of_float %> succ %> max 1
+in
+
 (* parse the *.time and *.perf files *)
 
 coq_opam_packages
@@ -273,19 +277,19 @@ coq_opam_packages
                                 |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
                                old__label__length in
      let proportional_difference__user_time__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.first %> abs_float) |> List.reduce max
-                                                           |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
+                                                           |> count_number_of_digits_before_decimal_point) + 2 + precision)
                                                          proportional_difference__label__length in
      let proportional_difference__instructions__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.second %> abs_float) |> List.reduce max
-                                                              |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
+                                                              |> count_number_of_digits_before_decimal_point) + 2 + precision)
                                                             proportional_difference__label__length in
      let proportional_difference__cycles__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.third %> abs_float) |> List.reduce max
-                                                        |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
+                                                        |> count_number_of_digits_before_decimal_point) + 2 + precision)
                                                       proportional_difference__label__length in
      let proportional_difference__mem__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.fourth %> abs_float) |> List.reduce max
-                                                     |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
+                                                     |> count_number_of_digits_before_decimal_point) + 2 + precision)
                                                    proportional_difference__label__length in
      let proportional_difference__faults__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.fifth %> abs_float) |> List.reduce max
-                                                        |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
+                                                        |> count_number_of_digits_before_decimal_point) + 2 + precision)
                                                       proportional_difference__label__length in
 
      (* print the table *)
