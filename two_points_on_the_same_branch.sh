@@ -395,7 +395,7 @@ for coq_opam_package in $coq_opam_packages; do
          4>$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stderr 2>&4 || continue
 
     for iteration in $(seq $num_of_iterations); do
-        if /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U" \
+        if /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U %M %F" \
            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
            opam install $coq_opam_package -v -b -j1 \
            3>$working_dir/$coq_opam_package.NEW.opam_install.$iteration.stdout 1>&3 \
@@ -434,7 +434,7 @@ for coq_opam_package in $coq_opam_packages; do
          4>$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stderr 2>&4 || continue
 
     for iteration in $(seq $num_of_iterations); do
-        if /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U" \
+        if /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U %M %F" \
            perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
            opam install $coq_opam_package -v -j1 \
            3>$working_dir/$coq_opam_package.OLD.opam_install.$iteration.stdout 1>&3 \

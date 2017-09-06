@@ -55,21 +55,30 @@ let run cmd =
   | _ -> assert false
 in
 
+let nth =
+  flip List.nth
+in
+
+let proportional_difference_of_integers new_value old_value =
+  if old_value = 0
+  then Float.nan
+  else float_of_int (new_value - old_value) /. float_of_int old_value *. 100.0
+in
+
 (* parse the *.time and *.perf files *)
 
 coq_opam_packages
 |> List.map
      (fun package_name ->
-       package_name,
-       
-       (* compilation_results_for_NEW : (float * int * int) list *)
+       package_name,(* compilation_results_for_NEW : (float * int * int * int) list *)
        List.init num_of_iterations succ
        |> List.map
             (fun iteration ->
               let command_prefix = "cat " ^ working_directory ^ "/" ^ package_name ^ ".NEW." ^ string_of_int iteration in
+              let time_command_output = command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> String.split_on_char ' ' in
 
               (* NEW_user_time : float *)
-              command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> float_of_string,
+              time_command_output |> nth 0 |> float_of_string,
 
               (* NEW_instructions : int *)
               command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'"
@@ -77,16 +86,23 @@ coq_opam_packages
 
               (* NEW_cycles : int *)
               command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'"
-              |> run |> String.rchop ~n:1 |> int_of_string),
+              |> run |> String.rchop ~n:1 |> int_of_string,
 
-       (* compilation_results_for_OLD : (float * int * int) list *)
+              (* NEW_mem *)
+              time_command_output |> nth 1 |> int_of_string,
+
+              (* NEW_faults *)
+              time_command_output |> nth 2 |> int_of_string),
+
+       (* compilation_results_for_OLD : (float * int * int * int * int) list *)
        List.init num_of_iterations succ
        |> List.map
             (fun iteration ->
               let command_prefix = "cat " ^ working_directory ^ "/" ^ package_name ^ ".OLD." ^ string_of_int iteration in
+              let time_command_output = command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> String.split_on_char ' ' in
 
               (* OLD_user_time : float *)
-              command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> float_of_string,
+              time_command_output |> nth 0 |> float_of_string,
 
               (* OLD_instructions : int *)
               command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'"
@@ -94,77 +110,105 @@ coq_opam_packages
 
               (* OLD_cycles : int *)
               command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'"
-              |> run |> String.rchop ~n:1 |> int_of_string))
+              |> run |> String.rchop ~n:1 |> int_of_string,
 
-(* [package_name, [NEW_user_time, NEW_instructions, NEW_cycles]      , [OLD_user_time, OLD_instructions, OLD_cycles]     ]
- : (string      * (float        * int             * int       ) list * (float        * int             * int             ) list) list *)
+              (* OLD_mem *)
+              time_command_output |> nth 1 |> int_of_string,
+
+              (* OLD_faults *)
+              time_command_output |> nth 2 |> int_of_string))
+
+(* [package_name, [NEW_user_time, NEW_instructions, NEW_cycles, NEW_mem, NEW_faults]      , [OLD_user_time, OLD_instructions, OLD_cycles, OLD_mem, OLD_faults]     ]
+ : (string      * (float        * int             * int       * int    * int       ) list * (float        * int             * int       * int    * int       ) list) list *)
 
 (* from the list of measured values, select just the minimal ones *)
 
 |> List.map
      (fun ((package_name : string),
-           (new_measurements : (float * int * int) list),
-           (old_measurements : (float * int * int) list)) ->
+           (new_measurements : (float * int * int * int * int) list),
+           (old_measurements : (float * int * int * int * int) list)) ->
 
        (* : string *)
        package_name,
 
-       (* minimums_of_NEW_measurements : float * int * int *)
+       (* minimums_of_NEW_measurements : float * int * int * int * int *)
        (
          (* minimal_NEW_user_time : float *)
-         new_measurements |> List.map Tuple3.first |> List.reduce min,
+         new_measurements |> List.map Tuple5.first |> List.reduce min,
 
          (* minimal_NEW_instructions : int *)
-         new_measurements |> List.map Tuple3.second |> List.reduce min,
+         new_measurements |> List.map Tuple5.second |> List.reduce min,
 
          (* minimal_NEW_cycles : int *)
-         new_measurements |> List.map Tuple3.third |> List.reduce min
+         new_measurements |> List.map Tuple5.third |> List.reduce min,
+
+         (* minimal_NEW_mem : int *)
+         new_measurements |> List.map Tuple5.fourth |> List.reduce min,
+
+         (* minimal_NEW_faults : int *)
+         new_measurements |> List.map Tuple5.fifth |> List.reduce min
        ),
 
-       (* minimums_of_OLD_measurements : float * int * int *)
+       (* minimums_of_OLD_measurements : float * int * int * int * int *)
        (
          (* minimal_OLD_user_time : float *)
-         old_measurements |> List.map Tuple3.first |> List.reduce min,
+         old_measurements |> List.map Tuple5.first |> List.reduce min,
 
          (* minimal_OLD_instructions : int *)
-         old_measurements |> List.map Tuple3.second |> List.reduce min,
+         old_measurements |> List.map Tuple5.second |> List.reduce min,
 
          (* minimal_OLD_cycles : int *)
-         old_measurements |> List.map Tuple3.third |> List.reduce min
+         old_measurements |> List.map Tuple5.third |> List.reduce min,
+
+         (* minimal_OLD_mem : int *)
+         old_measurements |> List.map Tuple5.fourth |> List.reduce min,
+
+         (* minimal_OLD_faults : int *)
+         old_measurements |> List.map Tuple5.fifth |> List.reduce min
        )
      )
 
-(* [package_name, (minimal_NEW_user_time, minimal_NEW_instructions, minimal_NEW_cycles) , (minimal_OLD_user_time, minimal_OLD_instructions, minimal_OLD_cycles)]
- : (string      * (float                * int                     * int               ) * (float                * int                     * int                      )) list *)
+(* [package_name,
+    (minimal_NEW_user_time, minimal_NEW_instructions, minimal_NEW_cycles, minimal_NEW_mem, minimal_NEW_faults),
+    (minimal_OLD_user_time, minimal_OLD_instructions, minimal_OLD_cycles, minimal_OLD_mem, minimal_OLD_faults)]
+ : (string *
+   (float * int * int * int * int) *
+   (float * int * int * int * int)) list *)
 
 (* compute the "proportional differences in % of the NEW measurement and the OLD measurement" of all measured values *)
 |> List.map
      (fun (package_name,
-           (minimal_NEW_user_time, minimal_NEW_instructions, minimal_NEW_cycles as minimums_of_NEW_measurements),
-           (minimal_OLD_user_time, minimal_OLD_instructions, minimal_OLD_cycles as minimums_of_OLD_measurements)) ->
+           (minimal_NEW_user_time, minimal_NEW_instructions, minimal_NEW_cycles, minimal_NEW_mem, minimal_NEW_faults as minimums_of_NEW_measurements),
+           (minimal_OLD_user_time, minimal_OLD_instructions, minimal_OLD_cycles, minimal_OLD_mem, minimal_OLD_faults as minimums_of_OLD_measurements)) ->
        package_name,
        minimums_of_NEW_measurements,
        minimums_of_OLD_measurements,
        ((minimal_NEW_user_time -. minimal_OLD_user_time) /. minimal_OLD_user_time *. 100.0,
-        float_of_int (minimal_NEW_instructions - minimal_OLD_instructions) /. float_of_int minimal_OLD_instructions *. 100.0,
-        float_of_int (minimal_NEW_cycles - minimal_OLD_cycles) /. float_of_int minimal_OLD_cycles *. 100.0))
+        proportional_difference_of_integers minimal_NEW_instructions minimal_OLD_instructions,
+        proportional_difference_of_integers minimal_NEW_cycles minimal_OLD_cycles,
+        proportional_difference_of_integers minimal_NEW_mem minimal_OLD_mem,
+        proportional_difference_of_integers minimal_NEW_faults minimal_OLD_faults))
 
 (* [package_name,
     (minimal_NEW_user_time, minimal_NEW_instructions, minimal_NEW_cycles),
     (minimal_OLD_user_time, minimal_OLD_instructions, minimal_OLD_cycles),
-    (proportianal_difference_of_user_times, proportional_difference_of_instructions, proportional_difference_of_cycles)]
+    (proportianal_difference_of_user_times,
+     proportional_difference_of_instructions,
+     proportional_difference_of_cycles,
+     proportional_difference_of_mem,
+     proportional_difference_of_faults)]
 
  : (string *
-    (float * int * int) *
-    (float * int * int) *
-    (float * float * float)) list *)
+    (float * int   * int   * int   * int) *
+    (float * int   * int   * int   * int) *
+    (float * float * float * float * float)) list *)
 
 (* sort the table with results *)
 |> List.sort
      (match sorting_column with
       | "user_time_pdiff" ->
          (fun measurement1 measurement2 ->
-           let get_user_time = Tuple4.fourth %> Tuple3.first in
+           let get_user_time = Tuple4.fourth %> Tuple5.first in
            compare (get_user_time measurement1) (get_user_time measurement2))
       | "package_name" ->
          (fun measurement1 measurement2 ->
@@ -176,7 +220,7 @@ coq_opam_packages
 (* Keep only measurements that took at least "minimal_user_time" (in seconds). *)
 
 |> List.filter
-     (fun (_, (minimal_NEW_user_time,_,_), (minimal_OLD_user_time,_,_), _) ->
+     (fun (_, (minimal_NEW_user_time,_,_,_,_), (minimal_OLD_user_time,_,_,_,_), _) ->
         minimal_user_time <= minimal_NEW_user_time && minimal_user_time <= minimal_OLD_user_time)
 
 (* Below we take the measurements and format them to stdout. *)
@@ -198,33 +242,50 @@ coq_opam_packages
      (* widths of individual columns of the table *)
      let package_name__width = max (measurements |> List.map (Tuple4.first %> String.length) |> List.reduce max)
                                    (String.length package_name__label) in
-     let new__user_time__width = max ((measurements |> List.map (Tuple4.second %> Tuple3.first)
+     let new__user_time__width = max ((measurements |> List.map (Tuple4.second %> Tuple5.first)
                                        |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision)
                                        new__label__length in
-     let new__instructions__width = max (measurements |> List.map (Tuple4.second %> Tuple3.second)
+     let new__instructions__width = max (measurements |> List.map (Tuple4.second %> Tuple5.second)
                                          |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
                                         new__label__length in
-     let new__cycles__width = max (measurements |> List.map (Tuple4.second %> Tuple3.third)
+     let new__cycles__width = max (measurements |> List.map (Tuple4.second %> Tuple5.third)
                                    |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
                                   new__label__length in
-     let old__user_time__width = max ((measurements |> List.map (Tuple4.third %> Tuple3.first)
+     let new__mem__width = max (measurements |> List.map (Tuple4.second %> Tuple5.fourth)
+                                |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                               new__label__length in
+     let new__faults__width = max (measurements |> List.map (Tuple4.second %> Tuple5.fifth)
+                                   |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                  new__label__length in
+     let old__user_time__width = max ((measurements |> List.map (Tuple4.third %> Tuple5.first)
                                        |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision)
                                      old__label__length in
-     let old__instructions__width = max (measurements |> List.map (Tuple4.third %> Tuple3.second)
+     let old__instructions__width = max (measurements |> List.map (Tuple4.third %> Tuple5.second)
                                           |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
                                           old__label__length in
-     let old__cycles__width = max (measurements |> List.map (Tuple4.third %> Tuple3.third)
+     let old__cycles__width = max (measurements |> List.map (Tuple4.third %> Tuple5.third)
                                    |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
-                                  old__label__length
-     in
-     let proportional_difference__user_time__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple3.first %> abs_float) |> List.reduce max
-                                                           |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision)
+                                  old__label__length in
+     let old__mem__width = max (measurements |> List.map (Tuple4.third %> Tuple5.fourth)
+                                |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                               old__label__length in
+     let old__faults__width = max (measurements |> List.map (Tuple4.third %> Tuple5.fifth)
+                                |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                               old__label__length in
+     let proportional_difference__user_time__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.first %> abs_float) |> List.reduce max
+                                                           |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
                                                          proportional_difference__label__length in
-     let proportional_difference__instructions__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple3.second %> abs_float) |> List.reduce max
-                                                              |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision)
+     let proportional_difference__instructions__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.second %> abs_float) |> List.reduce max
+                                                              |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
                                                             proportional_difference__label__length in
-     let proportional_difference__cycles__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple3.third %> abs_float) |> List.reduce max
-                                                        |> log10 |> ceil |> int_of_float |> fun i -> if i <= 0 then 1 else i) + 2 + precision)
+     let proportional_difference__cycles__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.third %> abs_float) |> List.reduce max
+                                                        |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
+                                                      proportional_difference__label__length in
+     let proportional_difference__mem__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.fourth %> abs_float) |> List.reduce max
+                                                     |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
+                                                   proportional_difference__label__length in
+     let proportional_difference__faults__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.fifth %> abs_float) |> List.reduce max
+                                                        |> log10 |> floor |> int_of_float |> succ |> max 1) + 2 + precision)
                                                       proportional_difference__label__length in
 
      (* print the table *)
@@ -233,7 +294,7 @@ coq_opam_packages
        | 0 -> ""
        | count -> "─" ^ make_dashes (pred count)
      in
-     let vertical_separator left_glyph middle_glyph right_glyph = sprintf "%s─%s─%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s\n"
+     let vertical_separator left_glyph middle_glyph right_glyph = sprintf "%s─%s─%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s\n"
        left_glyph
        (make_dashes package_name__width)
        middle_glyph
@@ -248,6 +309,14 @@ coq_opam_packages
        (make_dashes new__instructions__width)
        (make_dashes old__instructions__width)
        (make_dashes proportional_difference__instructions__width)
+       middle_glyph
+       (make_dashes new__mem__width)
+       (make_dashes old__mem__width)
+       (make_dashes proportional_difference__mem__width)
+       middle_glyph
+       (make_dashes new__faults__width)
+       (make_dashes old__faults__width)
+       (make_dashes proportional_difference__faults__width)
        right_glyph
      in
      let center_string string width =
@@ -262,14 +331,18 @@ coq_opam_packages
      "│" ^ String.make (1 + package_name__width + 1) ' ' ^ "│"
      ^ center_string "user time [s]" (1 +  new__user_time__width + 1 + old__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "│"
      ^ center_string "CPU cycles" (1 + new__cycles__width    + 1 + old__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "│"
-     ^ center_string "CPU instructions" (1 + new__instructions__width + 1 + old__instructions__width + 1 + proportional_difference__instructions__width + 3)
+     ^ center_string "CPU instructions" (1 + new__instructions__width + 1 + old__instructions__width + 1 + proportional_difference__instructions__width + 3) ^ "│"
+     ^ center_string "max resident mem" (1 + new__mem__width + 1 + old__mem__width + 1 + proportional_difference__mem__width + 3) ^ "│"
+     ^ center_string "mem faults" (1 + new__faults__width + 1 + old__faults__width + 1 + proportional_difference__faults__width + 3)
      ^ "│\n" |> print_string;
-     printf "│%*s │ %*s│ %*s│ %*s│\n"
+     printf "│%*s │ %*s│ %*s│ %*s│ %*s│ %*s│\n"
        (1 + package_name__width) ""
        (new__user_time__width    + 1 + old__user_time__width    + 1 + proportional_difference__user_time__width + 3) ""
        (new__cycles__width       + 1 + old__cycles__width       + 1 + proportional_difference__cycles__width + 3) ""
-       (new__instructions__width + 1 + old__instructions__width + 1 + proportional_difference__instructions__width + 3) "";
-     printf "│ %*s │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │\n"
+       (new__instructions__width + 1 + old__instructions__width + 1 + proportional_difference__instructions__width + 3) ""
+       (new__mem__width + 1 + old__mem__width + 1 + proportional_difference__mem__width + 3) ""
+       (new__faults__width + 1 + old__faults__width + 1 + proportional_difference__faults__width + 3) "";
+     printf "│ %*s │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │\n"
        package_name__width package_name__label
        new__user_time__width new__label
        old__user_time__width old__label
@@ -279,14 +352,20 @@ coq_opam_packages
        proportional_difference__cycles__width proportional_difference__label
        new__instructions__width new__label
        old__instructions__width old__label
-       proportional_difference__instructions__width proportional_difference__label;
+       proportional_difference__instructions__width proportional_difference__label
+       new__mem__width new__label
+       old__mem__width old__label
+       proportional_difference__mem__width proportional_difference__label
+       new__faults__width new__label
+       old__faults__width old__label
+       proportional_difference__faults__width proportional_difference__label;
      measurements |> List.iter
          (fun (package_name,
-               (new_user_time, new_instructions, new_cycles),
-               (old_user_time, old_instructions, old_cycles),
-               (proportional_difference__user_time, proportional_difference__instructions, proportional_difference__cycles)) ->
+               (new_user_time, new_instructions, new_cycles, new_mem, new_faults),
+               (old_user_time, old_instructions, old_cycles, old_mem, old_faults),
+               (proportional_difference__user_time, proportional_difference__instructions, proportional_difference__cycles, proportional_difference__mem, proportional_difference__faults)) ->
            print_string (vertical_separator "├" "┼" "┤");
-           printf "│ %*s │ %*.*f %*.*f %+*.*f %% │ %*d %*d %+*.*f %% │ %*d %*d %+*.*f %% │\n"
+           printf "│ %*s │ %*.*f %*.*f %+*.*f %% │ %*d %*d %+*.*f %% │ %*d %*d %+*.*f %% │ %*d %*d %+*.*f %% │ %*d %*d %+*.*f %% │\n"
              package_name__width package_name
              new__user_time__width precision new_user_time
              old__user_time__width precision old_user_time
@@ -296,7 +375,13 @@ coq_opam_packages
              proportional_difference__cycles__width precision proportional_difference__cycles
              new__instructions__width new_instructions
              old__instructions__width old_instructions
-             proportional_difference__instructions__width precision proportional_difference__instructions);
+             proportional_difference__instructions__width precision proportional_difference__instructions         
+             new__mem__width new_mem
+             old__mem__width old_mem
+             proportional_difference__mem__width precision proportional_difference__mem
+             new__faults__width new_faults
+             old__faults__width old_faults
+             proportional_difference__faults__width precision proportional_difference__faults);
 
 print_string (vertical_separator "└" "┴" "┘");
 printf "
