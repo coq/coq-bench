@@ -247,34 +247,34 @@ coq_opam_packages
      let package_name__width = max (measurements |> List.map (Tuple4.first %> String.length) |> List.reduce max)
                                    (String.length package_name__label) in
      let new__user_time__width = max ((measurements |> List.map (Tuple4.second %> Tuple5.first)
-                                       |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision)
+                                       |> List.reduce max |> count_number_of_digits_before_decimal_point) + 1 + precision)
                                        new__label__length in
      let new__instructions__width = max (measurements |> List.map (Tuple4.second %> Tuple5.second)
-                                         |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                         |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
                                         new__label__length in
      let new__cycles__width = max (measurements |> List.map (Tuple4.second %> Tuple5.third)
-                                   |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                   |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
                                   new__label__length in
      let new__mem__width = max (measurements |> List.map (Tuple4.second %> Tuple5.fourth)
-                                |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
                                new__label__length in
      let new__faults__width = max (measurements |> List.map (Tuple4.second %> Tuple5.fifth)
-                                   |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                   |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
                                   new__label__length in
      let old__user_time__width = max ((measurements |> List.map (Tuple4.third %> Tuple5.first)
-                                       |> List.reduce max |> log10 |> ceil |> int_of_float) + 1 + precision)
+                                       |> List.reduce max |> count_number_of_digits_before_decimal_point) + 1 + precision)
                                      old__label__length in
      let old__instructions__width = max (measurements |> List.map (Tuple4.third %> Tuple5.second)
-                                          |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                          |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
                                           old__label__length in
      let old__cycles__width = max (measurements |> List.map (Tuple4.third %> Tuple5.third)
-                                   |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                   |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
                                   old__label__length in
      let old__mem__width = max (measurements |> List.map (Tuple4.third %> Tuple5.fourth)
-                                |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
                                old__label__length in
      let old__faults__width = max (measurements |> List.map (Tuple4.third %> Tuple5.fifth)
-                                |> List.reduce max |> float_of_int |> log10 |> ceil |> int_of_float)
+                                |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
                                old__label__length in
      let proportional_difference__user_time__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.first %> abs_float) |> List.reduce max
                                                            |> count_number_of_digits_before_decimal_point) + 2 + precision)
