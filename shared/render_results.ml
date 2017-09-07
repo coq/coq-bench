@@ -336,7 +336,7 @@ coq_opam_packages
      ^ center_string "user time [s]" (1 +  new__user_time__width + 1 + old__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "│"
      ^ center_string "CPU cycles" (1 + new__cycles__width    + 1 + old__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "│"
      ^ center_string "CPU instructions" (1 + new__instructions__width + 1 + old__instructions__width + 1 + proportional_difference__instructions__width + 3) ^ "│"
-     ^ center_string "max resident mem" (1 + new__mem__width + 1 + old__mem__width + 1 + proportional_difference__mem__width + 3) ^ "│"
+     ^ center_string "max resident mem [KB]" (1 + new__mem__width + 1 + old__mem__width + 1 + proportional_difference__mem__width + 3) ^ "│"
      ^ center_string "mem faults" (1 + new__faults__width + 1 + old__faults__width + 1 + proportional_difference__faults__width + 3)
      ^ "│\n" |> print_string;
      printf "│%*s │ %*s│ %*s│ %*s│ %*s│ %*s│\n"
@@ -395,5 +395,33 @@ PDIFF = proportional difference between measurements done for the NEW and the OL
 
 NEW = %s
 OLD = %s
+
+Columns:
+
+  1. user time [s]
+
+     Total number of CPU-seconds that the process used directly (in user mode), in seconds.
+     (In other words, \"%%U\" quantity provided by the \"/usr/bin/time\" command.)
+
+  2. CPU cycles
+
+     Total number of CPU-cycles that the process used directly (in user mode).
+     (In other words, \"cycles:u\" quantity provided by the \"/usr/bin/perf\" command.)
+
+  3. CPU instructions
+
+     Total number of CPU-instructions that the process used directly (in user mode).
+     (In other words, \"instructions:u\" quantity provided by the \"/usr/bin/perf\" command.)
+
+  4. max resident mem [KB]
+
+     Maximum resident set size of the process during its lifetime, in Kilobytes.
+     (In other words, \"%%M\" quantity provided by the \"/usr/bin/time\" command.)
+
+  5. mem faults
+
+     Number of major, or I/O-requiring, page faults that occurred while the process was running.
+     These are faults where the page has actually migrated out of primary memory.
+     (In other words, \"%%F\" quantity provided by the \"/usr/bin/time\" command.)
 
 " new_coq_version old_coq_version;
