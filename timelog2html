@@ -65,7 +65,7 @@ for _, data_file in ipairs(data_files) do
   local last_end = -1
   local lines = 1
   for l in io.lines(data_file) do
-	local b,e,t = l:match('^([%d]+) ([%d]+) time_interp "([%d%.]+)"$')
+	local b,e,t = l:match('^Chars ([%d]+) %- ([%d]+) %S+ ([%d%.]+) secs')
 	if b then
 		if tonumber(b) > last_end + 1 then
 			local text = string.sub(source,last_end+1,b-1)

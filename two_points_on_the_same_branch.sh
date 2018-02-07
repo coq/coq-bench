@@ -295,8 +295,8 @@ touch $custom_opam_repo/packages/coq/coq.$coq_opam_version/descr
 
 # --------------------------------------------------------------------------------
 
-new_opam_root="$working_dir/.opam.NEW"
-old_opam_root="$working_dir/.opam.OLD"
+new_opam_root="$working_dir/opam.NEW"
+old_opam_root="$working_dir/opam.OLD"
 
 # --------------------------------------------------------------------------------
 
@@ -373,6 +373,9 @@ fi
 # - for the NEW commit
 # - for the OLD commit
 
+# Generate per line timing info
+export TIMING=1
+
 # The following variable will be set in the following cycle:
 installable_coq_opam_packages=
 
@@ -436,7 +439,23 @@ for coq_opam_package in $coq_opam_packages; do
 	echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
         $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
     fi
+
+  # Generate HTML report for LAST run
+
+  base_path=$opam_switch/build/$coq_opam_package.dev/
+  for vo in `cd $new_opam_root/$base_path/; find -name '*.vo'`; do
+    if [ -e $old_opam_root/$base_path/${vo%%o}.timing -a \
+	 -e $new_opam_root/$base_path/${vo%%o}.timing ]; then
+      mkdir -p $working_dir/html/$coq_opam_package/`dirname $vo`/
+      `dirname $0`/timelog2html $new_opam_root/$base_path/${vo%%o} \
+	    $old_opam_root/$base_path/${vo%%o}.timing \
+	    $new_opam_root/$base_path/${vo%%o}.timing > \
+	    $working_dir/html/$coq_opam_package/${vo%%o}.html
+    fi
+  done
+
 done
+
 
 # The following directories are no longer relevant:
 # - $working_dir/coq
@@ -520,7 +539,7 @@ function print_singular_or_plural {
     fi
 }
 
-echo "INFO: workspace = https://ci.inria.fr/coq/view/benchmarking/job/benchmark-part-of-the-branch/ws/$BUILD_ID"
+echo "INFO: workspace = https://ci.inria.fr/coq/view/benchmarking/job/$JOB_NAME/ws/$BUILD_ID"
 # Print the final results.
 if [ -z "$installable_coq_opam_packages" ]; then
     # Tell the user that none of the OPAM-package(s) the user provided is/are installable.
@@ -546,5 +565,8 @@ else
 
     echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
     $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
+
+    echo INFO: per line timing: https://ci.inria.fr/coq/job/$JOB_NAME/ws/$BUILD_ID/html/
+
     exit $exit_code
 fi
