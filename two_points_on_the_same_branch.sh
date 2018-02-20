@@ -550,5 +550,10 @@ else
 
     echo INFO: per line timing: https://ci.inria.fr/coq/job/$JOB_NAME/ws/$BUILD_ID/html/
 
+    cd $coq_dir
+    echo INFO: Old Coq version
+    git log -n 1 $old_coq_commit
+    echo INFO: New Coq version
+    git log -n 1 $new_coq_commit
     exit $exit_code
 fi
