@@ -181,24 +181,6 @@ if [ $(echo "$coq_opam_packages_on_separate_lines" | wc -l) != $(echo "$coq_opam
     exit 1
 fi
 
-is_checksum () {
-    echo "$1" | egrep '^[0-9a-f]+$'
-}
-
-if is_checksum "$new_coq_commit"; then
-    :
-else
-    echo "ERROR: new_coq_commit = \"$new_coq_commit\" is not a checksum." > /dev/stderr
-    exit 1
-fi
-
-if is_checksum "$old_coq_commit"; then
-    :
-else
-    echo "ERROR: old_coq_commit = \"$old_coq_commit\" is not a checksum." > /dev/stderr
-    exit 1
-fi
-
 # --------------------------------------------------------------------------------
 
 # Clone the indicated git-repository.
@@ -295,8 +277,8 @@ touch $custom_opam_repo/packages/coq/coq.$coq_opam_version/descr
 
 # --------------------------------------------------------------------------------
 
-new_opam_root="$working_dir/.opam.NEW"
-old_opam_root="$working_dir/.opam.OLD"
+new_opam_root="$working_dir/opam.NEW"
+old_opam_root="$working_dir/opam.OLD"
 
 # --------------------------------------------------------------------------------
 
@@ -373,17 +355,25 @@ fi
 # - for the NEW commit
 # - for the OLD commit
 
+# Generate per line timing info
+export TIMING=1
+
 # The following variable will be set in the following cycle:
 installable_coq_opam_packages=
 
 for coq_opam_package in $coq_opam_packages; do
     echo "DEBUG: coq_opam_package = $coq_opam_package"
 
-    # perform measurements for the NEW commit (provided by the user)
-    export OPAMROOT="$new_opam_root"
+  for RUNNER in NEW OLD; do
+    # perform measurements for the NEW/OLD commit (provided by the user)
+    if [ $RUNNER = "NEW" ]; then
+      export OPAMROOT="$new_opam_root"
+    else
+      export OPAMROOT="$old_opam_root"
+    fi
     . "$OPAMROOT"/opam-init/init.sh
 
-    opam show $coq_opam_package || continue
+    opam show $coq_opam_package || continue 2
 
     # If a given OPAM-package was already installed
     # (as a dependency of some OPAM-package that we have benchmarked before),
@@ -391,17 +381,17 @@ for coq_opam_package in $coq_opam_packages; do
     opam uninstall $coq_opam_package -v
 
     opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y \
-         3>$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stdout 1>&3 \
-         4>$working_dir/$coq_opam_package.NEW.opam_install.deps_only.stderr 2>&4 || continue
+         3>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stdout 1>&3 \
+         4>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stderr 2>&4 || continue 2
 
     for iteration in $(seq $num_of_iterations); do
-        if /usr/bin/time -o "$working_dir/$coq_opam_package.NEW.$iteration.time" --format="%U %M %F" \
-           perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.NEW.$iteration.perf" \
+        if /usr/bin/time -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.time" --format="%U %M %F" \
+           perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.perf" \
            opam install $coq_opam_package -v -b -j1 \
-           3>$working_dir/$coq_opam_package.NEW.opam_install.$iteration.stdout 1>&3 \
-           4>$working_dir/$coq_opam_package.NEW.opam_install.$iteration.stderr 2>&4;
+           3>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stdout 1>&3 \
+           4>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stderr 2>&4;
         then
-            echo $? > $working_dir/$coq_opam_package.NEW.opam_install.$iteration.exit_status
+            echo $? > $working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.exit_status
             # "opam install ...", we have started above, was successful.
 
             # Remove the benchmarked OPAM-package, unless this is the very last iteration
@@ -411,49 +401,11 @@ for coq_opam_package in $coq_opam_packages; do
             fi
         else
             # "opam install ...", we have started above, failed.
-            echo $? > $working_dir/$coq_opam_package.NEW.opam_install.$iteration.exit_status
-            continue 2
+            echo $? > $working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.exit_status
+            continue 3
         fi
     done
-
-    # --------------------------------------------------------------
-
-    # perform measurements for the OLD commit (provided by the user)
-    export OPAMROOT="$old_opam_root"
-    . "$OPAMROOT"/opam-init/init.sh
-
-    opam show $coq_opam_package || continue
-
-    # If a given OPAM-package was already installed
-    # (as a dependency of some OPAM-package that we have benchmarked before),
-    # remove it.
-    opam uninstall $coq_opam_package -v
-
-    opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y \
-         3>$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stdout 1>&3 \
-         4>$working_dir/$coq_opam_package.OLD.opam_install.deps_only.stderr 2>&4 || continue
-
-    for iteration in $(seq $num_of_iterations); do
-        if /usr/bin/time -o "$working_dir/$coq_opam_package.OLD.$iteration.time" --format="%U %M %F" \
-           perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.OLD.$iteration.perf" \
-           opam install $coq_opam_package -v -j1 \
-           3>$working_dir/$coq_opam_package.OLD.opam_install.$iteration.stdout 1>&3 \
-           4>$working_dir/$coq_opam_package.OLD.opam_install.$iteration.stderr 2>&4;
-        then
-            # "opam install ...", we have started above, was successful.
-            echo $? > $working_dir/$coq_opam_package.OLD.opam_install.$iteration.exit_status
-
-            # Remove the benchmarked OPAM-package, unless this is the very last iteration
-            # (we want to keep this OPAM-package because other OPAM-packages we will benchmark later might depend on it --- it would be a waste of time to remove it now just to install it later)
-            if [ $iteration != $num_of_iterations ]; then
-                opam uninstall $coq_opam_package -v
-            fi
-        else
-            # "opam install ...", we have started above, failed.
-            echo $? > $working_dir/$coq_opam_package.OLD.opam_install.$iteration.exit_status
-            continue 2
-        fi
-    done
+  done
 
     installable_coq_opam_packages="$installable_coq_opam_packages $coq_opam_package"
 
@@ -469,7 +421,23 @@ for coq_opam_package in $coq_opam_packages; do
 	echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
         $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
     fi
+
+  # Generate HTML report for LAST run
+
+  base_path=$opam_switch/build/$coq_opam_package.dev/
+  for vo in `cd $new_opam_root/$base_path/; find -name '*.vo'`; do
+    if [ -e $old_opam_root/$base_path/${vo%%o}.timing -a \
+	 -e $new_opam_root/$base_path/${vo%%o}.timing ]; then
+      mkdir -p $working_dir/html/$coq_opam_package/`dirname $vo`/
+      `dirname $0`/timelog2html $new_opam_root/$base_path/${vo%%o} \
+	    $old_opam_root/$base_path/${vo%%o}.timing \
+	    $new_opam_root/$base_path/${vo%%o}.timing > \
+	    $working_dir/html/$coq_opam_package/${vo%%o}.html
+    fi
+  done
+
 done
+
 
 # The following directories are no longer relevant:
 # - $working_dir/coq
@@ -553,7 +521,7 @@ function print_singular_or_plural {
     fi
 }
 
-echo "INFO: workspace = https://ci.inria.fr/coq/view/benchmarking/job/benchmark-part-of-the-branch/ws/$BUILD_ID"
+echo "INFO: workspace = https://ci.inria.fr/coq/view/benchmarking/job/$JOB_NAME/ws/$BUILD_ID"
 # Print the final results.
 if [ -z "$installable_coq_opam_packages" ]; then
     # Tell the user that none of the OPAM-package(s) the user provided is/are installable.
@@ -564,6 +532,17 @@ if [ -z "$installable_coq_opam_packages" ]; then
     print_singular_or_plural "cannot" "can" $coq_opam_packages; printf " be installed\n\n\n"
     exit 1
 else
+    echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
+    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
+
+    echo INFO: per line timing: https://ci.inria.fr/coq/job/$JOB_NAME/ws/$BUILD_ID/html/
+
+    cd $coq_dir
+    echo INFO: Old Coq version
+    git log -n 1 $old_coq_commit
+    echo INFO: New Coq version
+    git log -n 1 $new_coq_commit
+
     not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
 
     exit_code=0
@@ -573,11 +552,9 @@ else
         for coq_opam_package in $not_installable_coq_opam_packages; do
             echo "- $coq_opam_package"
         done
-        printf "cannot be installed\n\n\n"
+	printf "cannot be installed (exit 1)\n\n\n"
         exit_code=1
     fi
 
-    echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
-    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
     exit $exit_code
 fi
