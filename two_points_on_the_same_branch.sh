@@ -532,19 +532,6 @@ if [ -z "$installable_coq_opam_packages" ]; then
     print_singular_or_plural "cannot" "can" $coq_opam_packages; printf " be installed\n\n\n"
     exit 1
 else
-    not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
-
-    exit_code=0
-    if [ ! -z "$not_installable_coq_opam_packages" ]; then
-        # Tell the user that some of the provided OPAM-package(s) is/are not installable.
-        printf "\n\nINFO: the following OPAM-"; print_singular_or_plural "package" "packages" $not_installable_coq_opam_packages; echo ":"
-        for coq_opam_package in $not_installable_coq_opam_packages; do
-            echo "- $coq_opam_package"
-        done
-        printf "cannot be installed\n\n\n"
-        exit_code=1
-    fi
-
     echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
     $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
 
@@ -555,5 +542,19 @@ else
     git log -n 1 $old_coq_commit
     echo INFO: New Coq version
     git log -n 1 $new_coq_commit
+
+    not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
+
+    exit_code=0
+    if [ ! -z "$not_installable_coq_opam_packages" ]; then
+        # Tell the user that some of the provided OPAM-package(s) is/are not installable.
+        printf "\n\nINFO: the following OPAM-"; print_singular_or_plural "package" "packages" $not_installable_coq_opam_packages; echo ":"
+        for coq_opam_package in $not_installable_coq_opam_packages; do
+            echo "- $coq_opam_package"
+        done
+	printf "cannot be installed (exit 1)\n\n\n"
+        exit_code=1
+    fi
+
     exit $exit_code
 fi
