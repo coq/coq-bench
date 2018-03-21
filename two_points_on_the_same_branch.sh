@@ -35,10 +35,12 @@ check_variable () {
 
 check_variable "WORKSPACE"
 check_variable "BUILD_ID"
+check_variable "new_ocaml_switch"
 check_variable "new_coq_repository"
 check_variable "new_coq_commit"
 check_variable "new_coq_opam_archive_git_uri"
 check_variable "new_coq_opam_archive_git_branch"
+check_variable "old_ocaml_switch"
 check_variable "old_coq_repository"
 check_variable "old_coq_commit"
 check_variable "num_of_iterations"
@@ -57,10 +59,12 @@ working_dir="${WORKSPACE%@*}/$BUILD_ID"
 
 echo "DEBUG: ocaml -version = `ocaml -version`"
 echo "DEBUG: working_dir = $working_dir"
+echo "DEBUG: new_ocaml_switch = $new_ocaml_switch"
 echo "DEBUG: new_coq_repository = $new_coq_repository"
 echo "DEBUG: new_coq_commit = $new_coq_commit"
 echo "DEBUG: new_coq_opam_archive_git_uri = $new_coq_opam_archive_git_uri"
 echo "DEBUG: new_coq_opam_archive_git_branch = $new_coq_opam_archive_git_branch"
+echo "DEBUG: old_ocaml_switch = $old_ocaml_switch"
 echo "DEBUG: old_coq_repository = $old_coq_repository"
 echo "DEBUG: old_coq_commit = $old_coq_commit"
 echo "DEBUG: num_of_iterations = $num_of_iterations"
@@ -212,10 +216,9 @@ old_opam_root="$working_dir/opam.OLD"
 # Create a new OPAM-root to which we will install the NEW version of Coq.
 
 export OPAMROOT="$new_opam_root"
-opam_switch=4.04.0
 initial_opam_packages="camlp5 ocamlfind batteries"
 
-echo n | opam init -v -j$number_of_processors --comp $opam_switch
+echo n | opam init -v -j$number_of_processors --comp $new_ocaml_switch
 echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
 yes | opam install -v -j$number_of_processors $initial_opam_packages
@@ -248,7 +251,7 @@ opam pin --kind=version add coq $coq_opam_version
 
 export OPAMROOT="$old_opam_root"
 
-echo n | opam init -v -j$number_of_processors --comp $opam_switch
+echo n | opam init -v -j$number_of_processors --comp $old_ocaml_switch
 echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
 yes | opam install -v -j$number_of_processors $initial_opam_packages
@@ -352,14 +355,15 @@ for coq_opam_package in $coq_opam_packages; do
 
   # Generate HTML report for LAST run
 
-  base_path=$opam_switch/build/$coq_opam_package.dev/
-  for vo in `cd $new_opam_root/$base_path/; find -name '*.vo'`; do
-    if [ -e $old_opam_root/$base_path/${vo%%o}.timing -a \
-	 -e $new_opam_root/$base_path/${vo%%o}.timing ]; then
+  new_base_path=$new_ocaml_switch/build/$coq_opam_package.dev/
+  old_base_path=$old_ocaml_switch/build/$coq_opam_package.dev/
+  for vo in `cd $new_opam_root/$new_base_path/; find -name '*.vo'`; do
+    if [ -e $old_opam_root/$old_base_path/${vo%%o}.timing -a \
+	 -e $new_opam_root/$new_base_path/${vo%%o}.timing ]; then
       mkdir -p $working_dir/html/$coq_opam_package/`dirname $vo`/
-      `dirname $0`/timelog2html $new_opam_root/$base_path/${vo%%o} \
-	    $old_opam_root/$base_path/${vo%%o}.timing \
-	    $new_opam_root/$base_path/${vo%%o}.timing > \
+      `dirname $0`/timelog2html $new_opam_root/$new_base_path/${vo%%o} \
+	    $old_opam_root/$old_base_path/${vo%%o}.timing \
+	    $new_opam_root/$new_base_path/${vo%%o}.timing > \
 	    $working_dir/html/$coq_opam_package/${vo%%o}.html
     fi
   done
