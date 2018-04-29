@@ -388,6 +388,9 @@ coq_opam_packages
              proportional_difference__faults__width precision proportional_difference__faults);
 
 print_string (vertical_separator "└" "┴" "┘");
+
+(* ejgallego: disable this as it is very verbose and brings up little info in the log. *)
+if false then begin
 printf "
 
 PDIFF = proportional difference between measurements done for the NEW and the OLD Coq version
@@ -425,3 +428,4 @@ Columns:
      (In other words, \"%%F\" quantity provided by the \"/usr/bin/time\" command.)
 
 " new_coq_version old_coq_version;
+end
