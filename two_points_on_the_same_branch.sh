@@ -363,17 +363,18 @@ installable_coq_opam_packages=
 
 for coq_opam_package in $coq_opam_packages; do
     echo "DEBUG: coq_opam_package = $coq_opam_package"
+    opam show $coq_opam_package || continue 2
 
   for RUNNER in NEW OLD; do
     # perform measurements for the NEW/OLD commit (provided by the user)
     if [ $RUNNER = "NEW" ]; then
       export OPAMROOT="$new_opam_root"
+      echo "Testing NEW commit"
     else
       export OPAMROOT="$old_opam_root"
+      echo "Testing OLD commit"
     fi
     . "$OPAMROOT"/opam-init/init.sh
-
-    opam show $coq_opam_package || continue 2
 
     # If a given OPAM-package was already installed
     # (as a dependency of some OPAM-package that we have benchmarked before),
