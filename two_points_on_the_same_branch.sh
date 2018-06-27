@@ -12,6 +12,20 @@
 # - "ocaml*" binaries visible via $PATH
 # - the OPAM packages, specified by the user, are topologically sorted wrt. to the dependency relationship.
 
+
+echo "DEBUG = ocamlfind query batteries = $(ocamlfind query batteries)"
+
+mkdir "${WORKSPACE%@*}/$BUILD_ID"
+echo "DEBUG: ocaml = $(which ocaml)"
+echo "DEBUG: new_coq_repository = $new_coq_repository"
+echo "DEBUG: new_coq_commit = $new_coq_commit"
+echo "DEBUG: new_coq_opam_archive_git_uri = $new_coq_opam_archive_git_uri"
+echo "DEBUG: new_coq_opam_archive_git_branch = $new_coq_opam_archive_git_branch"
+echo "DEBUG: old_coq_repository = $old_coq_repository"
+echo "DEBUG: old_coq_commit = $old_coq_commit"
+echo "DEBUG: number_of_measurements_per_package = $number_of_measurements_per_package"
+echo "DEBUG: command = ~/git/coq-bench/two_points_on_the_same_branch.sh ${WORKSPACE%@*}/$BUILD_ID $new_coq_repository $new_coq_commit $new_coq_opam_archive_git_uri $new_coq_opam_archive_git_branch $old_coq_repository $old_coq_commit $number_of_measurements_per_package $coq_opam_packages"
+
 r='\033[0m'          # reset (all attributes off)
 b='\033[1m'          # bold
 u='\033[4m'          # underline
