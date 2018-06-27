@@ -12,19 +12,7 @@
 # - "ocaml*" binaries visible via $PATH
 # - the OPAM packages, specified by the user, are topologically sorted wrt. to the dependency relationship.
 
-
 echo "DEBUG = ocamlfind query batteries = $(ocamlfind query batteries)"
-
-mkdir "${WORKSPACE%@*}/$BUILD_ID"
-echo "DEBUG: ocaml = $(which ocaml)"
-echo "DEBUG: new_coq_repository = $new_coq_repository"
-echo "DEBUG: new_coq_commit = $new_coq_commit"
-echo "DEBUG: new_coq_opam_archive_git_uri = $new_coq_opam_archive_git_uri"
-echo "DEBUG: new_coq_opam_archive_git_branch = $new_coq_opam_archive_git_branch"
-echo "DEBUG: old_coq_repository = $old_coq_repository"
-echo "DEBUG: old_coq_commit = $old_coq_commit"
-echo "DEBUG: number_of_measurements_per_package = $number_of_measurements_per_package"
-echo "DEBUG: command = ~/git/coq-bench/two_points_on_the_same_branch.sh ${WORKSPACE%@*}/$BUILD_ID $new_coq_repository $new_coq_commit $new_coq_opam_archive_git_uri $new_coq_opam_archive_git_branch $old_coq_repository $old_coq_commit $number_of_measurements_per_package $coq_opam_packages"
 
 r='\033[0m'          # reset (all attributes off)
 b='\033[1m'          # bold
@@ -34,115 +22,38 @@ number_of_processors=$(cat /proc/cpuinfo | grep '^processor *' | wc -l)
 
 program_name="$0"
 program_path=$(readlink -f "${program_name%/*}")
-program_name="${program_name##*/}"
-synopsys1="\t$b$program_name$r  [$b-h$r | $b--help$r]"
-synopsys2="\t$b$program_name$r ${u}working_dir$r  ${u}new_coq_repository$r  ${u}new_coq_commit$r${r} \\\\\\n\t                                 ${u}new_coq_opam_archive_git_uri$r  ${u}new_coq_opam_archive_git_branch$r \\\\\\n\t                                 ${u}old_coq_repository$r  $r${u}old_coq_commit$r  ${u}num_of_iterations$r  \\\\\\n\t                                 ${u}coq_opam_package_1$r [${u}coq_opam_package_2$r  ... [${u}coq_opam_package_N$r}] ... ]]"
 
-# Print the "manual page" for this script.
-print_man_page () {
-    echo
-    echo -e ${b}NAME$r
-    echo
-    echo -e "\t$program_name - run Coq benchmarks"
-    echo
-    echo -e ${b}SYNOPSIS$r
-    echo
-    echo -e "$synopsys1"
-    echo
-    echo -e "$synopsys2"
-    echo
-    echo -e ${b}DESCRIPTION
-    echo
-    echo -e "$synopsys1"
-    echo
-    echo -e "\t\tPrint this help."
-    echo
-    echo -e "$synopsys2"
-    echo
-    echo -e "\t\tCompare the compilation times of given OPAM packages when we use two given versions of Coq."
-    echo
-    echo -e "\t\tHere:"
-    echo -e "\t\t- ${u}working_dir$r determines the directory where all the necessary temporary files should be stored"
-    echo -e "\t\t- ${u}new_coq_repository$r and ${u}new_coq_commit$r identifies the newer version of Coq"
-    echo -e "\t\t- ${u}new_coq_opam_archive_git_{uri,branch}$r designates the git repository and the branch holding the definitions of OPAM packages"
-    echo -e "\t\t- ${u}new_coq_opam_archive_git_branch$r is the branch (of the above repository) we want to use"
-    echo -e "\t\t  that should be used with the ${u}new_coq_commit$r."
-    echo -e "\t\t- ${u}old_coq_repository$r and ${u}old_coq_commit$r identifies the older version of Coq"
-    echo -e "\t\t- ${u}num_of_iterations$r determines how many times each of the requested OPAM packages should be compiled"
-    echo -e "\t\t  (with each of these two versions of Coq)."
-    echo
-    echo -e ${b}EXAMPLES$r
-    echo
-    echo -e "\t$b$program_name  /tmp https://github.com/gmalecha/coq.git  a0fc4cc \\"
-    echo -e "\t                                  https://github.com/coq/opam-coq-archive.git  master \\"
-    echo -e "\t                                  https://github.com/coq/coq.git  907db7e  1 \\"
-    echo -e "\t                                  coq-hott coq-flocq coq-compcert coq-vst coq-geocoq coq-color \\"
-    echo -e "\t                                  coq-fiat-crypto coq-fiat-parsers coq-unimath coq-sf \\"
-    echo -e "\t                                  coq-mathcomp-ssreflect coq-iris coq-mathcomp-fingroup \\"
-    echo -e "\t                                  coq-mathcomp-finmap coq-coquelicot coq-mathcomp-algebra \\"
-    echo -e "\t                                  coq-mathcomp-solvable coq-mathcomp-field coq-mathcomp-character \\"
-    echo -e "\t                                  coq-mathcomp-odd_order$r"
-    echo
+# Check that the required arguments are provided
+
+check_variable () {
+  if [ ! -v "$1" ]
+  then
+      echo "Variable $1 should be set"
+      exit 1
+  fi
 }
 
-print_man_page_hint () {
-    echo
-    echo "See:"
-    echo
-    echo "    $program_name --help"
-    echo
-}
+check_variable "WORKSPACE"
+check_variable "BUILD_ID"
+check_variable "new_coq_repository"
+check_variable "new_coq_commit"
+check_variable "new_coq_opam_archive_git_uri"
+check_variable "new_coq_opam_archive_git_branch"
+check_variable "old_coq_repository"
+check_variable "old_coq_commit"
+check_variable "num_of_iterations"
+check_variable "coq_opam_packages"
 
-# --------------------------------------------------------------------------------
+if echo "$num_of_iterations" | grep '^[1-9][0-9]*$' 2> /dev/null > /dev/null; then
+    :
+else
+    echo
+    echo "ERROR: num_of_iterations \"$num_of_iterations\" is not a positive integer." > /dev/stderr
+    print_man_page_hint
+    exit 1
+fi
 
-# Process command line arguments
-
-case $# in
-    0)
-        print_man_page
-        exit
-        ;;
-    1)
-        case $1 in
-            "-h" | "--help")
-                print_man_page
-                exit
-                ;;
-            *)
-                echo > /dev/stderr
-                echo "ERROR: unrecognized command-line argument \"$1\"." > /dev/stderr
-                print_man_page_hint
-                exit 1
-                ;;
-        esac
-        ;;
-    2 | 3 | 4 | 5 | 6 | 7 | 8)
-        echo > /dev/stderr
-        echo "ERROR: wrong number of arguments." > /dev/stderr
-        print_man_page_hint
-        exit 1
-        ;;
-    *)
-        working_dir="$1"
-        new_coq_repository="$2"
-        new_coq_commit="$3"
-        new_coq_opam_archive_git_uri="$4"
-        new_coq_opam_archive_git_branch="$5"
-        old_coq_repository="$6"
-        old_coq_commit="$7"
-        num_of_iterations="$8"
-        if echo "$num_of_iterations" | grep '^[1-9][0-9]*$' 2> /dev/null > /dev/null; then
-            :
-        else
-            echo
-            echo "ERROR: the third command-line argument \"$4\" is not a positive integer." > /dev/stderr
-            print_man_page_hint
-            exit 1
-        fi
-        shift 8
-        coq_opam_packages=$@
-        ;;
-esac
+working_dir="${WORKSPACE%@*}/$BUILD_ID"
 
 echo "DEBUG: ocaml -version = `ocaml -version`"
 echo "DEBUG: working_dir = $working_dir"
@@ -154,6 +65,8 @@ echo "DEBUG: old_coq_repository = $old_coq_repository"
 echo "DEBUG: old_coq_commit = $old_coq_commit"
 echo "DEBUG: num_of_iterations = $num_of_iterations"
 echo "DEBUG: coq_opam_packages = $coq_opam_packages"
+
+mkdir "$working_dir"
 
 # --------------------------------------------------------------------------------
 
