@@ -226,6 +226,7 @@ yes | opam install -v -j$number_of_processors $initial_opam_packages
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
 git clone --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
 
+opam repo add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
 opam repo add custom-opam-repo "$custom_opam_repo"
 opam repo add coq-extra-dev "$new_coq_opam_archive_dir/extra-dev"
 opam repo add coq-released "$new_coq_opam_archive_dir/released"
@@ -256,6 +257,7 @@ echo $PATH
 . "$OPAMROOT"/opam-init/init.sh
 yes | opam install -v -j$number_of_processors $initial_opam_packages
 
+opam repo add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
 opam repo add custom-opam-repo "$custom_opam_repo"
 
 git clone --depth 1 https://github.com/coq/opam-coq-archive.git
