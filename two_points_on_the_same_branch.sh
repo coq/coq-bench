@@ -295,7 +295,9 @@ installable_coq_opam_packages=
 
 for coq_opam_package in $coq_opam_packages; do
     echo "DEBUG: coq_opam_package = $coq_opam_package"
-    opam show $coq_opam_package || continue 2
+    echo "DEBUG: version=`opam show $coq_opam_package --field version`"
+    # We dont print info on the opam package as it is useless
+    # opam show $coq_opam_package || continue 2
 
   for RUNNER in NEW OLD; do
     # perform measurements for the NEW/OLD commit (provided by the user)
