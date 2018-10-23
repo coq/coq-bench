@@ -130,12 +130,7 @@ coq_opam_version=dev
 
 # Create a custom OPAM repository
 
-## Create a fake "camlp5.dev" package that, when installed, does nothing.
-## We assume that "camlp5" program is already installed.
-## If we let OPAM install some other camlp5 package, in general we would run into problems.
-
 custom_opam_repo="$working_dir/custom_opam_repo"
-mkdir -p "$custom_opam_repo/packages/camlp5/camlp5.dev"
 
 ## Create a OPAM package that represents Coq branch designated by the user.
 mkdir -p "$custom_opam_repo/packages/coq/coq.$coq_opam_version"
@@ -329,8 +324,6 @@ done
 
 # The following directories are no longer relevant:
 # - $working_dir/coq
-# - $working_dir/camlp4
-# - $working_dir/camlp5
 # - $working_dir/custom_opam_repo
 # - $working_dir/.opam
 # - $working_dir/.opam.OLD
