@@ -24,12 +24,51 @@
 open Batteries
 open Printf
 open Unix
+;;
 
+type ('a,'b) pkg_timings = {
+  user_time  : 'a;
+  num_instr  : 'b;
+  num_cycles : 'b;
+  num_mem    : 'b;
+  num_faults : 'b;
+}
+;;
+
+let reduce_pkg_timings (m_f : 'a list -> 'c) (m_a : 'b list -> 'd) (t : ('a,'b) pkg_timings list) : ('c,'d) pkg_timings =
+  { user_time  = m_f @@ List.map (fun x -> x.user_time)  t
+  ; num_instr  = m_a @@ List.map (fun x -> x.num_instr)  t
+  ; num_cycles = m_a @@ List.map (fun x -> x.num_cycles) t
+  ; num_mem    = m_a @@ List.map (fun x -> x.num_mem)    t
+  ; num_faults = m_a @@ List.map (fun x -> x.num_faults) t
+  }
+;;
+
+let run cmd =
+  match run_and_read cmd with
+  | WEXITED 0, stdout -> stdout
+  | _ -> assert false
+;;
+
+let mk_pkg_timings work_dir pkg_name suffix iteration =
+  let command_prefix = "cat " ^ work_dir ^ "/" ^ pkg_name ^ suffix ^ string_of_int iteration in
+  let time_command_output = command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> String.split_on_char ' ' in
+
+  let nth = flip List.nth in
+
+  { user_time = time_command_output |> nth 0 |> float_of_string
+  ; num_instr = command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'"
+                |> run |> String.rchop ~n:1 |> int_of_string
+  ; num_cycles = command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'"
+                 |> run |> String.rchop ~n:1 |> int_of_string
+  ; num_mem = time_command_output |> nth 1 |> int_of_string
+  ; num_faults = time_command_output |> nth 2 |> int_of_string
+  }
 ;;
 
 (* process command line paramters *)
 assert (Array.length Sys.argv > 5);
-let working_directory = Sys.argv.(1) in
+let work_dir = Sys.argv.(1) in
 let num_of_iterations = int_of_string Sys.argv.(2) in
 let new_coq_version = Sys.argv.(3) in
 let old_coq_version = Sys.argv.(4) in
@@ -49,15 +88,6 @@ let coq_opam_packages = Sys.argv |> Array.to_list |> List.drop 7 in
    wait until it termines;
    check if its exit status is 0;
    return its whole stdout as a string. *)
-let run cmd =
-  match run_and_read cmd with
-  | WEXITED 0, stdout -> stdout
-  | _ -> assert false
-in
-
-let nth =
-  flip List.nth
-in
 
 let proportional_difference_of_integers new_value old_value =
   if old_value = 0
@@ -70,166 +100,59 @@ let count_number_of_digits_before_decimal_point =
 in
 
 (* parse the *.time and *.perf files *)
-
 coq_opam_packages
 |> List.map
      (fun package_name ->
        package_name,(* compilation_results_for_NEW : (float * int * int * int) list *)
-       List.init num_of_iterations succ
-       |> List.map
-            (fun iteration ->
-              let command_prefix = "cat " ^ working_directory ^ "/" ^ package_name ^ ".NEW." ^ string_of_int iteration in
-              let time_command_output = command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> String.split_on_char ' ' in
-
-              (* NEW_user_time : float *)
-              time_command_output |> nth 0 |> float_of_string,
-
-              (* NEW_instructions : int *)
-              command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'"
-              |> run |> String.rchop ~n:1 |> int_of_string,
-
-              (* NEW_cycles : int *)
-              command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'"
-              |> run |> String.rchop ~n:1 |> int_of_string,
-
-              (* NEW_mem *)
-              time_command_output |> nth 1 |> int_of_string,
-
-              (* NEW_faults *)
-              time_command_output |> nth 2 |> int_of_string),
-
-       (* compilation_results_for_OLD : (float * int * int * int * int) list *)
-       List.init num_of_iterations succ
-       |> List.map
-            (fun iteration ->
-              let command_prefix = "cat " ^ working_directory ^ "/" ^ package_name ^ ".OLD." ^ string_of_int iteration in
-              let time_command_output = command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> String.split_on_char ' ' in
-
-              (* OLD_user_time : float *)
-              time_command_output |> nth 0 |> float_of_string,
-
-              (* OLD_instructions : int *)
-              command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'"
-              |> run |> String.rchop ~n:1 |> int_of_string,
-
-              (* OLD_cycles : int *)
-              command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'"
-              |> run |> String.rchop ~n:1 |> int_of_string,
-
-              (* OLD_mem *)
-              time_command_output |> nth 1 |> int_of_string,
-
-              (* OLD_faults *)
-              time_command_output |> nth 2 |> int_of_string))
-
-(* [package_name, [NEW_user_time, NEW_instructions, NEW_cycles, NEW_mem, NEW_faults]      , [OLD_user_time, OLD_instructions, OLD_cycles, OLD_mem, OLD_faults]     ]
- : (string      * (float        * int             * int       * int    * int       ) list * (float        * int             * int       * int    * int       ) list) list *)
+       List.init num_of_iterations succ |> List.map (mk_pkg_timings work_dir package_name ".NEW."),
+       List.init num_of_iterations succ |> List.map (mk_pkg_timings work_dir package_name ".OLD."))
 
 (* from the list of measured values, select just the minimal ones *)
 
 |> List.map
-     (fun ((package_name : string),
-           (new_measurements : (float * int * int * int * int) list),
-           (old_measurements : (float * int * int * int * int) list)) ->
-
-       (* : string *)
-       package_name,
-
-       (* minimums_of_NEW_measurements : float * int * int * int * int *)
-       (
-         (* minimal_NEW_user_time : float *)
-         new_measurements |> List.map Tuple5.first |> List.reduce min,
-
-         (* minimal_NEW_instructions : int *)
-         new_measurements |> List.map Tuple5.second |> List.reduce min,
-
-         (* minimal_NEW_cycles : int *)
-         new_measurements |> List.map Tuple5.third |> List.reduce min,
-
-         (* minimal_NEW_mem : int *)
-         new_measurements |> List.map Tuple5.fourth |> List.reduce min,
-
-         (* minimal_NEW_faults : int *)
-         new_measurements |> List.map Tuple5.fifth |> List.reduce min
-       ),
-
-       (* minimums_of_OLD_measurements : float * int * int * int * int *)
-       (
-         (* minimal_OLD_user_time : float *)
-         old_measurements |> List.map Tuple5.first |> List.reduce min,
-
-         (* minimal_OLD_instructions : int *)
-         old_measurements |> List.map Tuple5.second |> List.reduce min,
-
-         (* minimal_OLD_cycles : int *)
-         old_measurements |> List.map Tuple5.third |> List.reduce min,
-
-         (* minimal_OLD_mem : int *)
-         old_measurements |> List.map Tuple5.fourth |> List.reduce min,
-
-         (* minimal_OLD_faults : int *)
-         old_measurements |> List.map Tuple5.fifth |> List.reduce min
-       )
-     )
-
-(* [package_name,
-    (minimal_NEW_user_time, minimal_NEW_instructions, minimal_NEW_cycles, minimal_NEW_mem, minimal_NEW_faults),
-    (minimal_OLD_user_time, minimal_OLD_instructions, minimal_OLD_cycles, minimal_OLD_mem, minimal_OLD_faults)]
- : (string *
-   (float * int * int * int * int) *
-   (float * int * int * int * int)) list *)
+  (fun ((package_name : string),
+        (new_measurements : (float, int) pkg_timings list),
+        (old_measurements : (float, int) pkg_timings list)) ->
+    let f_min : float list -> float = List.min in
+    let i_min : int list -> int = List.min in
+    package_name,
+    reduce_pkg_timings f_min i_min new_measurements,
+    reduce_pkg_timings f_min i_min old_measurements
+  )
 
 (* compute the "proportional differences in % of the NEW measurement and the OLD measurement" of all measured values *)
 |> List.map
-     (fun (package_name,
-           (minimal_NEW_user_time, minimal_NEW_instructions, minimal_NEW_cycles, minimal_NEW_mem, minimal_NEW_faults as minimums_of_NEW_measurements),
-           (minimal_OLD_user_time, minimal_OLD_instructions, minimal_OLD_cycles, minimal_OLD_mem, minimal_OLD_faults as minimums_of_OLD_measurements)) ->
-       package_name,
-       minimums_of_NEW_measurements,
-       minimums_of_OLD_measurements,
-       ((minimal_NEW_user_time -. minimal_OLD_user_time) /. minimal_OLD_user_time *. 100.0,
-        proportional_difference_of_integers minimal_NEW_instructions minimal_OLD_instructions,
-        proportional_difference_of_integers minimal_NEW_cycles minimal_OLD_cycles,
-        proportional_difference_of_integers minimal_NEW_mem minimal_OLD_mem,
-        proportional_difference_of_integers minimal_NEW_faults minimal_OLD_faults))
-
-(* [package_name,
-    (minimal_NEW_user_time, minimal_NEW_instructions, minimal_NEW_cycles),
-    (minimal_OLD_user_time, minimal_OLD_instructions, minimal_OLD_cycles),
-    (proportianal_difference_of_user_times,
-     proportional_difference_of_instructions,
-     proportional_difference_of_cycles,
-     proportional_difference_of_mem,
-     proportional_difference_of_faults)]
-
- : (string *
-    (float * int   * int   * int   * int) *
-    (float * int   * int   * int   * int) *
-    (float * float * float * float * float)) list *)
+     (fun (package_name, new_t, old_t) ->
+       package_name, new_t, old_t,
+       { user_time  = (new_t.user_time -. old_t.user_time) /. old_t.user_time *. 100.0
+       ; num_instr  = proportional_difference_of_integers new_t.num_instr  old_t.num_instr
+       ; num_cycles = proportional_difference_of_integers new_t.num_cycles old_t.num_cycles
+       ; num_mem    = proportional_difference_of_integers new_t.num_mem    old_t.num_mem
+       ; num_faults = proportional_difference_of_integers new_t.num_faults old_t.num_faults
+       })
 
 (* sort the table with results *)
 |> List.sort
      (match sorting_column with
       | "user_time_pdiff" ->
-         (fun measurement1 measurement2 ->
-           let get_user_time = Tuple4.fourth %> Tuple5.first in
-           compare (get_user_time measurement1) (get_user_time measurement2))
+        fun (_,_,_,perf1) (_,_,_,perf2) ->
+          compare perf1.user_time perf2.user_time
       | "package_name" ->
-         (fun measurement1 measurement2 ->
-           compare (Tuple4.first measurement1) (Tuple4.first measurement2))
+        fun (n1,_,_,_) (n2,_,_,_) -> compare n1 n2
       | _ ->
-         assert false
+        assert false
      )
 
 (* Keep only measurements that took at least "minimal_user_time" (in seconds). *)
 
 |> List.filter
-     (fun (_, (minimal_NEW_user_time,_,_,_,_), (minimal_OLD_user_time,_,_,_,_), _) ->
-        minimal_user_time <= minimal_NEW_user_time && minimal_user_time <= minimal_OLD_user_time)
+     (fun (_, new_t, old_t, _) ->
+        minimal_user_time <= new_t.user_time && minimal_user_time <= old_t.user_time)
 
 (* Below we take the measurements and format them to stdout. *)
 
 |> fun measurements ->
+
      let precision = 2 in
 
      (* the labels that we will print *)
@@ -240,89 +163,64 @@ coq_opam_packages
 
      (* the lengths of labels that we will print *)
      let new__label__length = String.length new__label in
-     let old__label__length = String.length old__label in
      let proportional_difference__label__length = String.length proportional_difference__label in
 
      (* widths of individual columns of the table *)
-     let package_name__width = max (measurements |> List.map (Tuple4.first %> String.length) |> List.reduce max)
-                                   (String.length package_name__label) in
-     let new__user_time__width = max ((measurements |> List.map (Tuple4.second %> Tuple5.first)
-                                       |> List.reduce max |> count_number_of_digits_before_decimal_point) + 1 + precision)
-                                       new__label__length in
-     let new__instructions__width = max (measurements |> List.map (Tuple4.second %> Tuple5.second)
-                                         |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
-                                        new__label__length in
-     let new__cycles__width = max (measurements |> List.map (Tuple4.second %> Tuple5.third)
-                                   |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
-                                  new__label__length in
-     let new__mem__width = max (measurements |> List.map (Tuple4.second %> Tuple5.fourth)
-                                |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
-                               new__label__length in
-     let new__faults__width = max (measurements |> List.map (Tuple4.second %> Tuple5.fifth)
-                                   |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
-                                  new__label__length in
-     let old__user_time__width = max ((measurements |> List.map (Tuple4.third %> Tuple5.first)
-                                       |> List.reduce max |> count_number_of_digits_before_decimal_point) + 1 + precision)
-                                     old__label__length in
-     let old__instructions__width = max (measurements |> List.map (Tuple4.third %> Tuple5.second)
-                                          |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
-                                          old__label__length in
-     let old__cycles__width = max (measurements |> List.map (Tuple4.third %> Tuple5.third)
-                                   |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
-                                  old__label__length in
-     let old__mem__width = max (measurements |> List.map (Tuple4.third %> Tuple5.fourth)
-                                |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
-                               old__label__length in
-     let old__faults__width = max (measurements |> List.map (Tuple4.third %> Tuple5.fifth)
-                                |> List.reduce max |> float_of_int |> count_number_of_digits_before_decimal_point)
-                               old__label__length in
-     let proportional_difference__user_time__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.first %> abs_float) |> List.reduce max
-                                                           |> count_number_of_digits_before_decimal_point) + 2 + precision)
-                                                         proportional_difference__label__length in
-     let proportional_difference__instructions__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.second %> abs_float) |> List.reduce max
-                                                              |> count_number_of_digits_before_decimal_point) + 2 + precision)
-                                                            proportional_difference__label__length in
-     let proportional_difference__cycles__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.third %> abs_float) |> List.reduce max
-                                                        |> count_number_of_digits_before_decimal_point) + 2 + precision)
-                                                      proportional_difference__label__length in
-     let proportional_difference__mem__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.fourth %> abs_float) |> List.reduce max
-                                                     |> count_number_of_digits_before_decimal_point) + 2 + precision)
-                                                   proportional_difference__label__length in
-     let proportional_difference__faults__width = max ((measurements |> List.map (Tuple4.fourth %> Tuple5.fifth %> abs_float) |> List.reduce max
-                                                        |> count_number_of_digits_before_decimal_point) + 2 + precision)
-                                                      proportional_difference__label__length in
+     let package_name__width =
+       max (measurements |> List.map (Tuple4.first %> String.length) |> List.max)
+         (String.length package_name__label) in
+
+     let llf proj =
+       let lls = count_number_of_digits_before_decimal_point (List.max proj) + 1 + precision in
+       max lls new__label__length in
+
+     let lli proj =
+       let lls = count_number_of_digits_before_decimal_point (float_of_int (List.(max proj))) + 1 + precision in
+       max lls new__label__length in
+
+     let new_timing_width = reduce_pkg_timings llf lli @@ List.map Tuple4.second measurements in
+     let old_timing_width = reduce_pkg_timings llf lli @@ List.map Tuple4.third measurements in
+
+     let llp proj =
+       let lls =
+         count_number_of_digits_before_decimal_point List.(max List.(map abs_float proj)) + 2 + precision in
+       max lls proportional_difference__label__length in
+
+     let perc_timing_width = reduce_pkg_timings llp llp @@ List.map Tuple4.fourth measurements in
 
      (* print the table *)
-
      let rec make_dashes = function
        | 0 -> ""
        | count -> "─" ^ make_dashes (pred count)
      in
-     let vertical_separator left_glyph middle_glyph right_glyph = sprintf "%s─%s─%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s\n"
+
+     let vertical_separator left_glyph middle_glyph right_glyph =
+       sprintf "%s─%s─%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s─%s─%s─%s───%s\n"
        left_glyph
        (make_dashes package_name__width)
        middle_glyph
-       (make_dashes new__user_time__width)
-       (make_dashes old__user_time__width)
-       (make_dashes proportional_difference__user_time__width)
+       (make_dashes new_timing_width.user_time)
+       (make_dashes old_timing_width.user_time)
+       (make_dashes perc_timing_width.user_time)
        middle_glyph
-       (make_dashes new__cycles__width)
-       (make_dashes old__cycles__width)
-       (make_dashes proportional_difference__cycles__width)
+       (make_dashes new_timing_width.num_cycles)
+       (make_dashes old_timing_width.num_cycles)
+       (make_dashes perc_timing_width.num_cycles)
        middle_glyph
-       (make_dashes new__instructions__width)
-       (make_dashes old__instructions__width)
-       (make_dashes proportional_difference__instructions__width)
+       (make_dashes new_timing_width.num_instr)
+       (make_dashes old_timing_width.num_instr)
+       (make_dashes perc_timing_width.num_instr)
        middle_glyph
-       (make_dashes new__mem__width)
-       (make_dashes old__mem__width)
-       (make_dashes proportional_difference__mem__width)
+       (make_dashes new_timing_width.num_mem)
+       (make_dashes old_timing_width.num_mem)
+       (make_dashes perc_timing_width.num_mem)
        middle_glyph
-       (make_dashes new__faults__width)
-       (make_dashes old__faults__width)
-       (make_dashes proportional_difference__faults__width)
+       (make_dashes new_timing_width.num_faults)
+       (make_dashes old_timing_width.num_faults)
+       (make_dashes perc_timing_width.num_faults)
        right_glyph
      in
+
      let center_string string width =
        let string_length = String.length string in
        let width = max width string_length in
@@ -333,59 +231,56 @@ coq_opam_packages
      printf "\n";
      print_string (vertical_separator "┌" "┬" "┐");
      "│" ^ String.make (1 + package_name__width + 1) ' ' ^ "│"
-     ^ center_string "user time [s]" (1 +  new__user_time__width + 1 + old__user_time__width + 1 + proportional_difference__user_time__width + 3) ^ "│"
-     ^ center_string "CPU cycles" (1 + new__cycles__width    + 1 + old__cycles__width    + 1 + proportional_difference__cycles__width + 3) ^ "│"
-     ^ center_string "CPU instructions" (1 + new__instructions__width + 1 + old__instructions__width + 1 + proportional_difference__instructions__width + 3) ^ "│"
-     ^ center_string "max resident mem [KB]" (1 + new__mem__width + 1 + old__mem__width + 1 + proportional_difference__mem__width + 3) ^ "│"
-     ^ center_string "mem faults" (1 + new__faults__width + 1 + old__faults__width + 1 + proportional_difference__faults__width + 3)
+     ^ center_string "user time [s]" (1 +  new_timing_width.user_time + 1 + old_timing_width.user_time + 1 + perc_timing_width.user_time + 3) ^ "│"
+     ^ center_string "CPU cycles" (1 + new_timing_width.num_cycles    + 1 + old_timing_width.num_cycles    + 1 + perc_timing_width.num_cycles + 3) ^ "│"
+     ^ center_string "CPU instructions" (1 + new_timing_width.num_instr + 1 + old_timing_width.num_instr + 1 + perc_timing_width.num_instr + 3) ^ "│"
+     ^ center_string "max resident mem [KB]" (1 + new_timing_width.num_mem + 1 + old_timing_width.num_mem + 1 + perc_timing_width.num_mem + 3) ^ "│"
+     ^ center_string "mem faults" (1 + new_timing_width.num_faults + 1 + old_timing_width.num_faults + 1 + perc_timing_width.num_faults + 3)
      ^ "│\n" |> print_string;
      printf "│%*s │ %*s│ %*s│ %*s│ %*s│ %*s│\n"
        (1 + package_name__width) ""
-       (new__user_time__width    + 1 + old__user_time__width    + 1 + proportional_difference__user_time__width + 3) ""
-       (new__cycles__width       + 1 + old__cycles__width       + 1 + proportional_difference__cycles__width + 3) ""
-       (new__instructions__width + 1 + old__instructions__width + 1 + proportional_difference__instructions__width + 3) ""
-       (new__mem__width + 1 + old__mem__width + 1 + proportional_difference__mem__width + 3) ""
-       (new__faults__width + 1 + old__faults__width + 1 + proportional_difference__faults__width + 3) "";
+       (new_timing_width.user_time    + 1 + old_timing_width.user_time    + 1 + perc_timing_width.user_time + 3) ""
+       (new_timing_width.num_cycles       + 1 + old_timing_width.num_cycles       + 1 + perc_timing_width.num_cycles + 3) ""
+       (new_timing_width.num_instr + 1 + old_timing_width.num_instr + 1 + perc_timing_width.num_instr + 3) ""
+       (new_timing_width.num_mem + 1 + old_timing_width.num_mem + 1 + perc_timing_width.num_mem + 3) ""
+       (new_timing_width.num_faults + 1 + old_timing_width.num_faults + 1 + perc_timing_width.num_faults + 3) "";
      printf "│ %*s │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │ %*s %*s %*s   │\n"
        package_name__width package_name__label
-       new__user_time__width new__label
-       old__user_time__width old__label
-       proportional_difference__user_time__width proportional_difference__label
-       new__cycles__width new__label
-       old__cycles__width old__label
-       proportional_difference__cycles__width proportional_difference__label
-       new__instructions__width new__label
-       old__instructions__width old__label
-       proportional_difference__instructions__width proportional_difference__label
-       new__mem__width new__label
-       old__mem__width old__label
-       proportional_difference__mem__width proportional_difference__label
-       new__faults__width new__label
-       old__faults__width old__label
-       proportional_difference__faults__width proportional_difference__label;
+       new_timing_width.user_time new__label
+       old_timing_width.user_time old__label
+       perc_timing_width.user_time proportional_difference__label
+       new_timing_width.num_cycles new__label
+       old_timing_width.num_cycles old__label
+       perc_timing_width.num_cycles proportional_difference__label
+       new_timing_width.num_instr new__label
+       old_timing_width.num_instr old__label
+       perc_timing_width.num_instr proportional_difference__label
+       new_timing_width.num_mem new__label
+       old_timing_width.num_mem old__label
+       perc_timing_width.num_mem proportional_difference__label
+       new_timing_width.num_faults new__label
+       old_timing_width.num_faults old__label
+       perc_timing_width.num_faults proportional_difference__label;
      measurements |> List.iter
-         (fun (package_name,
-               (new_user_time, new_instructions, new_cycles, new_mem, new_faults),
-               (old_user_time, old_instructions, old_cycles, old_mem, old_faults),
-               (proportional_difference__user_time, proportional_difference__instructions, proportional_difference__cycles, proportional_difference__mem, proportional_difference__faults)) ->
+         (fun (package_name, new_t, old_t, perc) ->
            print_string (vertical_separator "├" "┼" "┤");
            printf "│ %*s │ %*.*f %*.*f %+*.*f %% │ %*d %*d %+*.*f %% │ %*d %*d %+*.*f %% │ %*d %*d %+*.*f %% │ %*d %*d %+*.*f %% │\n"
              package_name__width package_name
-             new__user_time__width precision new_user_time
-             old__user_time__width precision old_user_time
-             proportional_difference__user_time__width precision proportional_difference__user_time
-             new__cycles__width new_cycles
-             old__cycles__width old_cycles
-             proportional_difference__cycles__width precision proportional_difference__cycles
-             new__instructions__width new_instructions
-             old__instructions__width old_instructions
-             proportional_difference__instructions__width precision proportional_difference__instructions         
-             new__mem__width new_mem
-             old__mem__width old_mem
-             proportional_difference__mem__width precision proportional_difference__mem
-             new__faults__width new_faults
-             old__faults__width old_faults
-             proportional_difference__faults__width precision proportional_difference__faults);
+             new_timing_width.user_time precision new_t.user_time
+             old_timing_width.user_time precision old_t.user_time
+             perc_timing_width.user_time precision perc.user_time
+             new_timing_width.num_cycles new_t.num_cycles
+             old_timing_width.num_cycles old_t.num_cycles
+             perc_timing_width.num_cycles precision perc.num_cycles
+             new_timing_width.num_instr new_t.num_instr
+             old_timing_width.num_instr old_t.num_instr
+             perc_timing_width.num_instr precision perc.num_instr
+             new_timing_width.num_mem new_t.num_mem
+             old_timing_width.num_mem old_t.num_mem
+             perc_timing_width.num_mem precision perc.num_mem
+             new_timing_width.num_faults new_t.num_faults
+             old_timing_width.num_faults old_t.num_faults
+             perc_timing_width.num_faults precision perc.num_faults);
 
 print_string (vertical_separator "└" "┴" "┘");
 
