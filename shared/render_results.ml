@@ -17,11 +17,10 @@
  *)
 
 #use "topfind";;
-#require "batteries";;
+#require "unix";;
 #print_depth 100000000;;
 #print_length 100000000;;
 
-open Batteries
 open Printf
 open Unix
 ;;
@@ -44,17 +43,67 @@ let reduce_pkg_timings (m_f : 'a list -> 'c) (m_a : 'b list -> 'd) (t : ('a,'b) 
   }
 ;;
 
-let run cmd =
-  match run_and_read cmd with
-  | WEXITED 0, stdout -> stdout
-  | _ -> assert false
+(******************************************************************************)
+(* BEGIN Copied from batteries, to remove *)
+(******************************************************************************)
+let run cmd = ""
 ;;
+
+let ( %> ) f g x = g (f x)
+;;
+
+module Tuple4 = struct
+
+  let first (x,_,_,_) = x
+  let second (_,y,_,_) = y
+  let third (_,_,z,_) = z
+  let fourth (_,_,_,z) = z
+
+end
+;;
+
+module List = struct
+  include List
+
+  let rec drop n = function
+    | _ :: l when n > 0 -> drop (n-1) l
+    | l -> l
+
+  let reduce f = function
+    | [] ->
+      invalid_arg "List.reduce: Empty List"
+    | h :: t ->
+      fold_left f h t
+
+  let min l = reduce Pervasives.min l
+  let max l = reduce Pervasives.max l
+
+end
+;;
+
+module String = struct
+
+  include String
+
+  let rchop ?(n = 1) s =
+    if n < 0 then
+      invalid_arg "String.rchop: number of characters to chop is negative"
+    else
+      let slen = length s in
+      if slen <= n then "" else sub s 0 (slen - n)
+
+end
+;;
+
+(******************************************************************************)
+(* END Copied from batteries, to remove *)
+(******************************************************************************)
 
 let mk_pkg_timings work_dir pkg_name suffix iteration =
   let command_prefix = "cat " ^ work_dir ^ "/" ^ pkg_name ^ suffix ^ string_of_int iteration in
   let time_command_output = command_prefix ^ ".time" |> run |> String.rchop ~n:1 |> String.split_on_char ' ' in
 
-  let nth = flip List.nth in
+  let nth x i = List.nth i x in
 
   { user_time = time_command_output |> nth 0 |> float_of_string
   ; num_instr = command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'"

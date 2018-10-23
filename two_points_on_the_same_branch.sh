@@ -7,12 +7,11 @@
 # :set shiftwidth=4
 
 # ASSUMPTIONS:
-# - camlp5 is installed and available in $PATH
-# - ocamlfind is installed and available in $PATH
 # - "ocaml*" binaries visible via $PATH
+# - num is installed
+# - ocamlfind is installed and available in $PATH
+# - camlp5 is installed and available in $PATH
 # - the OPAM packages, specified by the user, are topologically sorted wrt. to the dependency relationship.
-
-echo "DEBUG = ocamlfind query batteries = $(ocamlfind query batteries)"
 
 r='\033[0m'          # reset (all attributes off)
 b='\033[1m'          # bold
@@ -216,7 +215,7 @@ old_opam_root="$working_dir/opam.OLD"
 # Create a new OPAM-root to which we will install the NEW version of Coq.
 
 export OPAMROOT="$new_opam_root"
-initial_opam_packages="camlp5 ocamlfind batteries"
+initial_opam_packages="num ocamlfind camlp5"
 
 echo n | opam init -v -j$number_of_processors --comp $new_ocaml_switch
 echo $PATH
