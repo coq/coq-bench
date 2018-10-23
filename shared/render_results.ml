@@ -46,11 +46,41 @@ let reduce_pkg_timings (m_f : 'a list -> 'c) (m_a : 'b list -> 'd) (t : ('a,'b) 
 (******************************************************************************)
 (* BEGIN Copied from batteries, to remove *)
 (******************************************************************************)
-let run cmd = ""
+let run_and_read cmd =
+  (* This code is before the open of BatInnerIO
+     to avoid using batteries' wrapped IOs *)
+  let string_of_file fn =
+    let buff_size = 1024 in
+    let buff = Buffer.create buff_size in
+    let ic = open_in fn in
+    let line_buff = Bytes.create buff_size in
+    begin
+      let was_read = ref (input ic line_buff 0 buff_size) in
+      while !was_read <> 0 do
+        Buffer.add_subbytes buff line_buff 0 !was_read;
+        was_read := input ic line_buff 0 buff_size;
+      done;
+      close_in ic;
+    end;
+    Buffer.contents buff
+  in
+  let tmp_fn = Filename.temp_file "" "" in
+  let cmd_to_run = cmd ^ " > " ^ tmp_fn in
+  let status = Unix.system cmd_to_run in
+  let output = string_of_file tmp_fn in
+  Unix.unlink tmp_fn;
+  (status, output)
 ;;
 
 let ( %> ) f g x = g (f x)
 ;;
+
+let run = run_and_read %> snd
+;;
+
+module Float = struct
+  let nan = Pervasives.nan
+end
 
 module Tuple4 = struct
 
@@ -64,6 +94,27 @@ end
 
 module List = struct
   include List
+
+  let rec init_tailrec_aux acc i n f =
+    if i >= n then acc
+    else init_tailrec_aux (f i :: acc) (i+1) n f
+
+  let rec init_aux i n f =
+    if i >= n then []
+    else
+      let r = f i in
+      r :: init_aux (i+1) n f
+
+  let rev_init_threshold =
+    match Sys.backend_type with
+    | Sys.Native | Sys.Bytecode -> 10_000
+    (* We don't known the size of the stack, better be safe and assume it's small. *)
+    | Sys.Other _ -> 50
+
+  let init len f =
+    if len < 0 then invalid_arg "List.init" else
+    if len > rev_init_threshold then rev (init_tailrec_aux [] 0 len f)
+    else init_aux 0 len f
 
   let rec drop n = function
     | _ :: l when n > 0 -> drop (n-1) l
