@@ -173,7 +173,7 @@ initial_opam_packages="num ocamlfind camlp5"
 echo n | opam init -v -j "$number_of_processors" --comp "$new_ocaml_switch"
 echo "$PATH"
 . "$OPAMROOT"/opam-init/init.sh
-yes | opam install -v -j "$number_of_processors" "$initial_opam_packages"
+yes | opam install -v -j "$number_of_processors" $initial_opam_packages
 
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
 git clone --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
@@ -207,7 +207,7 @@ export OPAMROOT="$old_opam_root"
 echo n | opam init -v -j "$number_of_processors" --comp "$old_ocaml_switch"
 echo "$PATH"
 . "$OPAMROOT"/opam-init/init.sh
-yes | opam install -v -j "$number_of_processors" "$initial_opam_packages"
+yes | opam install -v -j "$number_of_processors" $initial_opam_packages
 
 opam repo add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
 opam repo add custom-opam-repo "$custom_opam_repo"
