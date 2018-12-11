@@ -25,6 +25,9 @@ open Printf
 open Unix
 ;;
 
+let _ = Printexc.record_backtrace true
+;;
+
 type ('a,'b) pkg_timings = {
   user_time  : 'a;
   num_instr  : 'b;
@@ -157,10 +160,15 @@ let mk_pkg_timings work_dir pkg_name suffix iteration =
   let nth x i = List.nth i x in
 
   { user_time = time_command_output |> nth 0 |> float_of_string
-  ; num_instr = command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'"
-                |> run |> String.rchop ~n:1 |> int_of_string
-  ; num_cycles = command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'"
-                 |> run |> String.rchop ~n:1 |> int_of_string
+  (* Perf can indeed be not supported in some systems, so we must fail gracefully *)
+  ; num_instr =
+      (try command_prefix ^ ".perf | grep instructions:u | awk '{print $1}' | sed 's/,//g'" |>
+           run |> String.rchop ~n:1 |> int_of_string
+       with Failure _ -> 0)
+  ; num_cycles =
+      (try command_prefix ^ ".perf | grep cycles:u | awk '{print $1}' | sed 's/,//g'" |>
+           run |> String.rchop ~n:1 |> int_of_string
+       with Failure _ -> 0)
   ; num_mem = time_command_output |> nth 1 |> int_of_string
   ; num_faults = time_command_output |> nth 2 |> int_of_string
   }
