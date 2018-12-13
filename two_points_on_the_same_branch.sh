@@ -214,10 +214,10 @@ create_opam() {
 }
 
 # Create an OPAM-root to which we will install the NEW version of Coq.
-create_opam("NEW", "$new_ocaml_switch", "$new_coq_commit" ,"$new_coq_opam_archive_dir")
+create_opam "NEW" "$new_ocaml_switch" "$new_coq_commit" "$new_coq_opam_archive_dir"
 
 # Create an OPAM-root to which we will install the OLD version of Coq.
-create_opam("OLD", "$old_ocaml_switch", "$old_coq_commit" ,"$old_coq_opam_archive_dir")
+create_opam "OLD" "$old_ocaml_switch" "$old_coq_commit" "$old_coq_opam_archive_dir"
 
 # --------------------------------------------------------------------------------
 # Measure the compilation times of the specified OPAM packages in both switches
