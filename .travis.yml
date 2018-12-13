@@ -1,0 +1,61 @@
+dist: xenial
+sudo: required
+language: c
+
+cache:
+  apt: true
+
+addons:
+  apt:
+    packages:
+    - opam
+    - linux-tools-generic     # /usr/bin/perf
+    - time                    # /usr/bin/time
+    - ca-certificates
+    - ca-cacert               # iris repo is signed by cacert
+    - lua5.1                  # timelog2html
+
+env:
+  global:
+  - WORKSPACE="${TRAVIS_BUILD_DIR}/_workspace"
+  - BUILD_ID="travis"
+  - number_of_processors="2"
+  - num_of_iterations="2"
+  - coq_opam_packages="coq-sf-lf coq-mathcomp-ssreflect"
+  - new_ocaml_switch="4.06.1"
+  - new_coq_repository="https://github.com/coq/coq.git"
+  - new_coq_commit="850dfbf59f52b0d3dcba237ee2af5ce99fd1bcd2"
+  # OPAM 1 cannot use 4.07.1
+  - old_ocaml_switch="4.07.0"
+  - old_coq_repository="https://github.com/ejgallego/coq.git"
+  - old_coq_commit="40464248828e0f09ffd98e9602020975c0bcf82d"
+  - new_coq_opam_archive_git_uri="https://github.com/coq/opam-coq-archive.git"
+  - new_coq_opam_archive_git_branch="master"
+  matrix:
+  - BENCH_DEBUG=
+  - BENCH_DEBUG=true
+
+# linux-tools on Travis is a complicated issue
+install:
+- sudo apt-get install -y -qq linux-tools-`uname -r`
+# - sudo curl -sL https://github.com/ocaml/opam/releases/download/1.2.2/opam-1.2.2-x86_64-Linux -o /usr/bin/opam
+# - sudo chmod 755 /usr/bin/opam
+# - sudo curl -sL https://github.com/ocaml/opam/releases/download/2.0.1/opam-2.0.1-x86_64-linux -o /usr/bin/opam
+# - opam init -c "$COMPILER" --disable-sandboxing
+# - opam switch set "$COMPILER"
+# - eval $(opam env)
+# - opam install $BASE_OPAM
+# - opam list
+
+script:
+- set -e
+- mkdir -p _workspace
+
+- echo -e "travis_fold:start:printenv\033[33;1mprintenv\033[0m"
+- printenv -0 | sort -z | tr '\0' '\n'
+- echo -e 'travis_fold:end:printenv\\r'
+
+- echo -e "travis_fold:start:bench\033[33;1mbench\033[0m"
+- ./two_points_on_the_same_branch.sh
+- echo -e 'travis_fold:end:coq-bench\\r'
+- set +e
