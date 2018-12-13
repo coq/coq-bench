@@ -3,7 +3,7 @@ Upstream-Name: coq-bench
 Upstream-Contact: Emilio J. Gallego Arias <e@x80.org>
 Source: https://github.com/coq/coq-bench
 License: GPL-3+ / CC-BY-SA 3.0
-Copyright: 2016-2018, INRIA-MINES ParisTech
+Copyright: 2016-2019, INRIA / MINES ParisTech
 Authors: Matej Kosic, Emilio Jesús Gallego Arias, and others.
 Comment: We favor GPL-3, but we do allow a nice documentation license.
 

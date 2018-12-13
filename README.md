@@ -11,6 +11,12 @@ See (Jenkins Instructions)[https://github.com/coq/coq/wiki/Jenkins-(automated-be
 
 Results can be seen at https://ci.inria.fr/coq/job/benchmark-part-of-the-branch/
 
+## Contributing
+
+Maintainer of coq-bench is Emilio Jesús Gallego Arias; see the
+[contributing](./CONTRIBUTING.md) file information about contributing
+to this software.
+
 ## Running a bench locally:
 
-Soon!
+Soon, see Travis file.
