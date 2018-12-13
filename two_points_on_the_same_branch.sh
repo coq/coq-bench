@@ -165,6 +165,7 @@ old_opam_root="$working_dir/opam.OLD"
 
 old_coq_opam_archive_dir="$working_dir/old_coq_opam_archive"
 git clone -q --depth 1 https://github.com/coq/opam-coq-archive.git "$old_coq_opam_archive_dir"
+
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
 git clone -q --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
 
