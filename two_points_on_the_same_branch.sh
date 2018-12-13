@@ -199,7 +199,7 @@ create_opam() {
     if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: $1_coq_commit = $COQ_HASH"; fi
 
     git checkout -q $COQ_HASH
-    local COQ_HASH_LONG=$(git log --pretty=%H | head -n 1)
+    COQ_HASH_LONG=$(git log --pretty=%H | head -n 1)
 
     if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: $1_coq_commit_long = $COQ_HASH_LONG"; fi
 
@@ -215,10 +215,11 @@ create_opam() {
 
 # Create an OPAM-root to which we will install the NEW version of Coq.
 create_opam "NEW" "$new_ocaml_switch" "$new_coq_commit" "$new_coq_opam_archive_dir"
+new_coq_commit_long="$COQ_HASH_LONG"
 
 # Create an OPAM-root to which we will install the OLD version of Coq.
 create_opam "OLD" "$old_ocaml_switch" "$old_coq_commit" "$old_coq_opam_archive_dir"
-
+old_coq_commit_long="$COQ_HASH_LONG"
 # --------------------------------------------------------------------------------
 # Measure the compilation times of the specified OPAM packages in both switches
 
