@@ -163,84 +163,66 @@ old_opam_root="$working_dir/opam.OLD"
 
 # --------------------------------------------------------------------------------
 
-initial_opam_packages="num ocamlfind camlp5"
-
-# Create a new OPAM-root to which we will install the NEW version of Coq.
-
-export OPAMROOT="$new_opam_root"
-opam init -qn -j$number_of_processors --compiler $new_ocaml_switch
-eval $(opam config env)
-opam install -qy -j$number_of_processors $initial_opam_packages
-
+old_coq_opam_archive_dir="$working_dir/old_coq_opam_archive"
+git clone -q --depth 1 https://github.com/coq/opam-coq-archive.git "$old_coq_opam_archive_dir"
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
 git clone -q --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
 
-opam repo -q add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
-opam repo -q add custom-opam-repo "$custom_opam_repo"
-opam repo -q add coq-extra-dev "$new_coq_opam_archive_dir/extra-dev"
-opam repo -q add coq-released "$new_coq_opam_archive_dir/released"
-if [ ! -z "$BENCH_DEBUG" ]; then opam repo list; fi
+initial_opam_packages="num ocamlfind camlp5"
 
-cd "$coq_dir"
+# Create an opam root and install Coq
+# $1 = root_name {ex: NEW / OLD}
+# $2 = compiler name
+# $3 = git hash of Coq to be installed
+# $4 = directory of coq opam archive
+create_opam() {
 
-if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: new_coq_commit = $new_coq_commit"; fi
+    local OPAM_DIR="$working_dir/opam.$1"
+    local OPAM_COMP="$2"
+    local COQ_HASH="$3"
+    local OPAM_COQ_DIR="$4"
 
-git checkout -q $new_coq_commit
-new_coq_commit_long=$(git log --pretty=%H | head -n 1)
+    export OPAMROOT="$OPAM_DIR"
 
-if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: new_coq_commit_long = $new_coq_commit_long"; fi
+    opam init -qn -j$number_of_processors --compiler "$OPAM_COMP"
+    eval $(opam config env)
+    opam install -qy -j$number_of_processors $initial_opam_packages
 
-if opam install coq.$coq_opam_version -b -j$number_of_processors; then
-    :
-else
-    echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the NEWER commit = $head_long)."
-    exit 1
-fi
+    opam repo -q add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
+    opam repo -q add custom-opam-repo "$custom_opam_repo"
+    opam repo -q add coq-extra-dev "$OPAM_COQ_DIR/extra-dev"
+    opam repo -q add coq-released "$OPAM_COQ_DIR/released"
 
-opam pin --kind=version add coq $coq_opam_version
+    if [ ! -z "$BENCH_DEBUG" ]; then opam repo list; fi
 
-# --------------------------------------------------------------------------------
+    cd "$coq_dir"
+    if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: $1_coq_commit = $COQ_HASH"; fi
 
-# Create a new OPAM-root to which we will install the OLD version of Coq.
+    git checkout -q $COQ_HASH
+    local COQ_HASH_LONG=$(git log --pretty=%H | head -n 1)
 
-export OPAMROOT="$old_opam_root"
-opam init -qn -j$number_of_processors --compiler $old_ocaml_switch
-eval $(opam config env)
-opam install -qy -j$number_of_processors $initial_opam_packages
+    if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: $1_coq_commit_long = $COQ_HASH_LONG"; fi
 
-opam repo -q add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
-opam repo -q add custom-opam-repo "$custom_opam_repo"
+    if opam install coq.$coq_opam_version -b -j$number_of_processors; then
+        :
+    else
+        echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the commit = $COQ_HASH_LONG)."
+        exit 1
+    fi
 
-git clone -q --depth 1 https://github.com/coq/opam-coq-archive.git
-opam repo -q add coq-extra-dev opam-coq-archive/extra-dev
-opam repo -q add coq-released opam-coq-archive/released
+    opam pin --kind=version add coq $coq_opam_version
+}
 
-if [ ! -z "$BENCH_DEBUG" ]; then opam repo list; fi
+# Create an OPAM-root to which we will install the NEW version of Coq.
+create_opam("NEW", "$new_ocaml_switch", "$new_coq_commit" ,"$new_coq_opam_archive_dir")
 
-cd "$coq_dir"
-echo "DEBUG: old_coq_commit = $old_coq_commit"
-git checkout -q $old_coq_commit
-old_coq_commit_long=$(git log --pretty=%H | head -n 1)
-echo "DEBUG: old_coq_commit_long = $old_coq_commit_long"
-
-if opam install coq.$coq_opam_version -b -j$number_of_processors; then
-    :
-else
-    echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the NEWER commit = $head_long)."
-    exit 1
-fi
-
-if [ ! $coq_opam_version = dev ]; then
-  opam pin add coq $coq_opam_version
-fi
+# Create an OPAM-root to which we will install the OLD version of Coq.
+create_opam("OLD", "$old_ocaml_switch", "$old_coq_commit" ,"$old_coq_opam_archive_dir")
 
 # --------------------------------------------------------------------------------
+# Measure the compilation times of the specified OPAM packages in both switches
 
-# Measure the compilation times of the specified OPAM packages
-# - for the NEW commit
-# - for the OLD commit
-
-# Generate per line timing info
+# Generate per line timing info in devs that use coq_makefile
 export TIMING=1
 
 # The following variable will be set in the following cycle:
