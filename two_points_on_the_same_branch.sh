@@ -117,12 +117,12 @@ fi
 # Clone the indicated git-repository.
 
 coq_dir="$working_dir/coq"
-git clone "$new_coq_repository" "$coq_dir"
+git clone -q "$new_coq_repository" "$coq_dir"
 cd "$coq_dir"
 git remote rename origin new_coq_repository
 git remote add old_coq_repository "$old_coq_repository"
-git fetch "$old_coq_repository"
-git checkout $new_coq_commit
+git fetch -q "$old_coq_repository"
+git checkout -q $new_coq_commit
 
 official_coq_branch=master
 coq_opam_version=dev
@@ -173,19 +173,19 @@ eval $(opam config env)
 opam install -qy -j$number_of_processors $initial_opam_packages
 
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
-git clone --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
+git clone -q --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
 
-opam repo add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
-opam repo add custom-opam-repo "$custom_opam_repo"
-opam repo add coq-extra-dev "$new_coq_opam_archive_dir/extra-dev"
-opam repo add coq-released "$new_coq_opam_archive_dir/released"
-opam repo list
+opam repo -q add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
+opam repo -q add custom-opam-repo "$custom_opam_repo"
+opam repo -q add coq-extra-dev "$new_coq_opam_archive_dir/extra-dev"
+opam repo -q add coq-released "$new_coq_opam_archive_dir/released"
+if [ ! -z "$BENCH_DEBUG" ]; then opam repo list; fi
 
 cd "$coq_dir"
 
 if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: new_coq_commit = $new_coq_commit"; fi
 
-git checkout $new_coq_commit
+git checkout -q $new_coq_commit
 new_coq_commit_long=$(git log --pretty=%H | head -n 1)
 
 if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: new_coq_commit_long = $new_coq_commit_long"; fi
@@ -208,16 +208,18 @@ opam init -qn -j$number_of_processors --compiler $old_ocaml_switch
 eval $(opam config env)
 opam install -qy -j$number_of_processors $initial_opam_packages
 
-opam repo add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
-opam repo add custom-opam-repo "$custom_opam_repo"
+opam repo -q add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
+opam repo -q add custom-opam-repo "$custom_opam_repo"
 
-git clone --depth 1 https://github.com/coq/opam-coq-archive.git
-opam repo add coq-extra-dev opam-coq-archive/extra-dev
-opam repo add coq-released opam-coq-archive/released
-opam repo list
+git clone -q --depth 1 https://github.com/coq/opam-coq-archive.git
+opam repo -q add coq-extra-dev opam-coq-archive/extra-dev
+opam repo -q add coq-released opam-coq-archive/released
+
+if [ ! -z "$BENCH_DEBUG" ]; then opam repo list; fi
+
 cd "$coq_dir"
 echo "DEBUG: old_coq_commit = $old_coq_commit"
-git checkout $old_coq_commit
+git checkout -q $old_coq_commit
 old_coq_commit_long=$(git log --pretty=%H | head -n 1)
 echo "DEBUG: old_coq_commit_long = $old_coq_commit_long"
 
