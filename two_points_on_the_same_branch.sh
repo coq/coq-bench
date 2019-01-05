@@ -262,6 +262,7 @@ for coq_opam_package in $coq_opam_packages; do
         if [ ! -z "$BENCH_DEBUG" ]; then ls -l $working_dir; fi
 
         for iteration in $(seq $num_of_iterations); do
+            _RES=0
             /usr/bin/time -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.time" --format="%U %M %F" \
                  perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.perf" \
                     opam install -q -b -j1 $coq_opam_package \
