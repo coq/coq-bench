@@ -266,8 +266,8 @@ for coq_opam_package in $coq_opam_packages; do
                  perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.perf" \
                     opam install -q -b -j1 $coq_opam_package \
                      3>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stdout 1>&3 \
-                     4>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stderr 2>&4
-            _RES=$?
+                     4>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stderr 2>&4 || \
+                _RES=$?
             if [ $_RES = 0 ];
             then
                 echo $_RES > $working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.exit_status
