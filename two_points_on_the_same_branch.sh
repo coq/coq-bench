@@ -255,7 +255,7 @@ for coq_opam_package in $coq_opam_packages; do
         # before), remove it.
         opam uninstall -q $coq_opam_package
 
-        opam install $coq_opam_package -q -b -j$number_of_processors --deps-only -y \
+        opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y \
              3>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stdout 1>&3 \
              4>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stderr 2>&4 || continue 2
 
@@ -265,7 +265,7 @@ for coq_opam_package in $coq_opam_packages; do
             _RES=0
             /usr/bin/time -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.time" --format="%U %M %F" \
                  perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.perf" \
-                    opam install -q -b -j1 $coq_opam_package \
+                    opam install -v -b -j1 $coq_opam_package \
                      3>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stdout 1>&3 \
                      4>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stderr 2>&4 || \
                 _RES=$?
