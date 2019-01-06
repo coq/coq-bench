@@ -370,7 +370,7 @@ else
     if [ ! -z "$not_installable_coq_opam_packages" ]; then
         # Tell the user that some of the provided OPAM-package(s)
         # is/are not installable.
-        printf "\n\nINFO: failed to install $not_installable_coq_opam_packages"
+        printf '\n\nINFO: failed to install %s\n' "$not_installable_coq_opam_packages"
         exit_code=1
     fi
 
