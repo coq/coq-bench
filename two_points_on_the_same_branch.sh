@@ -268,9 +268,15 @@ for coq_opam_package in $coq_opam_packages; do
         # before), remove it.
         opam uninstall -q $coq_opam_package
 
+        # OPAM 2.0 likes to ignore the -j when it feels like :S so we
+        # workaround that here.
+        opam config set-global jobs $number_of_processors
+
         opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y \
              3>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stdout 1>&3 \
              4>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stderr 2>&4 || continue 2
+
+        opam config set-global jobs 1
 
         if [ ! -z "$BENCH_DEBUG" ]; then ls -l $working_dir; fi
 
