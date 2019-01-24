@@ -136,25 +136,28 @@ custom_opam_repo="$working_dir/custom_opam_repo"
 ## Create a OPAM package that represents Coq branch designated by the user.
 mkdir -p "$custom_opam_repo/packages/coq/coq.$coq_opam_version"
 
+echo "opam-version: \"2.0\"" > "$custom_opam_repo/repo"
+
 cat > "$custom_opam_repo/packages/coq/coq.$coq_opam_version/opam" <<+
-opam-version: "1.2"
+opam-version: "2.0"
 maintainer: "dummy@value.fr"
 homepage: "http://dummy.value/"
 bug-reports: "https://dummy.value/bugs/"
 license: "LGPL 2"
 build: [
-  ["./configure"
-   "-prefix" prefix
+  [ "./configure"
+    "-prefix" prefix
     "-coqide" "no"
   ]
-  [make "-j%{jobs}%"]
+  [ make "-j" jobs ]
 ]
 install: [make "install"]
 depends: []
 +
 
-echo "local: \"$working_dir/coq\"" > $custom_opam_repo/packages/coq/coq.$coq_opam_version/url
-touch $custom_opam_repo/packages/coq/coq.$coq_opam_version/descr
+echo "url { src: \"file://$working_dir/coq\" } " >> "$custom_opam_repo/packages/coq/coq.$coq_opam_version/opam"
+
+cat "$custom_opam_repo/packages/coq/coq.$coq_opam_version/opam"
 
 # --------------------------------------------------------------------------------
 
@@ -168,7 +171,7 @@ git clone -q --depth 1 https://github.com/coq/opam-coq-archive.git "$old_coq_opa
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
 git clone -q --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
 
-initial_opam_packages="num ocamlfind camlp5"
+initial_opam_packages="num ocamlfind dune"
 
 # Create an opam root and install Coq
 # $1 = root_name {ex: NEW / OLD}
@@ -184,15 +187,25 @@ create_opam() {
 
     export OPAMROOT="$OPAM_DIR"
 
-    opam init -qn -j$number_of_processors --compiler "$OPAM_COMP"
-    eval $(opam config env)
+    opam init --disable-sandboxing -qn -j$number_of_processors --bare
+    # Allow experimental compiler switches
+    opam repo add -q --set-default ocaml-pr https://github.com/ocaml/ocaml-pr-repository.git
+    # Rest of default switches
+    opam repo add -q --set-default iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
+    opam repo add -q --set-default custom-opam-repo "$custom_opam_repo"
+
+    opam switch create -qy -j$number_of_processors "$OPAM_COMP"
+    eval $(opam env)
+
+    # For some reason opam guesses an incorrect upper bound on the
+    # number of jobs available on Travis, so we set it here manually:
+    opam config set-global jobs $number_of_processors
+    if [ ! -z "$BENCH_DEBUG" ]; then opam config list; fi
+
+    opam repo add -q --this-switch coq-extra-dev "$OPAM_COQ_DIR/extra-dev"
+    opam repo add -q --this-switch coq-released "$OPAM_COQ_DIR/released"
+
     opam install -qy -j$number_of_processors $initial_opam_packages
-
-    opam repo -q add iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
-    opam repo -q add custom-opam-repo "$custom_opam_repo"
-    opam repo -q add coq-extra-dev "$OPAM_COQ_DIR/extra-dev"
-    opam repo -q add coq-released "$OPAM_COQ_DIR/released"
-
     if [ ! -z "$BENCH_DEBUG" ]; then opam repo list; fi
 
     cd "$coq_dir"
@@ -203,8 +216,8 @@ create_opam() {
 
     if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: $1_coq_commit_long = $COQ_HASH_LONG"; fi
 
-    if opam install coq.$coq_opam_version -b -j$number_of_processors; then
-        :
+    if opam install -b -j$number_of_processors coq.$coq_opam_version; then
+        echo "Coq installed successfully"
     else
         echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the commit = $COQ_HASH_LONG)."
         exit 1
@@ -248,7 +261,7 @@ for coq_opam_package in $coq_opam_packages; do
             echo "Testing OLD commit"
         fi
 
-        eval $(opam config env)
+        eval $(opam env)
 
         # If a given OPAM-package was already installed (as a
         # dependency of some OPAM-package that we have benchmarked
