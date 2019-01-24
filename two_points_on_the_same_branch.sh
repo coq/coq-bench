@@ -268,9 +268,15 @@ for coq_opam_package in $coq_opam_packages; do
         # before), remove it.
         opam uninstall -q $coq_opam_package
 
+        # OPAM 2.0 likes to ignore the -j when it feels like :S so we
+        # workaround that here.
+        opam config set-global jobs $number_of_processors
+
         opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y \
              3>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stdout 1>&3 \
              4>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stderr 2>&4 || continue 2
+
+        opam config set-global jobs 1
 
         if [ ! -z "$BENCH_DEBUG" ]; then ls -l $working_dir; fi
 
@@ -328,8 +334,8 @@ for coq_opam_package in $coq_opam_packages; do
 
     # Generate HTML report for LAST run
 
-    new_base_path=$new_ocaml_switch/build/$coq_opam_package.dev/
-    old_base_path=$old_ocaml_switch/build/$coq_opam_package.dev/
+    new_base_path=$new_ocaml_switch/.opam-switch/build/$coq_opam_package.dev/
+    old_base_path=$old_ocaml_switch/.opam-switch/build/$coq_opam_package.dev/
     for vo in `cd $new_opam_root/$new_base_path/; find -name '*.vo'`; do
         if [ -e $old_opam_root/$old_base_path/${vo%%o}.timing -a \
 	        -e $new_opam_root/$new_base_path/${vo%%o}.timing ]; then
