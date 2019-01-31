@@ -129,38 +129,6 @@ coq_opam_version=dev
 
 # --------------------------------------------------------------------------------
 
-# Create a custom OPAM repository
-
-custom_opam_repo="$working_dir/custom_opam_repo"
-
-## Create a OPAM package that represents Coq branch designated by the user.
-mkdir -p "$custom_opam_repo/packages/coq/coq.$coq_opam_version"
-
-echo "opam-version: \"2.0\"" > "$custom_opam_repo/repo"
-
-cat > "$custom_opam_repo/packages/coq/coq.$coq_opam_version/opam" <<+
-opam-version: "2.0"
-maintainer: "dummy@value.fr"
-homepage: "http://dummy.value/"
-bug-reports: "https://dummy.value/bugs/"
-license: "LGPL 2"
-build: [
-  [ "./configure"
-    "-prefix" prefix
-    "-coqide" "no"
-  ]
-  [ make "-j" jobs ]
-]
-install: [make "install"]
-depends: []
-+
-
-echo "url { src: \"file://$working_dir/coq\" } " >> "$custom_opam_repo/packages/coq/coq.$coq_opam_version/opam"
-
-cat "$custom_opam_repo/packages/coq/coq.$coq_opam_version/opam"
-
-# --------------------------------------------------------------------------------
-
 new_opam_root="$working_dir/opam.NEW"
 old_opam_root="$working_dir/opam.OLD"
 
@@ -192,7 +160,6 @@ create_opam() {
     opam repo add -q --set-default ocaml-pr https://github.com/ocaml/ocaml-pr-repository.git
     # Rest of default switches
     opam repo add -q --set-default iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
-    opam repo add -q --set-default custom-opam-repo "$custom_opam_repo"
 
     opam switch create -qy -j$number_of_processors "$OPAM_COMP"
     eval $(opam env)
@@ -216,14 +183,12 @@ create_opam() {
 
     if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: $1_coq_commit_long = $COQ_HASH_LONG"; fi
 
-    if opam install -b -j$number_of_processors coq.$coq_opam_version; then
+    if opam pin add -y -b -j$number_of_processors --kind=path coq . ; then
         echo "Coq installed successfully"
     else
         echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the commit = $COQ_HASH_LONG)."
         exit 1
     fi
-
-    opam pin --kind=version add coq $coq_opam_version
 }
 
 # Create an OPAM-root to which we will install the NEW version of Coq.
@@ -353,7 +318,7 @@ done
 
 # The following directories in $working_dir are no longer used:
 #
-# - coq, custom_opam_repo, opam.OLD, opam.NEW
+# - coq, opam.OLD, opam.NEW
 
 # Measured data for each `$coq_opam_package`, `$iteration`, `status \in {NEW,OLD}`:
 #
