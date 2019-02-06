@@ -17,6 +17,17 @@ Maintainer of coq-bench is Emilio Jesús Gallego Arias; see the
 [contributing](./CONTRIBUTING.md) file information about contributing
 to this software.
 
+## Adding your package for testing.
+
+- Add your package to the `coq-extra-dev` OPAM repository
+  https://github.com/coq/opam-coq-archive , for that you'll need to
+  submit a pull request.
+
+- Go to the web UI
+  https://ci.inria.fr/coq/view/benchmarking/job/benchmark-part-of-the-branch/configure
+  and add the package to the default list. You will need admin
+  privileges on the CI instance in order to do this.
+
 ## Running a bench locally:
 
-Soon, see Travis file.
+Soon, see Travis file to see how the setup works.
