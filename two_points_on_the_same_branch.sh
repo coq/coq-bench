@@ -248,6 +248,9 @@ for coq_opam_package in $coq_opam_packages; do
         opam list
         echo "DEBUG: coq_opam_package = $coq_opam_package"
         opam show $coq_opam_package || continue 2
+    else
+        # cause to skip with error if unknown package
+        opam show $coq_opam_package >/dev/null || continue 2
     fi
 
     for RUNNER in NEW OLD; do
