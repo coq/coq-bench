@@ -23,10 +23,10 @@ env:
   - coq_opam_packages="coq-bignums coq-mathcomp-ssreflect"
   - new_ocaml_switch="4.07.1"
   - new_coq_repository="https://github.com/coq/coq.git"
-  - new_coq_commit="163000a8326ad559d2a0581608f2ccc83fe3beee"
+  - new_coq_commit="d8cf6da35a1b1c697e8bd3017de607c4a2d89691"
   - old_ocaml_switch="4.06.1"
   - old_coq_repository="https://github.com/ejgallego/coq.git"
-  - old_coq_commit="47c6f0ddacf340d4027fce181ee8ac8a0369188f"
+  - old_coq_commit="92df98da23057a47a6cd2053618fd97efe54ba30"
   - new_coq_opam_archive_git_uri="https://github.com/coq/opam-coq-archive.git"
   - new_coq_opam_archive_git_branch="master"
   matrix:
