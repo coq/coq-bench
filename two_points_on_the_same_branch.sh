@@ -186,7 +186,7 @@ create_opam() {
 
     if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: $1_coq_commit_long = $COQ_HASH_LONG"; fi
 
-    if opam pin add -y -b -j$number_of_processors --kind=path coq . ; then
+    if opam pin add -y -b -j$number_of_processors --kind=path coq.dev . ; then
         echo "Coq installed successfully"
     else
         echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the commit = $COQ_HASH_LONG)."
