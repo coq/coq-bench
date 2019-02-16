@@ -72,6 +72,9 @@ fi
 
 mkdir "$working_dir"
 
+log_dir=$working_dir/logs
+mkdir "$log_dir"
+
 # --------------------------------------------------------------------------------
 
 # Some sanity checks of command-line arguments provided by the user that can be done right now.
@@ -241,8 +244,8 @@ for coq_opam_package in $coq_opam_packages; do
         opam config set-global jobs $number_of_processors
 
         opam install $coq_opam_package -v -b -j$number_of_processors --deps-only -y \
-             3>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stdout 1>&3 \
-             4>$working_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stderr 2>&4 || continue 2
+             3>$log_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stdout 1>&3 \
+             4>$log_dir/$coq_opam_package.$RUNNER.opam_install.deps_only.stderr 2>&4 || continue 2
 
         opam config set-global jobs 1
 
@@ -250,15 +253,15 @@ for coq_opam_package in $coq_opam_packages; do
 
         for iteration in $(seq $num_of_iterations); do
             _RES=0
-            /usr/bin/time -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.time" --format="%U %M %F" \
-                 perf stat -e instructions:u,cycles:u -o "$working_dir/$coq_opam_package.$RUNNER.$iteration.perf" \
+            /usr/bin/time -o "$log_dir/$coq_opam_package.$RUNNER.$iteration.time" --format="%U %M %F" \
+                 perf stat -e instructions:u,cycles:u -o "$log_dir/$coq_opam_package.$RUNNER.$iteration.perf" \
                     opam install -v -b -j1 $coq_opam_package \
-                     3>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stdout 1>&3 \
-                     4>$working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stderr 2>&4 || \
+                     3>$log_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stdout 1>&3 \
+                     4>$log_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.stderr 2>&4 || \
                 _RES=$?
             if [ $_RES = 0 ];
             then
-                echo $_RES > $working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.exit_status
+                echo $_RES > $log_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.exit_status
                 # "opam install" was successful.
 
                 # Remove the benchmarked OPAM-package, unless this is the
@@ -271,7 +274,7 @@ for coq_opam_package in $coq_opam_packages; do
                 fi
             else
                 # "opam install" failed.
-                echo $_RES > $working_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.exit_status
+                echo $_RES > $log_dir/$coq_opam_package.$RUNNER.opam_install.$iteration.exit_status
                 continue 3
             fi
         done
@@ -291,12 +294,12 @@ for coq_opam_package in $coq_opam_packages; do
         :
     else
 
-        echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
+        echo "DEBUG: $program_path/shared/render_results.ml "$log_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
         if [ ! -z "$BENCH_DEBUG" ]; then
-            cat $working_dir/$coq_opam_package.$RUNNER.1.time || true
-            cat $working_dir/$coq_opam_package.$RUNNER.1.perf || true
+            cat $log_dir/$coq_opam_package.$RUNNER.1.time || true
+            cat $log_dir/$coq_opam_package.$RUNNER.1.perf || true
         fi
-        $program_path/shared/render_results.ml "$working_dir" \
+        $program_path/shared/render_results.ml "$log_dir" \
                                                $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
     fi
 
@@ -339,8 +342,8 @@ if [ -z "$installable_coq_opam_packages" ]; then
     printf "\n\nINFO: failed to install: $coq_opam_packages"
     exit 1
 else
-    echo "DEBUG: $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
-    $program_path/shared/render_results.ml "$working_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
+    echo "DEBUG: $program_path/shared/render_results.ml "$log_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
+    $program_path/shared/render_results.ml "$log_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
 
     echo "INFO: per line timing: https://ci.inria.fr/coq/job/$JOB_NAME/ws/$BUILD_ID/html/"
 
