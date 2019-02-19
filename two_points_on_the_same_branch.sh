@@ -184,7 +184,7 @@ create_opam() {
     git checkout -q $COQ_HASH
     COQ_HASH_LONG=$(git log --pretty=%H | head -n 1)
 
-    if [ ! -z "$BENCH_DEBUG" ]; then echo "DEBUG: $1_coq_commit_long = $COQ_HASH_LONG"; fi
+    echo "$1_coq_commit_long = $COQ_HASH_LONG"
 
     if opam pin add -y -b -j$number_of_processors --kind=path coq.dev . ; then
         echo "Coq installed successfully"
