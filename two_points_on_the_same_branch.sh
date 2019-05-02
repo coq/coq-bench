@@ -40,6 +40,8 @@ check_variable "new_coq_opam_archive_git_branch"
 check_variable "old_ocaml_switch"
 check_variable "old_coq_repository"
 check_variable "old_coq_commit"
+check_variable "old_coq_opam_archive_git_uri"
+check_variable "old_coq_opam_archive_git_branch"
 check_variable "num_of_iterations"
 check_variable "coq_opam_packages"
 
@@ -66,6 +68,8 @@ then
    echo "DEBUG: old_ocaml_switch = $old_ocaml_switch"
    echo "DEBUG: old_coq_repository = $old_coq_repository"
    echo "DEBUG: old_coq_commit = $old_coq_commit"
+   echo "DEBUG: old_coq_opam_archive_git_uri = $old_coq_opam_archive_git_uri"
+   echo "DEBUG: old_coq_opam_archive_git_branch = $old_coq_opam_archive_git_branch"
    echo "DEBUG: num_of_iterations = $num_of_iterations"
    echo "DEBUG: coq_opam_packages = $coq_opam_packages"
 fi
@@ -138,7 +142,7 @@ old_opam_root="$working_dir/opam.OLD"
 # --------------------------------------------------------------------------------
 
 old_coq_opam_archive_dir="$working_dir/old_coq_opam_archive"
-git clone -q --depth 1 https://github.com/coq/opam-coq-archive.git "$old_coq_opam_archive_dir"
+git clone -q --depth 1 -b "$old_coq_opam_archive_git_branch" "$old_coq_opam_archive_git_uri" "$old_coq_opam_archive_dir"
 new_coq_opam_archive_dir="$working_dir/new_coq_opam_archive"
 git clone -q --depth 1 -b "$new_coq_opam_archive_git_branch" "$new_coq_opam_archive_git_uri" "$new_coq_opam_archive_dir"
 
