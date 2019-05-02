@@ -29,6 +29,8 @@ env:
   - old_coq_commit="92df98da23057a47a6cd2053618fd97efe54ba30"
   - new_coq_opam_archive_git_uri="https://github.com/coq/opam-coq-archive.git"
   - new_coq_opam_archive_git_branch="master"
+  - old_coq_opam_archive_git_uri="https://github.com/coq/opam-coq-archive.git"
+  - old_coq_opam_archive_git_branch="master"
   matrix:
   - BENCH_DEBUG=
   - BENCH_DEBUG=true
