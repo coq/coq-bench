@@ -125,9 +125,13 @@ done
 
 export OPAMROOT="$working_dir/.opam"
 
-for coq_opam_package in $coq_opam_packages; do
+# Sort the opam packages
+sorted_coq_opam_packages=$("${program_path}/sort-by-deps.sh" ${coq_opam_packages})
+echo "DEBUG: sorted_coq_opam_packages = ${sorted_coq_opam_packages}"
+
+for coq_opam_package in $sorted_coq_opam_packages; do
     echo DEBUG: coq_opam_package = $coq_opam_package
-    
+
     # perform measurements with the $older_coq_version
     rm -r -f "$OPAMROOT"
     cp -r "$OPAMROOT.$older_coq_version" "$OPAMROOT"
@@ -156,4 +160,4 @@ done
 export OPAMROOT=
 echo "DEBUG: ocamlfind = `which ocamlfind`"
 echo "DEBUG: ocaml = `which ocaml`"
-$program_path/shared/bench.ml $working_dir $num_of_iterations $newer_coq_version $older_coq_version 0 package_name $coq_opam_packages
+$program_path/shared/bench.ml $working_dir $num_of_iterations $newer_coq_version $older_coq_version 0 package_name $sorted_coq_opam_packages
