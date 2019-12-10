@@ -1,4 +1,4 @@
-dist: xenial
+dist: bionic
 sudo: required
 language: c
 
@@ -21,12 +21,12 @@ env:
   - number_of_processors="2"
   - num_of_iterations="2"
   - coq_opam_packages="coq-bignums coq-mathcomp-ssreflect"
-  - new_ocaml_switch="ocaml.4.07.1"
+  - new_ocaml_switch="ocaml-base-compiler.4.07.1"
   - new_coq_repository="https://github.com/coq/coq.git"
-  - new_coq_commit="d8cf6da35a1b1c697e8bd3017de607c4a2d89691"
-  - old_ocaml_switch="ocaml.4.06.1"
+  - new_coq_commit="79f9e907fa4cc0e8862c4b678d60d8409a6cc88e"
+  - old_ocaml_switch="ocaml-base-compiler.4.06.1"
   - old_coq_repository="https://github.com/ejgallego/coq.git"
-  - old_coq_commit="92df98da23057a47a6cd2053618fd97efe54ba30"
+  - old_coq_commit="0fa2d49c6fe110a61811c8305c735342dc717213"
   - new_coq_opam_archive_git_uri="https://github.com/coq/opam-coq-archive.git"
   - new_coq_opam_archive_git_branch="master"
   - old_coq_opam_archive_git_uri="https://github.com/coq/opam-coq-archive.git"
@@ -38,7 +38,7 @@ env:
 # linux-tools on Travis is a complicated issue
 install:
 - sudo apt-get install -y -qq linux-tools-`uname -r`
-- sudo curl -sL https://github.com/ocaml/opam/releases/download/2.0.2/opam-2.0.2-x86_64-linux -o /usr/bin/opam
+- sudo curl -sL https://github.com/ocaml/opam/releases/download/2.0.5/opam-2.0.5-x86_64-linux -o /usr/bin/opam
 - sudo chmod +x /usr/bin/opam
 # - opam init -c "$COMPILER" --disable-sandboxing
 # - opam switch set "$COMPILER"
