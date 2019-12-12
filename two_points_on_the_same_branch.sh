@@ -163,6 +163,8 @@ create_opam() {
     export OPAMROOT="$OPAM_DIR"
 
     opam init --disable-sandboxing -qn -j$number_of_processors --bare
+    # Allow beta compiler switches
+    opam repo add -q --set-default beta https://github.com/ocaml/ocaml-beta-repository.git
     # Allow experimental compiler switches
     opam repo add -q --set-default ocaml-pr https://github.com/ocaml/ocaml-pr-repository.git
     # Rest of default switches
