@@ -210,13 +210,20 @@ old_coq_commit_long="$COQ_HASH_LONG"
 # --------------------------------------------------------------------------------
 # Measure the compilation times of the specified OPAM packages in both switches
 
+# Sort the opam packages
+sorted_coq_opam_packages=$("${program_path}/sort-by-deps.sh" ${coq_opam_packages})
+if [ ! -z "$BENCH_DEBUG" ]
+then
+   echo "DEBUG: sorted_coq_opam_packages = ${sorted_coq_opam_packages}"
+fi
+
 # Generate per line timing info in devs that use coq_makefile
 export TIMING=1
 
 # The following variable will be set in the following cycle:
 installable_coq_opam_packages=
 
-for coq_opam_package in $coq_opam_packages; do
+for coq_opam_package in $sorted_coq_opam_packages; do
 
     if [ ! -z "$BENCH_DEBUG" ]; then
         opam list
@@ -291,7 +298,7 @@ for coq_opam_package in $coq_opam_packages; do
     # --------------------------------------------------------------
 
     # Print the intermediate results after we finish benchmarking each OPAM package
-    if [ "$coq_opam_package" = "$(echo $coq_opam_packages | sed 's/ /\n/g' | tail -n 1)" ]; then
+    if [ "$coq_opam_package" = "$(echo $sorted_coq_opam_packages | sed 's/ /\n/g' | tail -n 1)" ]; then
 
         # It does not make sense to print the intermediate results when
         # we finished bechmarking the very last OPAM package because the
@@ -345,7 +352,7 @@ echo "INFO: workspace = https://ci.inria.fr/coq/view/benchmarking/job/$JOB_NAME/
 if [ -z "$installable_coq_opam_packages" ]; then
     # Tell the user that none of the OPAM-package(s) the user provided
     # /are installable.
-    printf "\n\nINFO: failed to install: $coq_opam_packages"
+    printf "\n\nINFO: failed to install: $sorted_coq_opam_packages"
     exit 1
 else
     echo "DEBUG: $program_path/shared/render_results.ml "$log_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
@@ -359,7 +366,7 @@ else
     echo INFO: New Coq version
     git log -n 1 "$new_coq_commit"
 
-    not_installable_coq_opam_packages=`comm -23 <(echo $coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
+    not_installable_coq_opam_packages=`comm -23 <(echo $sorted_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
 
     exit_code=0
 
