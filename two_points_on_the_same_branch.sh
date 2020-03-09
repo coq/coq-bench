@@ -166,7 +166,7 @@ create_opam() {
     # Allow beta compiler switches
     opam repo add -q --set-default beta https://github.com/ocaml/ocaml-beta-repository.git
     # Allow experimental compiler switches
-    opam repo add -q --set-default ocaml-pr https://github.com/ocaml/ocaml-pr-repository.git
+    opam repo add -q --set-default ocaml-pr https://github.com/ejgallego/ocaml-pr-repository.git
     # Rest of default switches
     opam repo add -q --set-default iris-dev "https://gitlab.mpi-sws.org/FP/opam-dev.git"
 
