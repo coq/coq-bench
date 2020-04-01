@@ -1,0 +1,82 @@
+#!/usr/bin/env ocaml
+
+(** Usage:
+
+- Call this script from a directory containing the benchmark HTML files.
+- Alternatively pass it as argument a folder containing these files.
+
+*)
+
+let rec get_lines chan accu =
+  let line = try Some (input_line chan) with End_of_file -> None in
+  match line with
+  | None -> List.rev accu
+  | Some l -> get_lines chan (l :: accu)
+
+let get_lines file =
+  let chan = open_in file in
+  let lines = get_lines chan [] in
+  let () = close_in chan in
+  lines
+
+let find_all_files suff dir =
+  let rec find accu cur =
+    let files = Sys.readdir cur in
+    let files = Array.map (fun f -> Filename.concat cur f) files in
+    Array.fold_left fold accu files
+  and fold accu f =
+    if Sys.is_directory f then
+      find accu f
+    else if Filename.check_suffix f suff then
+      f :: accu
+    else accu
+  in
+  find [] dir
+
+let starts_with s pre =
+  let len = String.length pre in
+  len <= String.length s && pre = (String.sub s 0 len)
+
+let skip_header s head =
+  let () = if not (starts_with s head) then raise Exit in
+  let len = String.length head in
+  String.sub s len (String.length s - len)
+
+let parse_time s =
+  (** [s] is of the form [\d+s] *)
+  float_of_string (String.sub s 0 (String.length s - 1))
+
+let rec parse_file f accu = function
+| h :: ((_ :: t1 :: t2 :: rem) as l) ->
+  let v =
+    try
+      let line = int_of_string (skip_header h "Line: ") in
+      let t1 = parse_time (skip_header t1 "Time1: ") in
+      let t2 = parse_time (skip_header t2 "Time2: ") in
+      Some (f, line, t1, t2)
+    with _ -> None
+  in
+  begin match v with
+  | None -> parse_file f accu l
+  | Some v -> parse_file f (v :: accu) l
+  end
+| _ -> accu
+
+let read_file accu f =
+  let lines = get_lines f in
+  parse_file f accu lines
+
+(* Change me to change the sort algorithm *)
+let sort (_, _, t1, t2) (_, _, u1, u2) =
+  Pervasives.compare (t2 -. t1) (u2 -. u1)
+
+let () =
+  let dir = try Sys.argv.(1) with _ -> Sys.getcwd () in
+  let files = find_all_files ".v.html" dir in
+  let data = List.fold_left read_file [] files in
+  let data = List.sort sort data in
+  let iter (f, l, t1, t2) =
+    let p = 100. *. (t2 -. t1) /. t1 in
+    Printf.printf "%s:%i %.2f %.2f %.2f (%.0f%%)\n" f l (t2 -. t1) t1 t2 p
+  in
+  List.iter iter data
