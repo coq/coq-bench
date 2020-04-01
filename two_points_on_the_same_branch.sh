@@ -318,8 +318,11 @@ for coq_opam_package in $sorted_coq_opam_packages; do
 
     # Generate HTML report for LAST run
 
-    new_base_path=$new_ocaml_switch/.opam-switch/build/$coq_opam_package.dev/
-    old_base_path=$old_ocaml_switch/.opam-switch/build/$coq_opam_package.dev/
+    # N.B. Not all packages end in .dev, e.g., coq-lambda-rust uses .dev.timestamp.
+    # So we use a wildcard to catch such packages.  This will have to be updated if
+    # ever there is a package that uses some different naming scheme.
+    new_base_path=$new_ocaml_switch/.opam-switch/build/$coq_opam_package.dev*/
+    old_base_path=$old_ocaml_switch/.opam-switch/build/$coq_opam_package.dev*/
     for vo in `cd $new_opam_root/$new_base_path/; find -name '*.vo'`; do
         if [ -e $old_opam_root/$old_base_path/${vo%%o}.timing -a \
 	        -e $new_opam_root/$new_base_path/${vo%%o}.timing ]; then
