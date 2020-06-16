@@ -239,10 +239,10 @@ for coq_opam_package in $sorted_coq_opam_packages; do
         # perform measurements for the NEW/OLD commit (provided by the user)
         if [ $RUNNER = "NEW" ]; then
             export OPAMROOT="$new_opam_root"
-            echo "Testing NEW commit"
+            echo "Testing NEW commit: $(date)"
         else
             export OPAMROOT="$old_opam_root"
-            echo "Testing OLD commit"
+            echo "Testing OLD commit: $(date)"
         fi
 
         eval $(opam env)
