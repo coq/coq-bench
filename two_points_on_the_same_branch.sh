@@ -14,11 +14,14 @@ fi
 r='\033[0m'          # reset (all attributes off)
 b='\033[1m'          # bold
 u='\033[4m'          # underline
+nl=$'\n'
 
 number_of_processors=$(cat /proc/cpuinfo | grep '^processor *' | wc -l)
 
 program_name="$0"
 program_path=$(readlink -f "${program_name%/*}")
+
+coqbot_url_prefix="https://coqbot.herokuapp.com/pendulum/"
 
 # Check that the required arguments are provided
 
@@ -32,6 +35,12 @@ check_variable () {
 
 check_variable "WORKSPACE"
 check_variable "BUILD_ID"
+check_variable "BUILD_URL"
+check_variable "BUILD_NUMBER"
+check_variable "JOB_NAME"
+check_variable "JENKINS_URL"
+check_variable "coq_pr_number"
+check_variable "coq_pr_comment_id"
 check_variable "new_ocaml_switch"
 check_variable "new_coq_repository"
 check_variable "new_coq_commit"
@@ -45,6 +54,15 @@ check_variable "old_coq_opam_archive_git_branch"
 check_variable "num_of_iterations"
 check_variable "coq_opam_packages"
 
+if which jq > /dev/null; then
+    :
+else
+    echo > /dev/stderr
+    echo "ERROR: \"jq\" program is not available." > /dev/stderr
+    echo > /dev/stderr
+    exit 1
+fi
+
 if echo "$num_of_iterations" | grep '^[1-9][0-9]*$' 2> /dev/null > /dev/null; then
     :
 else
@@ -55,6 +73,48 @@ else
 fi
 
 working_dir="${WORKSPACE%@*}/$BUILD_ID"
+mkdir "$working_dir"
+
+log_dir=$working_dir/logs
+mkdir "$log_dir"
+
+if [ ! -z "${coq_pr_number}" ]; then
+    github_response="$(curl "https://api.github.com/repos/coq/coq/pulls/${coq_pr_number}")"
+    new_coq_repository="$(echo "${github_response}" | jq -r '.head.repo.clone_url')"
+    new_coq_commit="$(echo "${github_response}" | jq -r '.head.sha')"
+    old_coq_repository="$(echo "${github_response}" | jq -r '.base.repo.clone_url')"
+    old_coq_commit="$(echo "${github_response}" | jq -r '.base.sha')"
+    coq_pr_title="$(echo "${github_response}" | jq -r '.title')"
+    # for coqbot parsing purposes, coq_pr_number and coq_pr_comment_id must not have newlines
+    coq_pr_number="$(echo "${coq_pr_number}" | tr -d '\n' | tr -d '\r')"
+    coq_pr_comment_id="$(echo "${coq_pr_comment_id}" | tr -d '\n' | tr -d '\r')"
+
+    for val in "${new_coq_repository}" "${new_coq_commit}" "${old_coq_repository}" "${old_coq_commit}" "${coq_pr_title}"; do
+        if [ -z "$val" ] || [ "val" == "null" ]; then
+            echo 'ERROR: Invalid Response:' > /dev/stderr
+            echo "${github_response}" > /dev/stderr
+            echo "Info:" > /dev/stderr
+            curl -i "https://api.github.com/repos/coq/coq/pulls/${coq_pr_number}" > /dev/stderr
+            exit 1
+        fi
+    done
+
+    if [ -z "$BENCH_DEBUG" ]; then # if it's non-empty, this'll get
+                                   # printed later anyway.  But we
+                                   # want to see it always if we're
+                                   # automatically computing values
+        echo "DEBUG: new_coq_repository = $new_coq_repository"
+        echo "DEBUG: new_coq_commit = $new_coq_commit"
+        echo "DEBUG: old_coq_repository = $old_coq_repository"
+        echo "DEBUG: old_coq_commit = $old_coq_commit"
+    fi
+
+    # cf https://wiki.jenkins.io/display/JENKINS/Jenkins+CLI
+    # TODO: Is there a better place to put the cli?  Is it already available somewhere?
+    curl "${JENKINS_URL}/jnlpJars/jenkins-cli.jar" -o "$working_dir/jenkins-cli.jar"
+    # cf https://ci.inria.fr/coq/cli/command/set-build-display-name
+    java -jar "$working_dir/jenkins-cli.jar" -s "${JENKINS_URL}" set-build-display-name "${JOB_NAME}" "${BUILD_NUMBER}" "PR #${coq_pr_number}: ${coq_pr_title} (coqbot)"
+fi
 
 if [ ! -z "$BENCH_DEBUG" ]
 then
@@ -72,12 +132,9 @@ then
    echo "DEBUG: old_coq_opam_archive_git_branch = $old_coq_opam_archive_git_branch"
    echo "DEBUG: num_of_iterations = $num_of_iterations"
    echo "DEBUG: coq_opam_packages = $coq_opam_packages"
+   echo "DEBUG: coq_pr_number = $coq_pr_number"
+   echo "DEBUG: coq_pr_comment_id = $coq_pr_comment_id"
 fi
-
-mkdir "$working_dir"
-
-log_dir=$working_dir/logs
-mkdir "$log_dir"
 
 # --------------------------------------------------------------------------------
 
@@ -88,6 +145,15 @@ if which perf > /dev/null; then
 else
     echo > /dev/stderr
     echo "ERROR: \"perf\" program is not available." > /dev/stderr
+    echo > /dev/stderr
+    exit 1
+fi
+
+if which curl > /dev/null; then
+    :
+else
+    echo > /dev/stderr
+    echo "ERROR: \"curl\" program is not available." > /dev/stderr
     echo > /dev/stderr
     exit 1
 fi
@@ -118,6 +184,52 @@ if [ $(echo "$coq_opam_packages_on_separate_lines" | wc -l) != $(echo "$coq_opam
     echo "ERROR: The provided set of OPAM packages contains duplicates."
     exit 1
 fi
+
+# --------------------------------------------------------------------------------
+
+# Tell coqbot to update the initial comment, if we know which one to update
+function coqbot_update_comment() {
+    is_done="$1"
+    comment_body="$2"
+    uninstallable_packages="$3"
+
+    if [ ! -z "${coq_pr_number}" ]; then
+        comment_text=""
+
+        if [ -z "${is_done}" ]; then
+            comment_text="in progress, "
+        else
+            comment_text=""
+        fi
+        comment_text="Benchmarking ${comment_text}log available [here](${BUILD_URL}/console), workspace available [here](${JENKINS_URL}/view/benchmarking/job/${JOB_NAME}/ws/${BUILD_ID})"
+
+        if [ ! -z "${comment_body}" ]; then
+            comment_text="${comment_text}${nl}"'```'"${nl}${comment_body}${nl}"'```'
+        fi
+
+        if [ ! -z "${uninstallable_packages}" ]; then
+            comment_text="${comment_text}${nl}The following packages failed to install: ${uninstallable_packages}"
+        fi
+
+        # if there's a comment id, we update the comment while we're
+        # in progress; otherwise, we wait until the end to post a new
+        # comment
+        if [ ! -z "${coq_pr_comment_id}" ]; then
+            # Tell coqbot to update the in-progress comment
+            curl -X POST --data-binary "${coq_pr_number}${nl}${coq_pr_comment_id}${nl}${comment_text}" "${coqbot_url_prefix}/update-comment"
+        elif [ ! -z "${is_done}" ]; then
+            # Tell coqbot to post a new comment that we're done benchmarking
+            curl -X POST --data-binary "${coq_pr_number}${nl}${comment_text}" "${coqbot_url_prefix}/new-comment"
+        fi
+        if [ ! -z "${is_done}" ]; then
+            # Tell coqbot to remove the `needs: benchmarking` label
+            curl -X POST --data-binary "${coq_pr_number}" "${coqbot_url_prefix}/benchmarking-done"
+        fi
+    fi
+}
+
+# initial update to the comment, to say that we're in progress
+coqbot_update_comment "" "" ""
 
 # --------------------------------------------------------------------------------
 
@@ -328,8 +440,10 @@ for coq_opam_package in $sorted_coq_opam_packages; do
             cat $log_dir/$coq_opam_package.$RUNNER.1.time || true
             cat $log_dir/$coq_opam_package.$RUNNER.1.perf || true
         fi
-        $program_path/shared/render_results.ml "$log_dir" \
-                                               $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
+        rendered_results="$($program_path/shared/render_results.ml "$log_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages)"
+        echo "${rendered_results}"
+        # update the comment
+        coqbot_update_comment "" "${rendered_results}" ""
     fi
 
     # Generate HTML report for LAST run
@@ -372,10 +486,12 @@ if [ -z "$installable_coq_opam_packages" ]; then
     # Tell the user that none of the OPAM-package(s) the user provided
     # /are installable.
     printf "\n\nINFO: failed to install: $sorted_coq_opam_packages"
+    coqbot_update_comment "done" "" "$sorted_coq_opam_packages"
     exit 1
 else
     echo "DEBUG: $program_path/shared/render_results.ml "$log_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages"
-    $program_path/shared/render_results.ml "$log_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages
+    rendered_results="$($program_path/shared/render_results.ml "$log_dir" $num_of_iterations $new_coq_commit_long $old_coq_commit_long 0 user_time_pdiff $installable_coq_opam_packages)"
+    echo "${rendered_results}"
 
     echo "INFO: per line timing: https://ci.inria.fr/coq/job/$JOB_NAME/ws/$BUILD_ID/html/"
 
@@ -386,6 +502,8 @@ else
     git log -n 1 "$new_coq_commit"
 
     not_installable_coq_opam_packages=`comm -23 <(echo $sorted_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) <(echo $installable_coq_opam_packages | sed 's/ /\n/g' | sort | uniq) | sed 's/\t//g'`
+
+    coqbot_update_comment "done" "${rendered_results}" "${not_installable_coq_opam_packages}"
 
     exit_code=0
 
