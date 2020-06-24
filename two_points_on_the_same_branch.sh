@@ -267,7 +267,8 @@ initial_opam_packages="num ocamlfind dune"
 # $4 = directory of coq opam archive
 create_opam() {
 
-    local OPAM_DIR="$working_dir/opam.$1"
+    local RUNNER="$1"
+    local OPAM_DIR="$working_dir/opam.$RUNNER"
     local OPAM_COMP="$2"
     local COQ_HASH="$3"
     local OPAM_COQ_DIR="$4"
@@ -304,12 +305,27 @@ create_opam() {
 
     echo "$1_coq_commit_long = $COQ_HASH_LONG"
 
-    if opam pin add -y -b -j$number_of_processors --kind=path coq.dev . ; then
-        echo "Coq installed successfully"
+    _RES=0
+    /usr/bin/time -o "$log_dir/coq.$RUNNER.1.time" --format="%U %M %F" \
+                  perf stat -e instructions:u,cycles:u -o "$log_dir/coq.$RUNNER.1.perf" \
+                  opam pin add -y -b -j "$number_of_processors" --kind=path coq.dev . \
+                  3>$log_dir/coq.$RUNNER.opam_install.1.stdout 1>&3 \
+                  4>$log_dir/coq.$RUNNER.opam_install.1.stderr 2>&4 || \
+        _RES=$?
+    if [ $_RES = 0 ]; then
+        echo "Coq ($RUNNER) installed successfully"
     else
-        echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the commit = $COQ_HASH_LONG)."
+        echo "ERROR: \"opam install coq.$coq_opam_version\" has failed (for the $RUNNER commit = $COQ_HASH_LONG)."
         exit 1
     fi
+
+    # we don't multi compile coq for now (TODO some other time)
+    # the render needs all the files so copy them around
+    for it in $(seq 2 $num_of_iterations); do
+        cp "$log_dir/coq.$RUNNER.1.time" "$log_dir/coq.$RUNNER.$it.time"
+        cp "$log_dir/coq.$RUNNER.1.perf" "$log_dir/coq.$RUNNER.$it.perf"
+    done
+
 }
 
 # Create an OPAM-root to which we will install the NEW version of Coq.
@@ -333,7 +349,7 @@ fi
 export TIMING=1
 
 # The following variable will be set in the following cycle:
-installable_coq_opam_packages=
+installable_coq_opam_packages=coq
 
 for coq_opam_package in $sorted_coq_opam_packages; do
 
@@ -351,10 +367,10 @@ for coq_opam_package in $sorted_coq_opam_packages; do
         # perform measurements for the NEW/OLD commit (provided by the user)
         if [ $RUNNER = "NEW" ]; then
             export OPAMROOT="$new_opam_root"
-            echo "Testing NEW commit"
+            echo "Testing NEW commit: $(date)"
         else
             export OPAMROOT="$old_opam_root"
-            echo "Testing OLD commit"
+            echo "Testing OLD commit: $(date)"
         fi
 
         eval $(opam env)
