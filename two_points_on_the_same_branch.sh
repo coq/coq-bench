@@ -39,8 +39,8 @@ check_variable "BUILD_URL"
 check_variable "BUILD_NUMBER"
 check_variable "JOB_NAME"
 check_variable "JENKINS_URL"
-check_variable "coq_pr_number"
-check_variable "coq_pr_comment_id"
+# check_variable "coq_pr_number" # allowed to be empty (apparently empty variables on Jenkins don't exist?)
+# check_variable "coq_pr_comment_id" # allowed to be empty (apparently empty variables on Jenkins don't exist?)
 check_variable "new_ocaml_switch"
 check_variable "new_coq_repository"
 check_variable "new_coq_commit"
