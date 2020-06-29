@@ -13,11 +13,16 @@ addons:
     - ca-certificates
     - ca-cacert               # iris repo is signed by cacert
     - lua5.1                  # timelog2html
+    - jq                      # jq, for interaction with coqbot
 
 env:
   global:
   - WORKSPACE="${TRAVIS_BUILD_DIR}/_workspace"
   - BUILD_ID="travis"
+  - BUILD_URL="${TRAVIS_BUILD_WEB_URL}"
+  - BUILD_NUMBER="${TRAVIS_BUILD_NUMBER}"
+  - JOB_NAME="${TRAVIS_JOB_NAME}"
+  - JENKINS_URL="${TRAVIS_JOB_WEB_URL}"
   - number_of_processors="2"
   - num_of_iterations="2"
   - coq_opam_packages="coq-bignums coq-mathcomp-ssreflect"
@@ -31,6 +36,8 @@ env:
   - new_coq_opam_archive_git_branch="master"
   - old_coq_opam_archive_git_uri="https://github.com/coq/opam-coq-archive.git"
   - old_coq_opam_archive_git_branch="master"
+  - coq_pr_number=""
+  - coq_pr_comment_id=""
   matrix:
   - BENCH_DEBUG=
   - BENCH_DEBUG=true
