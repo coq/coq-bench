@@ -1,3 +1,15 @@
+# Coq Bench repository is in the process of being archived
+
+After https://github.com/coq/coq/pull/12581 [which was merged by
+side-effect in https://github.com/coq/coq/pull/12816] , the coq-bench
+script is maintained in the main Coq repository.
+
+Please, head to https://github.com/coq/coq for issues and up-to-date
+code. This repository will be shortly archived, once all the issues
+have been closed or transferred out.
+
+We keep the old readme below for historical purposes.
+
 # Welcome to Coq Bench!
 
 coq-bench is a set of scripts that allow users to track performance
